@@ -1,0 +1,34 @@
+# private, never commit
+CLAUDE.local.md
+*.ideamatrix.json
+!packages/core/src/sample/*.ideamatrix.json
+
+# dependencies
+node_modules/
+
+# next.js
+apps/web/.next/
+apps/web/out/
+apps/web/next-env.d.ts
+
+# builds and caches
+dist/
+coverage/
+*.tsbuildinfo
+.eslintcache
+
+# env and local
+.env*
+!.env.example
+.vercel
+
+# OS and editors
+.DS_Store
+Thumbs.db
+.idea/
+.vscode/*
+!.vscode/extensions.json
+*.log
+
+# playwright session files
+.playwright-mcp/
