@@ -54,17 +54,3 @@ export function StageBadge({ stage, className }: { stage: Stage; className?: str
     </span>
   );
 }
-
-export function BandLegend() {
-  return (
-    <div className="flex flex-wrap items-center gap-2 text-xs text-muted-foreground">
-      <span>Bands:</span>
-      {(Object.keys(BANDS) as (keyof typeof BANDS)[]).map((key) => (
-        <span key={key} className={cn("rounded-md px-2 py-0.5", BAND_CLASSES[key])}>
-          {BANDS[key].min}
-          {BANDS[key].max < 100 ? `–${BANDS[key].max}` : "+"} {BANDS[key].label}
-        </span>
-      ))}
-    </div>
-  );
-}

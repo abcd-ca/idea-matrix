@@ -1,15 +1,17 @@
 "use client";
 
 import {
+  BANDS,
   CONFIDENCE_INFO,
   CRITERION_INFO,
   CRITERIA,
+  FORMULA_INFO,
   STAGES,
+  STAGE_INFO,
   addIdea,
-  maxConfidenceAllowed,
   potential,
   score,
-  updateIdea,
+  type Criterion,
   type Idea,
   type Stage,
 } from "@idea-matrix/core";
@@ -24,9 +26,8 @@ import {
 import { cn } from "cn";
 import { ArrowDownIcon, ArrowUpIcon, PlusIcon } from "lucide-react";
 import { useRouter } from "next/navigation";
-import { useMemo, useState, type ReactNode } from "react";
-import { BandLegend, BandPill, StageBadge } from "@/components/pills";
-import { ScoreSelect } from "@/components/score-select";
+import { useEffect, useMemo, useState, type ReactNode } from "react";
+import { BandPill, StageBadge } from "@/components/pills";
 import { Button } from "@/components/ui/button";
 import {
   Dialog,
@@ -43,6 +44,26 @@ type Row = Idea & { potential: number | null; score: number | null };
 
 const columnHelper = createColumnHelper<Row>();
 const ACTIVE_STAGES = STAGES.filter((s) => s !== "Parked");
+const SHOW_SCORES_KEY = "ideamatrix.showScores";
+const CENTERED = new Set<string>(["potential", "score", "confidence", ...CRITERIA]);
+
+/** What hovering a column header explains. Built only from the app's own constants. */
+function scaleText(levels: Record<number, string>): string {
+  return Object.entries(levels)
+    .map(([k, v]) => `${k} = ${v}`)
+    .join("\n");
+}
+const HEADER_HELP: Record<string, string> = {
+  stage: STAGES.map((s) => `${s}: ${STAGE_INFO[s]}`).join("\n"),
+  confidence: `${CONFIDENCE_INFO.question}\n${scaleText(CONFIDENCE_INFO.levels)}`,
+  potential: `${FORMULA_INFO.potential}\n${Object.values(BANDS)
+    .map((b) => `${b.min}${b.max < 100 ? `–${b.max}` : "+"}: ${b.advice}`)
+    .join("\n")}`,
+  score: FORMULA_INFO.score,
+  ...Object.fromEntries(
+    CRITERIA.map((c: Criterion) => [c, `${CRITERION_INFO[c].question}\n${scaleText(CRITERION_INFO[c].levels)}`]),
+  ),
+};
 
 export function MatrixView({ parked = false }: { parked?: boolean }) {
   const router = useRouter();
@@ -52,6 +73,24 @@ export function MatrixView({ parked = false }: { parked?: boolean }) {
   const [sorting, setSorting] = useState<SortingState>([{ id: "score", desc: true }]);
   const [error, setError] = useState<string | null>(null);
   const [newOpen, setNewOpen] = useState(false);
+  const [showScores, setShowScores] = useState(false);
+
+  useEffect(() => {
+    try {
+      setShowScores(localStorage.getItem(SHOW_SCORES_KEY) === "1");
+    } catch {
+      // storage unavailable: keep the default
+    }
+  }, []);
+
+  const toggleScores = (on: boolean) => {
+    setShowScores(on);
+    try {
+      localStorage.setItem(SHOW_SCORES_KEY, on ? "1" : "0");
+    } catch {
+      // ignore
+    }
+  };
 
   const rows = useMemo<Row[]>(() => {
     const ideas = doc?.ideas ?? [];
@@ -64,10 +103,6 @@ export function MatrixView({ parked = false }: { parked?: boolean }) {
       });
   }, [doc, parked, stageFilter]);
 
-  const change = (ideaId: string, patch: Parameters<typeof updateIdea>[2]) => {
-    setError(mutate((d) => updateIdea(d, ideaId, patch)));
-  };
-
   const columns = useMemo(
     () => [
       columnHelper.accessor("name", {
@@ -79,56 +114,39 @@ export function MatrixView({ parked = false }: { parked?: boolean }) {
         header: "Stage",
         cell: (info) => <StageBadge stage={info.getValue()} />,
       }),
-      columnHelper.group({
-        id: "scores",
-        header: () => <span data-tour="scores">Reach · Impact · Profit · Vision · Ease</span>,
-        columns: CRITERIA.map((key) =>
-          columnHelper.accessor((row) => row.scores[key], {
-            id: key,
-            header: CRITERION_INFO[key].short,
-            enableSorting: false,
-            cell: (info) => (
-              <ScoreSelect
-                label={`${CRITERION_INFO[key].label} for ${info.row.original.name}`}
-                value={info.getValue()}
-                min={key === "profitability" ? 0 : 1}
-                meanings={CRITERION_INFO[key].levels}
-                onChange={(v) => change(info.row.original.id, { scores: { [key]: v } })}
-              />
-            ),
-          }),
-        ),
+      ...(showScores
+        ? CRITERIA.map((key) =>
+            columnHelper.accessor((row) => row.scores[key], {
+              id: key,
+              header: CRITERION_INFO[key].short,
+              sortUndefined: "last",
+              cell: (info) => {
+                const v = info.getValue();
+                return v === null ? <span className="text-muted-foreground">–</span> : <span className="tabular-nums">{v}</span>;
+              },
+            }),
+          )
+        : []),
+      columnHelper.accessor("potential", {
+        header: "Potential",
+        sortUndefined: "last",
+        cell: (info) => <BandPill value={info.getValue()} showLabel emptyText="score it" />,
       }),
       columnHelper.accessor("confidence", {
-        header: () => <span data-tour="confidence">Conf</span>,
-        enableSorting: false,
-        cell: (info) => {
-          const allowed = maxConfidenceAllowed(info.row.original.evidence);
-          return (
-            <ScoreSelect
-              label={`Confidence for ${info.row.original.name}`}
-              value={info.getValue()}
-              max={allowed}
-              allowEmpty={false}
-              meanings={CONFIDENCE_INFO.levels}
-              onChange={(v) => change(info.row.original.id, { confidence: v ?? 1 })}
-            />
-          );
-        },
-      }),
-      columnHelper.accessor("potential", {
-        header: () => <span data-tour="potential">Potential</span>,
-        sortUndefined: "last",
-        cell: (info) => <BandPill value={info.getValue()} emptyText="needs all 5" />,
+        header: "Confidence",
+        cell: (info) => (
+          <span className="tabular-nums" title={CONFIDENCE_INFO.levels[info.getValue()]}>
+            {info.getValue()}
+          </span>
+        ),
       }),
       columnHelper.accessor("score", {
-        header: () => <span data-tour="score">Score</span>,
+        header: "Score",
         sortUndefined: "last",
-        cell: (info) => <BandPill value={info.getValue()} />,
+        cell: (info) => <BandPill value={info.getValue()} showLabel />,
       }),
     ],
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-    [],
+    [showScores],
   );
 
   const table = useReactTable({
@@ -142,6 +160,8 @@ export function MatrixView({ parked = false }: { parked?: boolean }) {
   });
 
   if (!doc) return null;
+
+  const open = (id: string) => router.push(`/idea/?id=${encodeURIComponent(id)}`);
 
   return (
     <div className="flex flex-col gap-4">
@@ -161,7 +181,7 @@ export function MatrixView({ parked = false }: { parked?: boolean }) {
             All
           </Chip>
           {ACTIVE_STAGES.map((s) => (
-            <Chip key={s} active={stageFilter === s} onClick={() => setStageFilter(s)}>
+            <Chip key={s} active={stageFilter === s} onClick={() => setStageFilter(s)} title={STAGE_INFO[s]}>
               {s}
             </Chip>
           ))}
@@ -192,10 +212,12 @@ export function MatrixView({ parked = false }: { parked?: boolean }) {
                       <th
                         key={h.id}
                         colSpan={h.colSpan}
+                        title={HEADER_HELP[h.column.id]}
+                        data-tour={h.column.id}
                         className={cn(
-                          "px-2 py-2 text-left font-medium whitespace-nowrap",
+                          "px-3 py-2 text-left font-medium whitespace-nowrap",
                           h.column.getCanSort() && "cursor-pointer select-none hover:text-foreground",
-                          ["potential", "score", "confidence", ...CRITERIA].includes(h.column.id) && "text-center",
+                          CENTERED.has(h.column.id) && "text-center",
                         )}
                         onClick={h.column.getToggleSortingHandler()}
                         aria-sort={
@@ -213,19 +235,24 @@ export function MatrixView({ parked = false }: { parked?: boolean }) {
                 ))}
               </thead>
               <tbody>
-                {table.getRowModel().rows.map((row) => (
+                {table.getRowModel().rows.map((row, index) => (
                   <tr
                     key={row.id}
-                    className="cursor-pointer border-t hover:bg-muted/40"
-                    onClick={() => router.push(`/idea/?id=${encodeURIComponent(row.original.id)}`)}
+                    data-tour={index === 0 ? "first-row" : undefined}
+                    className="cursor-pointer border-t hover:bg-muted/40 focus-visible:bg-muted/40 focus-visible:outline-none"
+                    tabIndex={0}
+                    onClick={() => open(row.original.id)}
+                    onKeyDown={(e) => {
+                      if (e.key === "Enter" || e.key === " ") {
+                        e.preventDefault();
+                        open(row.original.id);
+                      }
+                    }}
                   >
                     {row.getVisibleCells().map((cell) => (
                       <td
                         key={cell.id}
-                        className={cn(
-                          "px-2 py-1.5 align-middle",
-                          ["potential", "score", "confidence", ...CRITERIA].includes(cell.column.id) && "text-center",
-                        )}
+                        className={cn("px-3 py-2 align-middle", CENTERED.has(cell.column.id) && "text-center")}
                       >
                         {flexRender(cell.column.columnDef.cell, cell.getContext())}
                       </td>
@@ -236,6 +263,19 @@ export function MatrixView({ parked = false }: { parked?: boolean }) {
             </table>
           </div>
 
+          <div className="hidden items-center justify-between gap-3 text-xs text-muted-foreground md:flex">
+            <span>Click an idea to open and score it. Hover a column heading for its scale.</span>
+            <label className="inline-flex cursor-pointer items-center gap-2">
+              <input
+                type="checkbox"
+                className="size-3.5 accent-primary"
+                checked={showScores}
+                onChange={(e) => toggleScores(e.target.checked)}
+              />
+              Show the five scores
+            </label>
+          </div>
+
           {/* Cards on phones */}
           <ul className="flex flex-col gap-2 md:hidden">
             {table.getRowModel().rows.map(({ original: idea }) => (
@@ -243,7 +283,7 @@ export function MatrixView({ parked = false }: { parked?: boolean }) {
                 <button
                   type="button"
                   className="flex w-full flex-col gap-1 rounded-md border p-3 text-left hover:bg-muted/40"
-                  onClick={() => router.push(`/idea/?id=${encodeURIComponent(idea.id)}`)}
+                  onClick={() => open(idea.id)}
                 >
                   <span className="flex items-center justify-between gap-2">
                     <span className="font-medium">{idea.name}</span>
@@ -262,8 +302,6 @@ export function MatrixView({ parked = false }: { parked?: boolean }) {
         </>
       )}
 
-      <BandLegend />
-
       <NewIdeaDialog
         open={newOpen}
         onOpenChange={setNewOpen}
@@ -275,18 +313,29 @@ export function MatrixView({ parked = false }: { parked?: boolean }) {
             return result.doc;
           });
           setError(err);
-          if (!err && created) router.push(`/idea/?id=${encodeURIComponent(created)}`);
+          if (!err && created) open(created);
         }}
       />
     </div>
   );
 }
 
-function Chip({ active, onClick, children }: { active: boolean; onClick: () => void; children: ReactNode }) {
+function Chip({
+  active,
+  onClick,
+  title,
+  children,
+}: {
+  active: boolean;
+  onClick: () => void;
+  title?: string;
+  children: ReactNode;
+}) {
   return (
     <button
       type="button"
       aria-pressed={active}
+      title={title}
       onClick={onClick}
       className={cn(
         "rounded-full border px-3 py-1 text-xs whitespace-nowrap",

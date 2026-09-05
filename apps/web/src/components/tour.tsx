@@ -8,8 +8,11 @@ import { useAppStore } from "@/lib/store";
 function list(items: string[]): string {
   return `<ul style="margin:8px 0 0;padding-left:18px">${items.map((i) => `<li>${i}</li>`).join("")}</ul>`;
 }
+function para(text: string): string {
+  return `<p style="margin-top:8px">${text}</p>`;
+}
 
-// Descriptions below are built from the app's own constants, never from user text.
+// Popover text is built only from the app's own constants, never from user text.
 const STEPS: DriveStep[] = [
   {
     element: "[data-tour=stages]",
@@ -18,38 +21,19 @@ const STEPS: DriveStep[] = [
       description:
         "Filter the matrix by where each idea is." +
         list(STAGES.filter((s) => s !== "Parked").map((s) => `<b>${s}</b>: ${STAGE_INFO[s]}`)) +
-        "<p style='margin-top:8px'>Parked ideas keep their scores and live under Parked in the menu.</p>",
-    },
-  },
-  {
-    element: "[data-tour=scores]",
-    popover: {
-      title: "Five scores, each from 1 to 5",
-      description:
-        list(
-          CRITERIA.map(
-            (c) => `<b>${CRITERION_INFO[c].label}</b>: ${CRITERION_INFO[c].question} 1 = ${CRITERION_INFO[c].levels[1]}, 5 = ${CRITERION_INFO[c].levels[5]}.`,
-          ),
-        ) + "<p style='margin-top:8px'>Change any number right here in the table. Each score's meaning shows as you pick.</p>",
-    },
-  },
-  {
-    element: "[data-tour=confidence]",
-    popover: {
-      title: "Confidence: how much evidence is behind those scores?",
-      description:
-        list(Object.entries(CONFIDENCE_INFO.levels).map(([k, v]) => `<b>${k}</b> ${v}`)) +
-        `<p style='margin-top:8px'>Every new idea starts at 1, and only talking to people moves it. Three rules for those conversations:</p>` +
-        list(CONFIDENCE_INFO.rules) +
-        "<p style='margin-top:8px'>The evidence log on each idea keeps the receipts, and Confidence cannot go above 2 without one.</p>",
+        para("Parked ideas keep their scores and live under Parked in the menu."),
     },
   },
   {
     element: "[data-tour=potential]",
     popover: {
-      title: "Potential",
+      title: "Potential: five scores, averaged",
       description:
         `<p>${FORMULA_INFO.potential}</p>` +
+        list(CRITERIA.map((c) => `<b>${CRITERION_INFO[c].label}</b>: ${CRITERION_INFO[c].question}`)) +
+        para(
+          "The five scores stay out of this table by default. Tick <b>Show the five scores</b> below it to see them, and <b>hover any column heading</b> to see what its numbers mean.",
+        ) +
         list([
           "<b>39 and under</b>: not worth time yet",
           "<b>40 to 59</b>: worth a look",
@@ -59,11 +43,32 @@ const STEPS: DriveStep[] = [
     },
   },
   {
+    element: "[data-tour=confidence]",
+    popover: {
+      title: "Confidence: how much evidence is behind those scores?",
+      description:
+        list(Object.entries(CONFIDENCE_INFO.levels).map(([k, v]) => `<b>${k}</b> ${v}`)) +
+        para("Every new idea starts at 1, and only talking to people moves it. Three rules for those conversations:") +
+        list(CONFIDENCE_INFO.rules) +
+        para("The evidence log on each idea keeps the receipts, and Confidence cannot go above 2 without one."),
+    },
+  },
+  {
     element: "[data-tour=score]",
     popover: {
       title: "Score is what ranks your ideas",
       description:
-        `<p>${FORMULA_INFO.score}</p><p style='margin-top:8px'>Score can never exceed Potential. The most evidence in the world only proves the idea is as good as you thought.</p>`,
+        `<p>${FORMULA_INFO.score}</p>` +
+        para("Score can never exceed Potential. The most evidence in the world only proves the idea is as good as you thought."),
+    },
+  },
+  {
+    element: "[data-tour=first-row]",
+    popover: {
+      title: "Click an idea to score it",
+      description:
+        "<p>This table is for comparing. Scoring happens inside an idea, where each number shows its meaning as you pick, and where the evidence log lives.</p>" +
+        para("You can replay this tour any time from Help."),
     },
   },
 ];
