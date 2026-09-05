@@ -1,0 +1,105 @@
+"use client";
+
+import type { MatrixDocument } from "@idea-matrix/core";
+import { del, get, set } from "idb-keyval";
+import { create } from "zustand";
+import { createJSONStorage, persist, type StateStorage } from "zustand/middleware";
+
+/**
+ * Where the document is right now, from the user's point of view.
+ *
+ * - no-file: nothing chosen yet (first run, or the file was closed)
+ * - needs-permission: a file is remembered but the browser wants a click
+ *   before it will let the app write to it again
+ * - ready / saving / saved / error: normal life with a file
+ */
+export type FileStatus =
+  | "no-file"
+  | "needs-permission"
+  | "loading"
+  | "ready"
+  | "saving"
+  | "saved"
+  | "error";
+
+export interface AppState {
+  hydrated: boolean;
+  doc: MatrixDocument | null;
+  fileName: string | null;
+  status: FileStatus;
+  error: string | null;
+  dirty: boolean;
+  lastSavedAt: number | null;
+  tourPending: boolean;
+
+  setHydrated: () => void;
+  /** Replace the document. `dirty` marks it as needing a save. */
+  setDoc: (doc: MatrixDocument | null, options?: { dirty?: boolean }) => void;
+  /**
+   * Apply a pure change from the core package. Returns an error message
+   * instead of throwing so forms can show it inline.
+   */
+  mutate: (change: (doc: MatrixDocument) => MatrixDocument) => string | null;
+  setFile: (fileName: string | null) => void;
+  setStatus: (status: FileStatus, error?: string | null) => void;
+  markSaved: (at: number) => void;
+  setTourPending: (pending: boolean) => void;
+}
+
+const idbStorage: StateStorage = {
+  getItem: async (name) => (await get<string>(name)) ?? null,
+  setItem: async (name, value) => {
+    await set(name, value);
+  },
+  removeItem: async (name) => {
+    await del(name);
+  },
+};
+
+export const useAppStore = create<AppState>()(
+  persist(
+    (setState, getState) => ({
+      hydrated: false,
+      doc: null,
+      fileName: null,
+      status: "loading",
+      error: null,
+      dirty: false,
+      lastSavedAt: null,
+      tourPending: false,
+
+      setHydrated: () => setState({ hydrated: true }),
+      setDoc: (doc, options) =>
+        setState({ doc, dirty: doc !== null && (options?.dirty ?? false), error: null }),
+      mutate: (change) => {
+        const current = getState().doc;
+        if (!current) return "No matrix is open.";
+        try {
+          const next = change(current);
+          setState({ doc: next, dirty: true, error: null });
+          return null;
+        } catch (e) {
+          return e instanceof Error ? e.message : "That change could not be applied.";
+        }
+      },
+      setFile: (fileName) => setState({ fileName }),
+      setStatus: (status, error = null) => setState({ status, error }),
+      markSaved: (at) => setState({ status: "saved", dirty: false, lastSavedAt: at, error: null }),
+      setTourPending: (tourPending) => setState({ tourPending }),
+    }),
+    {
+      name: "ideamatrix.cache",
+      storage: createJSONStorage(() => idbStorage),
+      // Only the document and its name are cached. Status is rebuilt on boot.
+      partialize: (state) => ({
+        doc: state.doc,
+        fileName: state.fileName,
+        tourPending: state.tourPending,
+        dirty: state.dirty,
+      }),
+      onRehydrateStorage: () => (state) => {
+        state?.setHydrated();
+      },
+    },
+  ),
+);

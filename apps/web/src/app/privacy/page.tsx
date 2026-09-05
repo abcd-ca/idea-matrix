@@ -1,0 +1,96 @@
+import type { ReactNode } from "react";
+import Link from "next/link";
+import { APP_NAME, SOURCE_URL } from "@/lib/config";
+
+export const metadata = { title: `Privacy and trust · ${APP_NAME}` };
+
+export default function PrivacyPage() {
+  return (
+    <main className="mx-auto flex max-w-2xl flex-col gap-6 p-6 md:p-10">
+      <Link href="/" className="text-sm text-muted-foreground hover:text-foreground">
+        ← Back to the app
+      </Link>
+      <h1 className="font-heading text-3xl font-bold">Privacy and trust</h1>
+      <p className="text-lg text-muted-foreground">
+        This page is not a policy. It is a list of things you can check for yourself.
+      </p>
+
+      <Section title="Where your ideas are">
+        <p>
+          In one file that you chose, on your own computer. {APP_NAME} has no accounts and no database. The site you
+          loaded is a folder of static files; there is no server-side code at all.
+        </p>
+        <p>
+          You can see the file in Finder or Explorer. You can copy it, back it up, put it in a folder your iCloud,
+          Dropbox, OneDrive or Google Drive client syncs, or open it in a text editor. It is plain JSON.
+        </p>
+      </Section>
+
+      <Section title="Check the network yourself">
+        <ol className="list-decimal space-y-1 pl-5">
+          <li>Open your browser’s developer tools (F12, or Cmd-Option-I on a Mac) and choose the Network tab.</li>
+          <li>Use the app: score an idea, add a conversation, park something.</li>
+          <li>
+            Watch the list. After the page has loaded, nothing else is requested. There are no calls to any server,
+            because there is nothing to call.
+          </li>
+        </ol>
+      </Section>
+
+      <Section title="What the browser remembers">
+        <p>
+          A cached copy of your matrix and a pointer to your file live in this browser’s private storage, so the app
+          opens instantly and survives a dropped connection. They never leave the browser. Clearing site data removes
+          them; your file is untouched.
+        </p>
+        <p>
+          On a return visit the browser asks for one click before the app may write to your file again. That prompt is
+          the browser’s, not ours, and it is a good thing.
+        </p>
+      </Section>
+
+      <Section title="No telemetry">
+        <p>
+          No analytics, no crash reporting, no usage pings, no third-party scripts. There is nothing in the code that
+          could send your ideas, or anything about how you use the app, anywhere.
+        </p>
+      </Section>
+
+      <Section title="AI assistants, later">
+        <p>
+          A future version adds a small program you can install so Claude Desktop, Claude Code or a local model can
+          read and update your matrix through the Model Context Protocol. When you use it, the text of the idea you ask
+          about goes to whichever assistant you connected, on your account, and nowhere else. Nothing about it involves
+          a server of ours.
+        </p>
+      </Section>
+
+      <Section title="Read the source">
+        <p>
+          {APP_NAME} is open source under the MIT licence.
+          {SOURCE_URL ? (
+            <>
+              {" "}
+              The code is at{" "}
+              <a href={SOURCE_URL} className="underline underline-offset-4" target="_blank" rel="noreferrer">
+                {SOURCE_URL}
+              </a>
+              .
+            </>
+          ) : null}{" "}
+          Every pull request runs the same checks, and the rule that nothing leaves your machine is written into the
+          contributor guidelines.
+        </p>
+      </Section>
+    </main>
+  );
+}
+
+function Section({ title, children }: { title: string; children: ReactNode }) {
+  return (
+    <section className="flex flex-col gap-2">
+      <h2 className="font-heading text-xl font-bold">{title}</h2>
+      <div className="flex flex-col gap-2 text-[15px] leading-relaxed">{children}</div>
+    </section>
+  );
+}

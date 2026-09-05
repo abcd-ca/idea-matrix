@@ -1,0 +1,22 @@
+{
+  "name": "idea-matrix",
+  "version": "0.1.0",
+  "private": true,
+  "description": "Score your side-project ideas honestly. A local-first matrix with no accounts and no server of its own.",
+  "license": "MIT",
+  "workspaces": [
+    "packages/*",
+    "apps/*"
+  ],
+  "engines": {
+    "node": ">=20.9"
+  },
+  "scripts": {
+    "dev": "npm run dev -w apps/web",
+    "build": "npm run build -w apps/web",
+    "typecheck": "npm run typecheck --workspaces --if-present",
+    "lint": "npm run lint --workspaces --if-present",
+    "test": "npm run test --workspaces --if-present",
+    "check": "npm run typecheck && npm run lint && npm run test && npm run build"
+  }
+}
