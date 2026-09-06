@@ -5,6 +5,7 @@ A local-first web app for scoring side-project ideas. Read `README.md` for what 
 ## Layout
 
 - `packages/core`: schema (zod), formulas, the Confidence gate, CSV and Markdown, sample data. Pure TypeScript, no React, no browser APIs. Tests in `packages/core/test` (vitest).
+- `packages/mcp`: the MCP server, CLI and Claude Desktop bundle (`manifest.json`). `src/server.ts` registers the tools, prompts and resource; `src/store.ts` is the atomic read-modify-write file store; `src/walkthrough.ts` holds the prompt text. Bundled to one file with tsup; `npm run bundle -w packages/mcp` builds `dist/idea-matrix.mcpb`. Tests use the SDK's in-memory transport.
 - `apps/web`: Next.js app router, static export (`output: "export"`). shadcn/ui on Base UI, Tailwind 4, Zustand, TanStack Table, driver.js for the guided tour, idb-keyval for the IndexedDB cache.
 - `apps/web/src/lib/store.ts` is the Zustand store; `apps/web/src/lib/file-session.ts` owns the file handle, autosave and the external-change watcher; `apps/web/src/lib/storage/local-file.ts` wraps the File System Access API.
 

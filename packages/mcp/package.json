@@ -1,0 +1,35 @@
+{
+  "name": "@idea-matrix/mcp",
+  "version": "0.1.0",
+  "private": true,
+  "description": "Command-line tool and MCP server for Idea Matrix files, so Claude Desktop, Claude Code or a local model can read and score your ideas.",
+  "license": "MIT",
+  "type": "module",
+  "bin": {
+    "idea-matrix": "./dist/cli.js"
+  },
+  "files": [
+    "dist",
+    "manifest.json",
+    "README.md"
+  ],
+  "scripts": {
+    "build": "tsup",
+    "dev": "tsx src/cli.ts",
+    "typecheck": "tsc --noEmit",
+    "test": "vitest run",
+    "bundle": "npm run build && npx --yes @anthropic-ai/mcpb@2.1.2 pack . dist/idea-matrix.mcpb"
+  },
+  "dependencies": {
+    "@idea-matrix/core": "*",
+    "@modelcontextprotocol/sdk": "^1.30.0",
+    "zod": "^4.1.0"
+  },
+  "devDependencies": {
+    "@types/node": "^22",
+    "tsup": "^8.5.1",
+    "tsx": "^4.20.0",
+    "typescript": "^5",
+    "vitest": "^3.2.4"
+  }
+}
