@@ -22,12 +22,9 @@ export function SaveIndicator({ className }: { className?: string }) {
     icon = <AlertCircleIcon className="size-3.5" aria-hidden />;
     text = error ?? "Could not save";
     tone = "text-destructive";
-  } else if (status === "saving") {
+  } else if (status === "saving" || dirty) {
     icon = <LoaderCircleIcon className="size-3.5 animate-spin" aria-hidden />;
     text = "Saving…";
-  } else if (dirty) {
-    icon = <LoaderCircleIcon className="size-3.5" aria-hidden />;
-    text = "Saving shortly…";
   }
 
   return (
