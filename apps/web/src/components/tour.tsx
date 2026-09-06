@@ -12,6 +12,24 @@ function para(text: string): string {
   return `<p style="margin-top:8px">${text}</p>`;
 }
 
+// The same colours as the pills in the table (light theme values from lib/bands.ts).
+const BAND_SWATCH: Record<string, { bg: string; fg: string }> = {
+  grey: { bg: "#e5e5e5", fg: "#262626" },
+  amber: { bg: "#fde68a", fg: "#451a03" },
+  lightGreen: { bg: "#a7f3d0", fg: "#022c22" },
+  darkGreen: { bg: "#059669", fg: "#ffffff" },
+};
+function bandChip(key: keyof typeof BAND_SWATCH, example: string, text: string): string {
+  const c = BAND_SWATCH[key];
+  return `<span style="display:inline-block;min-width:2.5em;text-align:center;padding:1px 8px;border-radius:6px;font-weight:600;background:${c.bg};color:${c.fg}">${example}</span> ${text}`;
+}
+const BAND_LIST = list([
+  bandChip("grey", "39", "<b>39 and under</b>: not worth time yet"),
+  bandChip("amber", "40", "<b>40 to 59</b>: worth a look"),
+  bandChip("lightGreen", "60", "<b>60 to 79</b>: worth a customer conversation"),
+  bandChip("darkGreen", "80", "<b>80 and up</b>: worth a serious plan"),
+]);
+
 // Popover text is built only from the app's own constants, never from user text.
 const STEPS: DriveStep[] = [
   {
@@ -34,12 +52,8 @@ const STEPS: DriveStep[] = [
         para(
           "The five scores stay out of this table by default. Tick <b>Show the five scores</b> below it to see them, and <b>hover any column heading</b> to see what its numbers mean.",
         ) +
-        list([
-          "<b>39 and under</b>: not worth time yet",
-          "<b>40 to 59</b>: worth a look",
-          "<b>60 to 79</b>: worth a customer conversation",
-          "<b>80 and up</b>: worth a serious plan",
-        ]),
+        para("The colour says which band a number falls in:") +
+        BAND_LIST,
     },
   },
   {
@@ -59,7 +73,9 @@ const STEPS: DriveStep[] = [
       title: "Score is what ranks your ideas",
       description:
         `<p>${FORMULA_INFO.score}</p>` +
-        para("Score can never exceed Potential. The most evidence in the world only proves the idea is as good as you thought."),
+        para("Score can never exceed Potential. The most evidence in the world only proves the idea is as good as you thought.") +
+        para("Same colours as Potential:") +
+        BAND_LIST,
     },
   },
   {
