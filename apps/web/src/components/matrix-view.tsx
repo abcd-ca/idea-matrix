@@ -1,17 +1,14 @@
 "use client";
 
 import {
-  BANDS,
   CONFIDENCE_INFO,
   CRITERION_INFO,
   CRITERIA,
-  FORMULA_INFO,
   STAGES,
   STAGE_INFO,
   addIdea,
   potential,
   score,
-  type Criterion,
   type Idea,
   type Stage,
 } from "@idea-matrix/core";
@@ -27,7 +24,9 @@ import { cn } from "cn";
 import { ArrowDownIcon, ArrowUpIcon, PlusIcon } from "lucide-react";
 import { useRouter } from "next/navigation";
 import { useEffect, useMemo, useState, type ReactNode } from "react";
+import { ColumnHelp } from "@/components/column-help";
 import { BandPill, StageBadge } from "@/components/pills";
+import { SaveIndicator } from "@/components/save-indicator";
 import { Button } from "@/components/ui/button";
 import {
   Dialog,
@@ -46,24 +45,6 @@ const columnHelper = createColumnHelper<Row>();
 const ACTIVE_STAGES = STAGES.filter((s) => s !== "Parked");
 const SHOW_SCORES_KEY = "ideamatrix.showScores";
 const CENTERED = new Set<string>(["potential", "score", "confidence", ...CRITERIA]);
-
-/** What hovering a column header explains. Built only from the app's own constants. */
-function scaleText(levels: Record<number, string>): string {
-  return Object.entries(levels)
-    .map(([k, v]) => `${k} = ${v}`)
-    .join("\n");
-}
-const HEADER_HELP: Record<string, string> = {
-  stage: STAGES.map((s) => `${s}: ${STAGE_INFO[s]}`).join("\n"),
-  confidence: `${CONFIDENCE_INFO.question}\n${scaleText(CONFIDENCE_INFO.levels)}`,
-  potential: `${FORMULA_INFO.potential}\n${Object.values(BANDS)
-    .map((b) => `${b.min}${b.max < 100 ? `–${b.max}` : "+"}: ${b.advice}`)
-    .join("\n")}`,
-  score: FORMULA_INFO.score,
-  ...Object.fromEntries(
-    CRITERIA.map((c: Criterion) => [c, `${CRITERION_INFO[c].question}\n${scaleText(CRITERION_INFO[c].levels)}`]),
-  ),
-};
 
 export function MatrixView({ parked = false }: { parked?: boolean }) {
   const router = useRouter();
@@ -167,11 +148,14 @@ export function MatrixView({ parked = false }: { parked?: boolean }) {
     <div className="flex flex-col gap-4">
       <div className="flex flex-wrap items-center justify-between gap-3">
         <h1 className="font-heading text-3xl font-bold">{parked ? "Parked ideas" : doc.name}</h1>
-        {!parked ? (
-          <Button onClick={() => setNewOpen(true)}>
-            <PlusIcon data-icon="inline-start" /> New idea
-          </Button>
-        ) : null}
+        <div className="flex items-center gap-4">
+          <SaveIndicator className="hidden sm:inline-flex" />
+          {!parked ? (
+            <Button onClick={() => setNewOpen(true)}>
+              <PlusIcon data-icon="inline-start" /> New idea
+            </Button>
+          ) : null}
+        </div>
       </div>
 
       {!parked ? (
@@ -212,7 +196,6 @@ export function MatrixView({ parked = false }: { parked?: boolean }) {
                       <th
                         key={h.id}
                         colSpan={h.colSpan}
-                        title={HEADER_HELP[h.column.id]}
                         data-tour={h.column.id}
                         className={cn(
                           "px-3 py-2 text-left font-medium whitespace-nowrap",
@@ -225,7 +208,9 @@ export function MatrixView({ parked = false }: { parked?: boolean }) {
                         }
                       >
                         <span className="inline-flex items-center gap-1">
-                          {h.isPlaceholder ? null : flexRender(h.column.columnDef.header, h.getContext())}
+                          <ColumnHelp columnId={h.column.id}>
+                            {h.isPlaceholder ? null : flexRender(h.column.columnDef.header, h.getContext())}
+                          </ColumnHelp>
                           {h.column.getIsSorted() === "asc" ? <ArrowUpIcon className="size-3" /> : null}
                           {h.column.getIsSorted() === "desc" ? <ArrowDownIcon className="size-3" /> : null}
                         </span>
