@@ -10,7 +10,7 @@ Nothing here talks to any server of ours. The only thing that leaves your machin
 2. Double-click it (or drag it into Claude Desktop → Settings → Extensions).
 3. When asked, pick your matrix file, usually `ideas.ideamatrix.json`, the one the app created.
 
-Then, in a chat, choose the **Walk me through scoring an idea** prompt, or just say "let's go through my next idea".
+Then, in a chat, choose the **Work on my idea matrix** prompt, or just say "show me my idea matrix".
 
 ## Claude Code
 
@@ -18,7 +18,7 @@ Then, in a chat, choose the **Walk me through scoring an idea** prompt, or just 
 claude mcp add idea-matrix -- npx -y @idea-matrix/mcp mcp --file ~/Documents/ideas.ideamatrix.json
 ```
 
-Then `/idea-matrix:next_idea` starts the walkthrough, or ask in plain words.
+Then `/idea-matrix:idea_matrix` lists your ideas and asks which to work on, or ask in plain words.
 
 ## Other MCP clients
 
@@ -41,7 +41,7 @@ Local models work the same way through a client that supports MCP, such as LM St
 | `add_evidence` | Record a conversation: who, what they currently do, any commitment |
 | `park_idea` / `unpark_idea` | Set aside with a reason, or bring back |
 
-Two prompts: **next_idea** runs the scoring conversation (summarise, ask the one or two questions that matter, propose scores with reasons, write only what is agreed); **review_matrix** gives an honest read of the whole matrix without changing anything.
+Two prompts: **idea_matrix** lists the ideas as a numbered list, asks which one to work on (by number, name or id), then runs the scoring conversation (summarise, ask the one or two questions that matter, propose scores with reasons, write only what is agreed); **review_matrix** gives an honest read of the whole matrix without changing anything.
 
 One resource, `ideamatrix://matrix`, is the whole matrix as Markdown.
 

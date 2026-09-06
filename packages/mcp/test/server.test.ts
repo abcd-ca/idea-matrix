@@ -46,6 +46,8 @@ describe("tools", () => {
     const { data } = await call("list_ideas");
     expect(data.count).toBe(8);
     expect(data.ideas[0].name).toBe("Pop-up sauna bookings");
+    expect(data.ideas[0].number).toBe(1);
+    expect(data.ideas[7].number).toBe(8);
     expect(data.ideas[0].scoreBand).toBe("worth a look");
     const all = await call("list_ideas", { includeParked: true });
     expect(all.data.count).toBe(9);
@@ -126,12 +128,14 @@ describe("tools", () => {
 describe("prompts and resources", () => {
   it("offers the walkthrough and review prompts", async () => {
     const prompts = await client.listPrompts();
-    expect(prompts.prompts.map((p) => p.name).sort()).toEqual(["next_idea", "review_matrix"]);
-    const p = await client.getPrompt({ name: "next_idea", arguments: { idea: "Backyard rink monitor" } });
+    expect(prompts.prompts.map((p) => p.name).sort()).toEqual(["idea_matrix", "review_matrix"]);
+    const p = await client.getPrompt({ name: "idea_matrix", arguments: { idea: "Backyard rink monitor" } });
     const text = (p.messages[0].content as { text: string }).text;
     expect(text).toContain('"Backyard rink monitor"');
     expect(text).toContain("Only when I agree");
     expect(text).toContain("commitment counts as proof");
+    const bare = await client.getPrompt({ name: "idea_matrix", arguments: {} });
+    expect((bare.messages[0].content as { text: string }).text).toContain("numbered list");
   });
 
   it("serves the matrix as markdown", async () => {

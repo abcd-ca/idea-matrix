@@ -1,7 +1,7 @@
 import { CONFIDENCE_INFO, CRITERION_INFO, CRITERIA, STAGE_INFO, STAGES } from "@idea-matrix/core";
 
 /**
- * The "next idea" walkthrough, offered to the assistant as an MCP prompt.
+ * The "idea matrix" walkthrough, offered to the assistant as an MCP prompt.
  * This is the conversation the app's owner has been having by hand: read the
  * idea, ask the one or two questions that change the score most, propose
  * scores with reasons, and only write once the person agrees. The Mom Test
@@ -9,9 +9,8 @@ import { CONFIDENCE_INFO, CRITERION_INFO, CRITERIA, STAGE_INFO, STAGES } from "@
  */
 export function walkthroughPrompt(ideaName?: string): string {
   const target = ideaName
-    ? `The idea to work on is "${ideaName}". Find it with list_ideas and read it with get_idea.`
-    : `Call list_ideas, then pick the next idea worth attention: one that is unscored, or scored with Confidence 1 and no evidence, or whose stage has not moved in a while. Say which one you picked and why in one sentence.`;
-
+    ? `The idea to work on is "${ideaName}". Find it with list_ideas and read it with get_idea, then start at step 1 of the conversation below.`
+    : `Start by calling list_ideas and showing me what is in the matrix as a numbered list, one line per idea: the number, the name, the stage, Potential, Confidence and Score, in the order the tool returns them. Keep it compact; no commentary yet beyond one line noting anything unscored or parked (call list_ideas again with includeParked if I ask about parked ideas). Then ask which one I want to work on. I will answer with a number, a name or an id; use the numbering from the list you showed. When I have picked, read it with get_idea and start at step 1 of the conversation below. If I ask for something else instead, such as adding a new idea or reviewing the whole matrix, do that.`;
   const scales = CRITERIA.map((c) => {
     const info = CRITERION_INFO[c];
     const levels = Object.entries(info.levels)
@@ -26,7 +25,7 @@ export function walkthroughPrompt(ideaName?: string): string {
 
   const stages = STAGES.map((s) => `- ${s}: ${STAGE_INFO[s]}`).join("\n");
 
-  return `You are helping me score one idea in my Idea Matrix, using the tools from the idea-matrix MCP server. Work through it as a conversation, not a form.
+  return `You are helping me work on my Idea Matrix, using the tools from the idea-matrix MCP server. Work through it as a conversation, not a form.
 
 ${target}
 
