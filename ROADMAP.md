@@ -90,6 +90,22 @@ What this means for the plan:
 - Import from the Google Sheet template early. Template-to-app is the only plausible adoption route.
 - Realistic ceiling if published (Show HN, Indie Hackers): a few hundred stars and a handful of regulars. Fine for a portfolio piece.
 
+## Testing
+
+What exists (2026-09-06): 32 unit tests on the core package (formulas, the Confidence gate, round trips, hostile files, CSV and Markdown) and 10 round-trip tests on the MCP server through the SDK's in-memory transport. The web app has no automated tests yet; I checked it by driving Chromium by hand through the Playwright MCP tools.
+
+**To do: Playwright end-to-end tests for the web app.** The trick that makes them possible without a native file dialog: in the test, replace `window.showSaveFilePicker` and `window.showOpenFilePicker` with functions that return a handle from the browser's origin private file system (`navigator.storage.getDirectory()` then `getFileHandle(name, { create: true })`). That handle is a real `FileSystemFileHandle`: it supports `createWritable`, `getFile`, and storing in IndexedDB, and it has no `queryPermission`, which the app treats as granted. The flows worth covering, in order:
+
+1. First run: three setup screens, create the file, choose the example, land on the matrix with the tour showing; then reload and confirm the matrix comes back from the file with no setup.
+2. Scoring: open an idea, change a score, add an evidence entry, confirm Confidence unlocks to 4 and stays blocked at 5, and read the file on disk to confirm autosave within two seconds.
+3. Parking: park with a reason, find it under Parked, unpark from the detail screen.
+4. Export: each of the three formats downloads a file with the expected first line.
+5. Import CSV: preview count and warnings, then the rows appear.
+6. The external-change watcher: write to the file from outside (Node) and confirm the tab reloads it.
+7. The Safari path: stub the picker functions away and confirm the alert appears and the local option is disabled.
+
+Run them in CI on Chromium only; the local-file feature does not exist elsewhere.
+
 ## Untrusted input
 
 Rules from 2026-09-04. The idea text, the file, the pasted-back AI block and later the MCP tool inputs are all untrusted.
