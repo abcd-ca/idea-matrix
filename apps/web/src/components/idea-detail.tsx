@@ -26,6 +26,7 @@ import { useState, type ReactNode } from "react";
 import { EvidenceLog } from "@/components/evidence-log";
 import { ParkDialog } from "@/components/park-dialog";
 import { BandPill } from "@/components/pills";
+import { SaveIndicator } from "@/components/save-indicator";
 import { Segmented } from "@/components/segmented";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -65,12 +66,15 @@ export function IdeaDetail() {
 
   return (
     <div className="flex flex-col gap-5">
-      <Link
-        href={parked ? "/parked/" : "/"}
-        className="inline-flex items-center gap-1 text-sm text-muted-foreground hover:text-foreground"
-      >
-        <ArrowLeftIcon className="size-4" /> {parked ? "Back to parked" : "Back to matrix"}
-      </Link>
+      <div className="flex flex-wrap items-center justify-between gap-2">
+        <Link
+          href={parked ? "/parked/" : "/"}
+          className="inline-flex items-center gap-1 text-sm text-muted-foreground hover:text-foreground"
+        >
+          <ArrowLeftIcon className="size-4" /> {parked ? "Back to parked" : "Back to matrix"}
+        </Link>
+        <SaveIndicator />
+      </div>
 
       {error ? (
         <p role="alert" className="text-sm text-destructive">
