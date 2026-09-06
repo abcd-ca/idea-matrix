@@ -1,0 +1,47 @@
+{
+  "manifest_version": "0.3",
+  "name": "idea-matrix",
+  "display_name": "Idea Matrix",
+  "version": "0.1.0",
+  "description": "Score your side-project ideas honestly, from Claude. Reads and updates your Idea Matrix file on this computer.",
+  "long_description": "Idea Matrix keeps your side-project ideas in one JSON file that you own. This extension lets Claude read that file, walk you through scoring an idea with the Mom Test rules, record the conversations you have had, and update scores, all against the same Confidence gate as the app. Nothing is sent anywhere except to Claude on your own account.",
+  "author": {
+    "name": "Andrew Blair"
+  },
+  "license": "MIT",
+  "keywords": ["ideas", "prioritization", "side projects", "mom test", "local-first"],
+  "server": {
+    "type": "node",
+    "entry_point": "dist/cli.js",
+    "mcp_config": {
+      "command": "node",
+      "args": ["${__dirname}/dist/cli.js", "mcp", "--file", "${user_config.matrix_file}"]
+    }
+  },
+  "user_config": {
+    "matrix_file": {
+      "type": "file",
+      "title": "Matrix file",
+      "description": "Your ideas file, usually called ideas.ideamatrix.json. Create it in the Idea Matrix app first.",
+      "required": true
+    }
+  },
+  "tools": [
+    { "name": "list_ideas", "description": "List ideas with scores, Confidence, Potential and Score." },
+    { "name": "get_idea", "description": "The full record for one idea, including its evidence log." },
+    { "name": "add_idea", "description": "Add a new idea at stage Backlog." },
+    { "name": "update_idea", "description": "Change fields and scores on an idea, subject to the Confidence gate." },
+    { "name": "add_evidence", "description": "Record a conversation in an idea's evidence log." },
+    { "name": "park_idea", "description": "Set an idea aside with a reason." },
+    { "name": "unpark_idea", "description": "Bring a parked idea back." }
+  ],
+  "prompts": [
+    { "name": "next_idea", "description": "Walk me through scoring an idea.", "arguments": ["idea"], "text": "Walk me through scoring the next idea in my matrix." },
+    { "name": "review_matrix", "description": "Review the whole matrix without changing it.", "text": "Review my whole idea matrix." }
+  ],
+  "compatibility": {
+    "claude_desktop": ">=0.10.0",
+    "platforms": ["darwin", "win32", "linux"],
+    "runtimes": { "node": ">=20.0.0" }
+  }
+}

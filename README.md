@@ -12,6 +12,10 @@ There are no accounts and no server of ours. Your matrix is one JSON file that y
 
 Saving a file in place needs the File System Access API, which today means Chrome or Edge. The app detects the feature, not the browser, so support switches on by itself when others ship it.
 
+## Claude, Claude Code and other assistants
+
+`packages/mcp` is a small program that lets an AI assistant read and update your matrix through the Model Context Protocol, on your machine, against the same file and the same rules as the app. It ships as a one-click Claude Desktop extension and as an `npx` command for Claude Code and other clients, and it doubles as a command-line tool. See `packages/mcp/README.md`. The assistant walks you through scoring; you assign the numbers, and Confidence still cannot rise without a recorded conversation.
+
 ## Running it locally
 
 Requires Node 22 (see `.node-version`).
@@ -35,6 +39,7 @@ npm run build       # static export to apps/web/out
 
 - `packages/core` holds the file format (zod schemas), the formulas, the Confidence gate, CSV and Markdown export, CSV import, and the fictional example matrix. No React and no browser APIs, so the future MCP server and CLI share it.
 - `apps/web` is the Next.js app, exported as a static site.
+- `packages/mcp` is the MCP server, Claude Desktop bundle and CLI, built on the core package.
 - `ROADMAP.md` records the decisions behind the design and what comes next.
 
 ## Contributing
