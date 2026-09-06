@@ -103,7 +103,7 @@ export function createServer(store: FileStore): McpServer {
     {
       title: "List ideas",
       description:
-        "List the ideas in the matrix with their scores, Confidence, Potential and Score, sorted by Score. Parked ideas are left out unless includeParked is true. Use get_idea for the full text of one idea.",
+        "List the ideas in the matrix with their scores, Confidence, Potential and Score, sorted by Score and numbered from 1 in that order. Parked ideas are left out unless includeParked is true. Use get_idea for the full text of one idea.",
       inputSchema: {
         includeParked: z.boolean().optional().describe("Include parked ideas (default false)."),
         stage: z.enum(STAGES).optional().describe("Only ideas at this stage."),
@@ -116,7 +116,8 @@ export function createServer(store: FileStore): McpServer {
           .filter((i) => (includeParked ? true : i.stage !== "Parked"))
           .filter((i) => (stage ? i.stage === stage : true))
           .map(summary)
-          .sort((a, b) => (b.score ?? -1) - (a.score ?? -1));
+          .sort((a, b) => (b.score ?? -1) - (a.score ?? -1))
+          .map((row, index) => ({ number: index + 1, ...row }));
         return ok({ matrix: doc.name, file: store.path, count: rows.length, ideas: rows });
       } catch (e) {
         return fail(explain(e));
@@ -339,11 +340,11 @@ export function createServer(store: FileStore): McpServer {
   );
 
   server.registerPrompt(
-    "next_idea",
+    "idea_matrix",
     {
-      title: "Walk me through scoring an idea",
+      title: "Work on my idea matrix",
       description:
-        "The scoring conversation: read the idea, ask the one or two questions that matter, propose scores with reasons, write only what is agreed. Optionally name the idea; otherwise the next one worth attention is picked.",
+        "Lists the ideas as a numbered list and asks which one to work on, then runs the scoring conversation: read the idea, ask the one or two questions that matter, propose scores with reasons, write only what is agreed. Name an idea to skip the list.",
       argsSchema: { idea: z.string().optional().describe("Name of the idea to work on (optional).") },
     },
     ({ idea }) => ({
