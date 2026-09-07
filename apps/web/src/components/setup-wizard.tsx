@@ -11,17 +11,18 @@ import { supportsLocalFile } from "@/lib/storage/local-file";
 import { useAppStore } from "@/lib/store";
 
 type Where = "local" | "drive" | "dropbox";
-type Step = "where" | "file" | "start";
+type Step = "welcome" | "where" | "file" | "start";
 
 /**
- * First run. Three screens, one decision each: where the file lives, which
- * file, and (only after creating a new one) what goes in it.
+ * First run. An overview of what this is, then three screens with one
+ * decision each: where the file lives, which file, and (only after creating
+ * a new one) what goes in it.
  */
 export function SetupWizard() {
   const router = useRouter();
   const setTourPending = useAppStore((s) => s.setTourPending);
   const storeError = useAppStore((s) => s.error);
-  const [step, setStep] = useState<Step>("where");
+  const [step, setStep] = useState<Step>("welcome");
   const [where, setWhere] = useState<Where | null>(null);
   const [seed, setSeed] = useState<"example" | "empty">("example");
   const [busy, setBusy] = useState(false);
@@ -41,7 +42,49 @@ export function SetupWizard() {
   return (
     <div className="flex min-h-svh items-center justify-center bg-muted/30 p-4">
       <div className="flex w-full max-w-3xl flex-col gap-6 rounded-lg border bg-background p-6 shadow-sm md:p-10">
-        <Progress step={step} />
+        {step !== "welcome" ? <Progress step={step} /> : null}
+
+        {step === "welcome" ? (
+          <>
+            <header className="flex flex-col gap-2">
+              <p className="text-xs font-medium tracking-wide text-muted-foreground uppercase">Welcome</p>
+              <h1 className="font-heading text-3xl font-bold">Score your side-project ideas honestly</h1>
+              <p className="max-w-prose text-muted-foreground">
+                Idea Matrix is a place to keep the ideas you have not started yet, and to be honest with yourself
+                about which one deserves your time.
+              </p>
+            </header>
+
+            <div className="grid gap-4 sm:grid-cols-3">
+              <Overview title="Five scores, one Potential">
+                Each idea gets 1 to 5 for Reach, Impact, Profitability, Vision and Ease. Their average, scaled to 100, is
+                its Potential: how good it could be.
+              </Overview>
+              <Overview title="Confidence keeps you honest">
+                A separate score for how much evidence sits behind those numbers, from gut feel to a customer
+                commitment. Score is Potential × Confidence ÷ 5, so nothing ranks high until real people have backed
+                it up.
+              </Overview>
+              <Overview title="Your file, your storage">
+                No accounts and no server. Your matrix is one file that you keep, and nothing leaves your computer.
+                You can check that yourself in the browser’s Network tab.
+              </Overview>
+            </div>
+
+            <p className="max-w-prose text-sm text-muted-foreground">
+              The method comes from{" "}
+              <a href="https://www.momtestbook.com/" target="_blank" rel="noreferrer" className="underline underline-offset-4">
+                The Mom Test
+              </a>
+              : talk about people’s lives, not your idea; ask what they did, not what they would do; only a commitment
+              counts as proof. A short tour explains the screen once your matrix is open.
+            </p>
+
+            <footer className="flex items-center justify-end">
+              <Button onClick={() => setStep("where")}>Get started</Button>
+            </footer>
+          </>
+        ) : null}
 
         {step === "where" ? (
           <>
@@ -81,11 +124,16 @@ export function SetupWizard() {
               </ChoiceCard>
             </div>
 
-            <footer className="flex items-center justify-end gap-3">
-              {where === null ? <span className="text-xs text-muted-foreground">Choose a location to continue</span> : null}
-              <Button disabled={where === null} onClick={() => setStep("file")}>
-                Continue
+            <footer className="flex items-center justify-between gap-3">
+              <Button variant="ghost" onClick={() => setStep("welcome")}>
+                Back
               </Button>
+              <span className="flex items-center gap-3">
+                {where === null ? <span className="text-xs text-muted-foreground">Choose a location to continue</span> : null}
+                <Button disabled={where === null} onClick={() => setStep("file")}>
+                  Continue
+                </Button>
+              </span>
             </footer>
           </>
         ) : null}
@@ -248,6 +296,15 @@ function Progress({ step }: { step: Step }) {
         </li>
       ) : null}
     </ol>
+  );
+}
+
+function Overview({ title, children }: { title: string; children: ReactNode }) {
+  return (
+    <div className="flex flex-col gap-1.5 rounded-md border p-4">
+      <h2 className="font-heading text-lg font-bold">{title}</h2>
+      <p className="text-sm text-muted-foreground">{children}</p>
+    </div>
   );
 }
 
