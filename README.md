@@ -4,7 +4,7 @@ Score your side-project ideas honestly, and keep the file yourself.
 
 Idea Matrix is a small web app for people with more ideas than time. Each idea gets five scores from 1 to 5 (Reach, Impact, Profitability, Vision, Ease), which average into a **Potential** from 0 to 100. A separate **Confidence** score records how much real evidence sits behind those numbers, and **Score** is Potential × Confidence ÷ 5. Score only rises when you have talked to real people, so the newest, shiniest idea cannot jump the queue.
 
-The scoring philosophy comes from *The Mom Test*, Rob Fitzpatrick's short book on how to talk to customers without being lied to: ask about people's lives and what they already do, not about your idea, and treat only commitments as proof. In matrix terms, your scores are hunches until other people's behaviour backs them up. Every idea carries a riskiest assumption and an evidence log, and Confidence cannot go above 2 until that log records what someone actually does about the problem.
+The scoring philosophy comes from [*The Mom Test*](https://www.momtestbook.com/), Rob Fitzpatrick's short book on how to talk to customers without being lied to: ask about people's lives and what they already do, not about your idea, and treat only commitments as proof. In matrix terms, your scores are hunches until other people's behaviour backs them up. Every idea carries a riskiest assumption and an evidence log, and Confidence cannot go above 2 until that log records what someone actually does about the problem.
 
 ## Nothing leaves your machine
 
