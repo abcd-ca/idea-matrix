@@ -50,7 +50,7 @@ export function StatusLine({ compact = false }: { compact?: boolean }) {
       <p className="truncate font-medium" title={fileName ?? undefined}>
         {fileName ?? "No file"}
       </p>
-      <p className="text-muted-foreground">This computer</p>
+      <p className="text-muted-foreground">Data is stored on this computer</p>
       <p className={tone} aria-live="polite">
         {text}
       </p>
