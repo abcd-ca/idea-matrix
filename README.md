@@ -72,3 +72,7 @@ npm run verify -- https://ideamatrix.io
 That downloads `build.json`, fetches every file it lists, hashes each one, and recomputes the fingerprint from what was actually served. Then compare the fingerprint with the one GitHub shows for that commit. To go one step further, check out the commit, run `npm ci && npm run build`, and compare `apps/web/out/build.sha256` with the served one.
 
 For the Claude Desktop extension, `shasum -a 256 idea-matrix.mcpb` on your download should match the release notes, and `idea-matrix version` prints the commit the bundle was built from.
+
+## Maintainer
+
+Idea Matrix is made and maintained by [Andrew Blair](https://abcd.ca), a developer in Squamish, BC, who builds apps and tools like this one for clients. Contributions are welcome through pull requests, and everyone who has landed one is on the [contributors page](https://github.com/abcd-ca/idea-matrix/graphs/contributors).

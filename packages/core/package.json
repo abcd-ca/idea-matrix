@@ -4,6 +4,7 @@
   "private": true,
   "description": "Schema, formulas, import and export for Idea Matrix files. No React, no browser APIs.",
   "license": "MIT",
+  "author": "Andrew Blair (https://abcd.ca)",
   "type": "module",
   "main": "./src/index.ts",
   "types": "./src/index.ts",
