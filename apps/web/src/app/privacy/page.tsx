@@ -2,6 +2,7 @@ import type { ReactNode } from "react";
 import Link from "next/link";
 import { BuildInfo } from "@/components/build-info";
 import { APP_NAME, MAINTAINER_NAME, MAINTAINER_URL, SOURCE_URL } from "@/lib/config";
+import { GitHubMark } from "@/components/github-mark";
 
 export const metadata = { title: `Privacy and trust · ${APP_NAME}` };
 
@@ -74,8 +75,13 @@ export default function PrivacyPage() {
             <>
               {" "}
               The code is at{" "}
-              <a href={SOURCE_URL} className="underline underline-offset-4" target="_blank" rel="noreferrer">
-                {SOURCE_URL}
+              <a
+                href={SOURCE_URL}
+                className="inline-flex items-center gap-1 underline underline-offset-4"
+                target="_blank"
+                rel="noreferrer"
+              >
+                <GitHubMark className="size-4" /> {SOURCE_URL.replace("https://", "")}
               </a>
               .
             </>

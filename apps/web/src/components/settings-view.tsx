@@ -127,8 +127,13 @@ export function SettingsView() {
           {SOURCE_URL ? (
             <>
               {" · "}
-              <a href={SOURCE_URL} className="underline underline-offset-4" target="_blank" rel="noreferrer">
-                source code
+              <a
+                href={SOURCE_URL}
+                className="inline-flex items-center gap-1 underline underline-offset-4"
+                target="_blank"
+                rel="noreferrer"
+              >
+                <GitHubMark className="size-3.5" /> source on GitHub
               </a>
             </>
           ) : null}
