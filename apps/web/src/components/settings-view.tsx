@@ -4,12 +4,13 @@ import { renameDocument } from "@idea-matrix/core";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { useState, type ReactNode } from "react";
+import { BuildInfo } from "@/components/build-info";
 import { ExportMenu } from "@/components/export-menu";
 import { ImportCsv } from "@/components/import-csv";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
-import { APP_NAME, APP_VERSION, ISSUES_URL, SOURCE_URL } from "@/lib/config";
+import { APP_NAME, APP_VERSION, ISSUES_URL, MAINTAINER_NAME, MAINTAINER_URL, SOURCE_URL } from "@/lib/config";
 import { closeFile, flushSave, openExistingFile } from "@/lib/file-session";
 import { useAppStore } from "@/lib/store";
 
@@ -107,9 +108,16 @@ export function SettingsView() {
         </p>
       </Section>
 
+      <Section title="This build">
+        <BuildInfo />
+      </Section>
+
       <Section title="About">
         <p className="text-xs text-muted-foreground">
-          {APP_NAME} {APP_VERSION} · open source · no telemetry
+          {APP_NAME} {APP_VERSION} · open source · no telemetry · maintained by{" "}
+          <a href={MAINTAINER_URL} className="underline underline-offset-4" target="_blank" rel="noreferrer">
+            {MAINTAINER_NAME}
+          </a>
           {SOURCE_URL ? (
             <>
               {" · "}

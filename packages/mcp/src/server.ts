@@ -25,6 +25,9 @@ import { reviewPrompt, walkthroughPrompt } from "./walkthrough";
 
 export const SERVER_NAME = "idea-matrix";
 export const SERVER_VERSION = "0.1.0";
+// Set by tsup at build time; running from source (tsx, vitest) has no build.
+declare const __BUILD_COMMIT__: string | undefined;
+export const SERVER_COMMIT: string = typeof __BUILD_COMMIT__ === "string" ? __BUILD_COMMIT__ : "source";
 
 const scoreArg = z.number().int().min(1).max(5);
 const profitabilityArg = z.number().int().min(0).max(5);

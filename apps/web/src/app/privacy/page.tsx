@@ -1,6 +1,7 @@
 import type { ReactNode } from "react";
 import Link from "next/link";
-import { APP_NAME, SOURCE_URL } from "@/lib/config";
+import { BuildInfo } from "@/components/build-info";
+import { APP_NAME, MAINTAINER_NAME, MAINTAINER_URL, SOURCE_URL } from "@/lib/config";
 
 export const metadata = { title: `Privacy and trust · ${APP_NAME}` };
 
@@ -31,8 +32,9 @@ export default function PrivacyPage() {
           <li>Open your browser’s developer tools (F12, or Cmd-Option-I on a Mac) and choose the Network tab.</li>
           <li>Use the app: score an idea, add a conversation, park something.</li>
           <li>
-            Watch the list. After the page has loaded, nothing else is requested. There are no calls to any server,
-            because there is nothing to call.
+            Watch the list. After the page has loaded, nothing else is requested. The one exception is a small file
+            called build.json, fetched from this same site when you open Settings or this page, so the app can show
+            its fingerprint. There are no calls to any server, because there is nothing to call.
           </li>
         </ol>
       </Section>
@@ -78,9 +80,17 @@ export default function PrivacyPage() {
               .
             </>
           ) : null}{" "}
-          Every pull request runs the same checks, and the rule that nothing leaves your machine is written into the
+          It is maintained by {MAINTAINER_NAME} (
+          <a href={MAINTAINER_URL} className="underline underline-offset-4" target="_blank" rel="noreferrer">
+            {MAINTAINER_URL.replace("https://", "")}
+          </a>
+          ). Every pull request runs the same checks, and the rule that nothing leaves your machine is written into the
           contributor guidelines.
         </p>
+      </Section>
+
+      <Section title="The build you are running">
+        <BuildInfo />
       </Section>
     </main>
   );

@@ -1,10 +1,10 @@
 import { StdioServerTransport } from "@modelcontextprotocol/sdk/server/stdio.js";
 import { exportCsv, exportMarkdown, potential, score, serializeDocument } from "@idea-matrix/core";
 import { resolve } from "node:path";
-import { createServer, SERVER_VERSION } from "./server";
+import { createServer, SERVER_COMMIT, SERVER_VERSION } from "./server";
 import { FileStore, StoreError } from "./store";
 
-const USAGE = `idea-matrix ${SERVER_VERSION}
+const USAGE = `idea-matrix ${SERVER_VERSION} (built from commit ${SERVER_COMMIT})
 
 Usage:
   idea-matrix mcp    --file <path>            Start the MCP server (stdio) over a matrix file
@@ -65,7 +65,7 @@ async function main(): Promise<number> {
     return args.command ? 0 : 1;
   }
   if (args.flags.version || args.command === "version") {
-    out(SERVER_VERSION);
+    out(`idea-matrix ${SERVER_VERSION} (built from commit ${SERVER_COMMIT})`);
     return 0;
   }
 
