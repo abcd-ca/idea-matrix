@@ -9,3 +9,4 @@ export const VERIFY_DOCS_URL = `${SOURCE_URL}#verify-the-build`;
 /** Who maintains the app; linked from Settings and the privacy page. */
 export const MAINTAINER_NAME = "Andrew Blair";
 export const MAINTAINER_URL = "https://abcd.ca";
+export const MOM_TEST_URL = "https://www.momtestbook.com/";

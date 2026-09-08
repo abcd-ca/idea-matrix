@@ -7,6 +7,8 @@ import { useState, useSyncExternalStore, type ReactNode } from "react";
 import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert";
 import { Button } from "@/components/ui/button";
 import { createNewFile, openExistingFile, writeDocumentNow } from "@/lib/file-session";
+import { MOM_TEST_URL } from "@/lib/config";
+import { MOM_TEST_SUMMARY, OVERVIEW_AI, OVERVIEW_CARDS, OVERVIEW_INTRO, OVERVIEW_TITLE } from "@/lib/overview";
 import { supportsLocalFile } from "@/lib/storage/local-file";
 import { useAppStore } from "@/lib/store";
 
@@ -48,36 +50,24 @@ export function SetupWizard() {
           <>
             <header className="flex flex-col gap-2">
               <p className="text-xs font-medium tracking-wide text-muted-foreground uppercase">Welcome</p>
-              <h1 className="font-heading text-3xl font-bold">Score your side-project ideas honestly</h1>
-              <p className="max-w-prose text-muted-foreground">
-                Idea Matrix is a place to keep the ideas you have not started yet, and to be honest with yourself
-                about which one deserves your time.
-              </p>
+              <h1 className="font-heading text-3xl font-bold">{OVERVIEW_TITLE}</h1>
+              <p className="max-w-prose text-muted-foreground">{OVERVIEW_INTRO}</p>
             </header>
 
             <div className="grid gap-4 sm:grid-cols-3">
-              <Overview title="Five scores, one Potential">
-                Each idea gets 1 to 5 for Reach, Impact, Profitability, Vision and Ease. Their average, scaled to 100, is
-                its Potential: how good it could be.
-              </Overview>
-              <Overview title="Confidence keeps you honest">
-                A separate score for how much evidence sits behind those numbers, from gut feel to a customer
-                commitment. Score is Potential × Confidence ÷ 5, so nothing ranks high until real people have backed
-                it up.
-              </Overview>
-              <Overview title="Your file, your storage">
-                No accounts and no server. Your matrix is one file that you keep, and nothing leaves your computer.
-                You can check that yourself in the browser’s Network tab.
-              </Overview>
+              {OVERVIEW_CARDS.map((card) => (
+                <Overview key={card.title} title={card.title}>
+                  {card.text}
+                </Overview>
+              ))}
             </div>
 
             <p className="max-w-prose text-sm text-muted-foreground">
-              The method comes from{" "}
-              <a href="https://www.momtestbook.com/" target="_blank" rel="noreferrer" className="underline underline-offset-4">
+              The rules for what counts as evidence come from{" "}
+              <a href={MOM_TEST_URL} target="_blank" rel="noreferrer" className="underline underline-offset-4">
                 The Mom Test
               </a>
-              : talk about people’s lives, not your idea; ask what they did, not what they would do; only a commitment
-              counts as proof. A short tour explains the screen once your matrix is open.
+              : {MOM_TEST_SUMMARY} {OVERVIEW_AI} A short tour explains the screen once your matrix is open.
             </p>
 
             <footer className="flex items-center justify-end">
