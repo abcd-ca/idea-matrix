@@ -4,6 +4,7 @@ import { renameDocument } from "@idea-matrix/core";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { useState, type ReactNode } from "react";
+import { BuildInfo } from "@/components/build-info";
 import { ExportMenu } from "@/components/export-menu";
 import { ImportCsv } from "@/components/import-csv";
 import { Button } from "@/components/ui/button";
@@ -105,6 +106,10 @@ export function SettingsView() {
             Read the full page
           </Link>
         </p>
+      </Section>
+
+      <Section title="This build">
+        <BuildInfo />
       </Section>
 
       <Section title="About">

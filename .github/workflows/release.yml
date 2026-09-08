@@ -1,9 +1,10 @@
 name: Release
 
-# Pushing a version tag (v0.1.0) builds the Claude Desktop bundle and attaches
-# it to a GitHub Release, so the releases page the app links to always has a
-# downloadable idea-matrix.mcpb. The tag must match the version in
-# packages/mcp/package.json and packages/mcp/manifest.json.
+# Pushing a version tag (v0.1.0) builds the web app and the Claude Desktop
+# bundle and attaches the bundle, its checksum and the web build fingerprint to
+# a GitHub Release, so the releases page the app links to always has a
+# downloadable idea-matrix.mcpb and the fingerprint to compare against. The tag
+# must match the version in every package.json and in the extension manifest.
 
 on:
   push:
@@ -11,9 +12,12 @@ on:
 
 permissions:
   contents: write
+  # For the build provenance attestation, which GitHub only offers on public repos.
+  id-token: write
+  attestations: write
 
 jobs:
-  bundle:
+  release:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v5
@@ -23,25 +27,59 @@ jobs:
           cache: npm
       - run: npm ci
 
-      - name: Check that the tag matches the package version
+      - name: Check that the tag matches the package versions
         run: |
           tag="${GITHUB_REF_NAME#v}"
-          pkg="$(node -p "require('./packages/mcp/package.json').version")"
-          manifest="$(node -p "require('./packages/mcp/manifest.json').version")"
-          echo "tag=$tag package.json=$pkg manifest.json=$manifest"
-          if [ "$tag" != "$pkg" ] || [ "$tag" != "$manifest" ]; then
-            echo "Tag v$tag does not match packages/mcp (package.json $pkg, manifest.json $manifest)." >&2
+          status=0
+          for f in package.json apps/web/package.json packages/core/package.json packages/mcp/package.json packages/mcp/manifest.json; do
+            v="$(node -p "require('./$f').version")"
+            echo "$f: $v"
+            if [ "$v" != "$tag" ]; then status=1; fi
+          done
+          if [ "$status" != 0 ]; then
+            echo "Tag v$tag does not match every version above." >&2
             exit 1
           fi
 
-      - run: npm test -w packages/core -w packages/mcp
+      - run: npm test
+      - run: npm run build
       - run: npm run bundle -w packages/mcp
 
-      - name: Create the GitHub Release with the bundle attached
+      - name: Write the release notes
+        id: notes
+        run: |
+          fingerprint="$(node -p "require('./apps/web/out/build.json').fingerprint")"
+          mcpb="$(sha256sum packages/mcp/dist/idea-matrix.mcpb | cut -d' ' -f1)"
+          cli="$(sha256sum packages/mcp/dist/cli.js | cut -d' ' -f1)"
+          cat > notes.md <<EOT
+          **Claude Desktop extension:** download \`idea-matrix.mcpb\` below and double-click it. Setup steps are in \`packages/mcp/README.md\`.
+
+          **Checksums for this release**, built from commit \`$GITHUB_SHA\`:
+
+          | What | SHA-256 |
+          |---|---|
+          | Web app fingerprint (shown in the app under Settings → This build) | \`$fingerprint\` |
+          | \`idea-matrix.mcpb\` | \`$mcpb\` |
+          | \`dist/cli.js\` inside the bundle | \`$cli\` |
+
+          \`build.json\` and \`build.sha256\` below list every file of the web build with its hash. See "Verify the build" in the README for how to check a running copy.
+          EOT
+          cp apps/web/out/build.json apps/web/out/build.sha256 .
+
+      - name: Attest the build (public repo only)
+        if: github.event.repository.private == false
+        uses: actions/attest-build-provenance@v3
+        with:
+          subject-path: |
+            build.json
+            packages/mcp/dist/idea-matrix.mcpb
+
+      - name: Create the GitHub Release
         env:
           GH_TOKEN: ${{ github.token }}
         run: |
-          gh release create "$GITHUB_REF_NAME" packages/mcp/dist/idea-matrix.mcpb \
+          gh release create "$GITHUB_REF_NAME" \
+            packages/mcp/dist/idea-matrix.mcpb build.json build.sha256 \
             --title "Idea Matrix $GITHUB_REF_NAME" \
             --generate-notes \
-            --notes "Claude Desktop extension: download idea-matrix.mcpb below and double-click it. Setup steps are in packages/mcp/README.md."
+            --notes-file notes.md
