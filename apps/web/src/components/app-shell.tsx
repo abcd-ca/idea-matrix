@@ -12,6 +12,8 @@ import {
   DropdownMenuItem,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
+import { ConnectAiPanel } from "@/components/connect-ai";
+import { GitHubMark } from "@/components/github-mark";
 import { startTour } from "@/components/tour";
 import { APP_NAME, SOURCE_URL } from "@/lib/config";
 import { useAppStore } from "@/lib/store";
@@ -59,7 +61,8 @@ export function AppShell({ children }: { children: ReactNode }) {
           <HelpMenu />
         </div>
         <div className="hidden flex-1 md:block" />
-        <div className="hidden md:block">
+        <div className="hidden flex-col gap-3 md:flex">
+          <ConnectAiPanel compact />
           <StatusLine />
         </div>
       </aside>

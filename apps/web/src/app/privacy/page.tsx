@@ -58,12 +58,12 @@ export default function PrivacyPage() {
         </p>
       </Section>
 
-      <Section title="AI assistants, later">
+      <Section title="AI assistants">
         <p>
-          A future version adds a small program you can install so Claude Desktop, Claude Code or a local model can
-          read and update your matrix through the Model Context Protocol. When you use it, the text of the idea you ask
-          about goes to whichever assistant you connected, on your account, and nowhere else. Nothing about it involves
-          a server of ours.
+          {APP_NAME} comes with a small program you can install so Claude Desktop, Claude Code or a local model can
+          read and update your matrix through the Model Context Protocol. It runs on your computer, on the same file as
+          the app. When you use it, the text of the idea you ask about goes to whichever assistant you connected, on
+          your account, and nowhere else. There is no server of the app’s in between.
         </p>
       </Section>
 
