@@ -16,6 +16,10 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v5
+        with:
+          # Build the branch head itself, not GitHub's merge commit, so the
+          # fingerprint matches a local build or a preview of the same commit.
+          ref: ${{ github.event.pull_request.head.sha || github.sha }}
       - uses: actions/setup-node@v5
         with:
           node-version-file: .node-version
@@ -37,7 +41,7 @@ jobs:
             echo "\`dist/cli.js\` inside it sha256 \`$(sha256sum packages/mcp/dist/cli.js | cut -d' ' -f1)\`"
           } >> "$GITHUB_STEP_SUMMARY"
 
-      - uses: actions/upload-artifact@v5
+      - uses: actions/upload-artifact@v7
         with:
           name: build-fingerprint
           path: |
@@ -47,7 +51,7 @@ jobs:
 
       - name: Attest the build (public repo only)
         if: github.event.repository.private == false
-        uses: actions/attest-build-provenance@v3
+        uses: actions/attest-build-provenance@v4
         with:
           subject-path: |
             apps/web/out/build.json
