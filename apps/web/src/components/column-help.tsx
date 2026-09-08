@@ -2,6 +2,7 @@
 
 import {
   BANDS,
+  CONFIDENCE_GATE_SUMMARY,
   CONFIDENCE_INFO,
   CRITERION_INFO,
   CRITERIA,
@@ -83,7 +84,7 @@ export function columnHelp(columnId: string): ReactNode | null {
         <>
           <p className="font-medium">{CONFIDENCE_INFO.question}</p>
           <Levels levels={CONFIDENCE_INFO.levels} />
-          <p className="opacity-80">Above 2 needs an evidence entry; 5 needs a commitment.</p>
+          <p className="opacity-80">{CONFIDENCE_GATE_SUMMARY}</p>
         </>
       );
     case "potential":

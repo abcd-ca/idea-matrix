@@ -79,7 +79,7 @@ describe("exportMarkdown", () => {
     expect(md).toContain("**Potential:** 68 (worth a customer conversation)");
     expect(md).toContain("**Score:** 54 (worth a look)");
     expect(md).toContain("- Confidence: 4 (several conversations that all point the same way)");
-    expect(md).toContain("Cold-dip group organiser");
+    expect(md).toContain("Cold-dip group organizer");
     expect(md).toContain("# Parked");
     expect(md).toContain("**Parked because:** Three existing apps");
     expect(md).toContain("**Potential:** needs all five scores");

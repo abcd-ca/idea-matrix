@@ -62,8 +62,8 @@ export function ParkDialog({
           <DialogHeader>
             <DialogTitle>Park “{ideaName}”</DialogTitle>
             <DialogDescription>
-              Parking keeps the idea, its scores and its evidence as history, and takes it out of the matrix. One
-              sentence on why is required, so future you knows.
+              Parking keeps the idea, its scores and its evidence as history, and takes it out of the matrix. A
+              sentence on why is required, so you remember later.
             </DialogDescription>
           </DialogHeader>
           <div className="flex flex-col gap-1.5">
@@ -100,7 +100,7 @@ export function ParkDialog({
                 className="text-xs text-muted-foreground underline-offset-4 hover:underline"
                 onClick={() => setConfirmDelete(true)}
               >
-                This was a mistake, delete it instead
+                Added by mistake? Delete it instead
               </button>
             )}
             <span className="flex gap-2">

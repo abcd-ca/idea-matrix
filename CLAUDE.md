@@ -1,6 +1,6 @@
 # Idea Matrix (app repo)
 
-A local-first web app for scoring side-project ideas. Read `README.md` for what it is and `ROADMAP.md` for why it is built this way and what comes next. Private context, including anything about my own ideas, lives in `CLAUDE.local.md`, which is gitignored; never move any of it into tracked files.
+A local-first web app for scoring project ideas. Read `README.md` for what it is and `ROADMAP.md` for why it is built this way and what comes next. Private context, including anything about my own ideas, lives in `CLAUDE.local.md`, which is gitignored; never move any of it into tracked files.
 
 ## Layout
 
@@ -29,8 +29,10 @@ A local-first web app for scoring side-project ideas. Read `README.md` for what 
 
 ## Writing conventions
 
-Text in the UI, docs and commit messages uses Canadian English spelling, first person singular where a person speaks, and few em-dashes.
+Text in the UI, docs and commit messages uses Canadian English spelling, first person singular where a person speaks, and few em-dashes. Plain and direct, not preachy: "explore which ones deserve your time" rather than "be honest with yourself".
+
+Once the app is localized (the next roadmap step), English is no longer the only copy: every copy edit also updates the locale files, and any sentence that appears in more than one place comes from one shared constant (see `CONFIDENCE_GATE_SUMMARY` in core and `apps/web/src/lib/overview.ts`).
 
 ## Git
 
-Main is protected; work on branches and open pull requests. Do not commit or push unless asked.
+Main is protected; work on branches and open pull requests. Do not commit or push unless asked. When asked to commit and the working tree holds unrelated changes, make one commit per concern rather than one commit for everything.

@@ -41,10 +41,10 @@ export function currentHandle(): FileSystemFileHandle | null {
 function explain(e: unknown): string {
   if (e instanceof DocumentError) return e.message;
   if (e instanceof DOMException && e.name === "NotAllowedError") {
-    return "The browser did not allow access to the file. Click Resume to grant it again.";
+    return "The browser did not allow access to the file. Try again, or open a different file.";
   }
   if (e instanceof DOMException && e.name === "NotFoundError") {
-    return "The file can no longer be found. It may have been moved or deleted.";
+    return "The file can no longer be found. It may have been moved or deleted. Put it back and reload the page, or open a different file.";
   }
   return e instanceof Error ? e.message : "Something went wrong with the file.";
 }
