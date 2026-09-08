@@ -25,14 +25,14 @@ export const CRITERION_INFO: Record<
       1: "barely noticed",
       2: "a small convenience",
       3: "a real improvement",
-      4: "a real difference to one user",
+      4: "something they would miss if it went away",
       5: "changes something important for them",
     },
   },
   profitability: {
     label: "Profitability",
     short: "Profit",
-    question: "Revenue minus cost, once it is running?",
+    question: "What is left after costs, once it is running?",
     levels: {
       0: "deliberately non-commercial",
       1: "revenue barely covers cost",
@@ -57,7 +57,7 @@ export const CRITERION_INFO: Record<
   ease: {
     label: "Ease",
     short: "Ease",
-    question: "How easy is it to launch and keep running, with today's tools?",
+    question: "How easy is it to launch and keep running, with today’s tools?",
     levels: {
       1: "months of hard work",
       2: "a couple of months",

@@ -81,9 +81,9 @@ describe("updateIdea", () => {
   it("enforces the Confidence gate", () => {
     const doc = sampleDocument(clock);
     // No evidence at all: capped at 2.
-    expect(() => updateIdea(doc, "sample-rink", { confidence: 3 }, clock)).toThrowError(/maximum 2/);
+    expect(() => updateIdea(doc, "sample-rink", { confidence: 3 }, clock)).toThrowError(/up to 2/);
     // An entry with no behaviour recorded (a compliment) does not help.
-    expect(() => updateIdea(doc, "sample-weather", { confidence: 3 }, clock)).toThrowError(/maximum 2/);
+    expect(() => updateIdea(doc, "sample-weather", { confidence: 3 }, clock)).toThrowError(/up to 2/);
     // Behaviour recorded but no commitment: capped at 4.
     const { doc: withBehaviour } = addEvidence(doc, "sample-rink", {
       date: "2026-09-04",
@@ -92,7 +92,7 @@ describe("updateIdea", () => {
       commitment: "",
     }, clock);
     expect(() => updateIdea(withBehaviour, "sample-rink", { confidence: 4 }, clock)).not.toThrow();
-    expect(() => updateIdea(withBehaviour, "sample-rink", { confidence: 5 }, clock)).toThrowError(/maximum 4/);
+    expect(() => updateIdea(withBehaviour, "sample-rink", { confidence: 5 }, clock)).toThrowError(/up to 4/);
     // A commitment on record allows 5.
     expect(() => updateIdea(doc, "sample-sauna", { confidence: 5 }, clock)).not.toThrow();
   });

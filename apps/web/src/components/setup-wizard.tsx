@@ -150,8 +150,8 @@ export function SetupWizard() {
               <div className="flex flex-col gap-3 rounded-md border p-5">
                 <h2 className="font-heading text-xl font-bold">Open an existing matrix</h2>
                 <p className="flex-1 text-sm text-muted-foreground">
-                  You already have a matrix file, maybe from another computer or a backup. Only Idea Matrix files are
-                  offered, and the app checks the file really is a matrix before loading it.
+                  You already have a matrix file, maybe from another computer or a backup. The picker shows JSON files,
+                  and the app checks that the one you choose really is a matrix before loading it.
                 </p>
                 <Button
                   variant="outline"
@@ -167,7 +167,7 @@ export function SetupWizard() {
                 >
                   Open a file…
                 </Button>
-                <p className="text-xs text-muted-foreground">Last step. Your matrix opens as it is.</p>
+                <p className="text-xs text-muted-foreground">This is the last step: your matrix opens as it is.</p>
               </div>
               <div className="flex flex-col gap-3 rounded-md border p-5">
                 <h2 className="font-heading text-xl font-bold">Create a new matrix</h2>
@@ -204,17 +204,17 @@ export function SetupWizard() {
             <header className="flex flex-col gap-2">
               <h1 className="font-heading text-3xl font-bold">What should go in it?</h1>
               <p className="text-muted-foreground">
-                <strong>{useAppStore.getState().fileName ?? "Your file"}</strong> is saved. It is empty until you choose.
+                <strong>{useAppStore.getState().fileName ?? "Your file"}</strong> is saved. It is empty until you choose what goes in it.
               </p>
             </header>
 
             <div className="grid gap-4 sm:grid-cols-2" role="radiogroup" aria-label="What to start with">
               <ChoiceCard selected={seed === "example"} onSelect={() => setSeed("example")} title="An example matrix">
                 Nine fictional ideas, already scored, so you can see what a filled-in matrix looks like before adding
-                your own. Delete or park them whenever you like.
+                your own. Park them whenever you like.
               </ChoiceCard>
               <ChoiceCard selected={seed === "empty"} onSelect={() => setSeed("empty")} title="Nothing yet">
-                Just the columns. You’ll add your first idea on the next screen.
+                Just the columns. You’ll add your first idea from the matrix, after a short tour.
               </ChoiceCard>
             </div>
 

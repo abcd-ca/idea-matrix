@@ -105,7 +105,7 @@ export function migrateDocument(raw: unknown): MatrixDocument {
   }
   if (version > SCHEMA_VERSION) {
     throw new DocumentError(
-      "This file was saved by a newer version of Idea Matrix. Update the app to open it.",
+      "This file was saved by a newer version of Idea Matrix. Reload the page to get the latest version, then open it again.",
       "newer-version",
     );
   }
@@ -168,7 +168,7 @@ export function updateIdea(
   const allowed = maxConfidenceAllowed(next.evidence);
   if (next.confidence > allowed) {
     throw new Error(
-      `Confidence ${next.confidence} is not supported by the evidence log yet (maximum ${allowed}).`,
+      `The evidence log only supports Confidence up to ${allowed} so far.`,
     );
   }
   if (next.stage === "Parked" && next.parkedReason.trim() === "") {
