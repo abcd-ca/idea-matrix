@@ -87,7 +87,9 @@ function HelpMenu() {
         <DropdownMenuItem onClick={() => startTour()}>Show me around</DropdownMenuItem>
         <DropdownMenuItem render={<Link href="/privacy/" />}>Privacy and trust</DropdownMenuItem>
         {SOURCE_URL ? (
-          <DropdownMenuItem render={<a href={SOURCE_URL} target="_blank" rel="noreferrer" />}>Source code</DropdownMenuItem>
+          <DropdownMenuItem render={<a href={SOURCE_URL} target="_blank" rel="noreferrer" />}>
+            <GitHubMark className="size-4" /> Source on GitHub
+          </DropdownMenuItem>
         ) : null}
       </DropdownMenuContent>
     </DropdownMenu>
