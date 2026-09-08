@@ -70,6 +70,8 @@ jobs:
 
       - name: Write the release notes
         if: steps.version.outputs.release == 'true'
+        env:
+          GH_TOKEN: ${{ github.token }}
         run: |
           fingerprint="$(node -p "require('./apps/web/out/build.json').fingerprint")"
           mcpb="$(sha256sum packages/mcp/dist/idea-matrix.mcpb | cut -d' ' -f1)"
