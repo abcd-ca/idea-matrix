@@ -3,6 +3,7 @@
   "version": "0.1.0",
   "private": true,
   "description": "Score your side-project ideas honestly. A local-first matrix with no accounts and no server of its own.",
+  "homepage": "https://ideamatrix.io",
   "license": "MIT",
   "workspaces": [
     "packages/*",
