@@ -14,9 +14,9 @@ There are no accounts and no server behind it. Your matrix is one JSON file that
 
 Saving a file in place needs the File System Access API, which today means Chrome or Edge. The app detects the feature, not the browser, so support switches on by itself when others ship it.
 
-## Claude, Claude Code and other assistants
+## AI assistants
 
-`packages/mcp` is a small program that lets an AI assistant read and update your matrix through the Model Context Protocol, on your machine, against the same file and the same rules as the app. It ships as a one-click Claude Desktop extension and as an `npx` command for Claude Code and other clients, and it doubles as a command-line tool. The **Connect to AI agent** button in the app shows the steps; `packages/mcp/README.md` has the full instructions. The assistant walks you through scoring; you assign the numbers, and Confidence still cannot rise without a recorded conversation.
+`packages/mcp` is a small program that lets an AI assistant such as Claude, Claude Code, ChatGPT or Perplexity read and update your matrix through the Model Context Protocol, on your machine, against the same file and the same rules as the app. Any assistant that can run a local MCP server works: it ships as a one-click Claude Desktop extension and as an `npx` command for everything else, and it doubles as a command-line tool. The **Connect to AI agent** button in the app shows the steps; `packages/mcp/README.md` has the full instructions. The assistant walks you through scoring; you assign the numbers, and Confidence still cannot rise without a recorded conversation.
 
 ## Running it locally
 
