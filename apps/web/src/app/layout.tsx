@@ -1,6 +1,6 @@
 import type { Metadata, Viewport } from "next";
 import type { ReactNode } from "react";
-import { Bricolage_Grotesque, IBM_Plex_Sans } from "next/font/google";
+import { IBM_Plex_Sans, Nunito_Sans } from "next/font/google";
 import "./globals.css";
 import "driver.js/dist/driver.css";
 import { FileSession } from "@/components/file-session";
@@ -12,10 +12,12 @@ const plexSans = IBM_Plex_Sans({
   weight: ["400", "500", "600"],
 });
 
-const bricolage = Bricolage_Grotesque({
+// Headings: a humanist sans at a lighter weight than the body's bold. Large
+// headings and the big numbers use 600, section titles and the rail name 700.
+const nunitoSans = Nunito_Sans({
   variable: "--font-heading",
   subsets: ["latin"],
-  weight: ["500", "700"],
+  weight: ["600", "700"],
 });
 
 export const metadata: Metadata = {
@@ -32,7 +34,7 @@ export const viewport: Viewport = {
 
 export default function RootLayout({ children }: { children: ReactNode }) {
   return (
-    <html lang="en" className={`${plexSans.variable} ${bricolage.variable} h-full antialiased`}>
+    <html lang="en" className={`${plexSans.variable} ${nunitoSans.variable} h-full antialiased`}>
       <body className="flex min-h-full flex-col bg-background text-foreground">
         <TooltipProvider>
           <FileSession />

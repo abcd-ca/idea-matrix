@@ -12,7 +12,7 @@ export default function PrivacyPage() {
       <Link href="/" className="text-sm text-muted-foreground hover:text-foreground">
         ← Back to the app
       </Link>
-      <h1 className="font-heading text-3xl font-bold">Privacy and trust</h1>
+      <h1 className="font-heading text-3xl font-semibold">Privacy and trust</h1>
       <p className="text-lg text-muted-foreground">
         This page is not a policy. It is a list of things you can check for yourself.
       </p>

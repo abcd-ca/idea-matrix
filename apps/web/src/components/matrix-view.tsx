@@ -147,7 +147,7 @@ export function MatrixView({ parked = false }: { parked?: boolean }) {
   return (
     <div className="flex flex-col gap-4">
       <div className="flex flex-wrap items-center justify-between gap-3">
-        <h1 className="font-heading text-3xl font-bold">{parked ? "Parked ideas" : doc.name}</h1>
+        <h1 className="font-heading text-3xl font-semibold">{parked ? "Parked ideas" : doc.name}</h1>
         <div className="flex items-center gap-4">
           <SaveIndicator className="hidden sm:inline-flex" />
           {!parked ? (
