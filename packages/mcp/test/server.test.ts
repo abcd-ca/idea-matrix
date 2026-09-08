@@ -75,7 +75,7 @@ describe("tools", () => {
   it("refuses Confidence the evidence does not support, then allows it after add_evidence", async () => {
     const refused = await call("update_idea", { idea: "sample-rink", confidence: 4 });
     expect(refused.result.isError).toBe(true);
-    expect(refused.text).toMatch(/maximum 2/);
+    expect(refused.text).toMatch(/up to 2/);
     const added = await call("add_evidence", {
       idea: "sample-rink",
       who: "Rink owner",

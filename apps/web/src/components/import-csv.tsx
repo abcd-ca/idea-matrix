@@ -13,6 +13,10 @@ import {
 } from "@/components/ui/dialog";
 import { useAppStore } from "@/lib/store";
 
+function plural(n: number, one: string, many: string): string {
+  return n === 1 ? one : many.replace("{n}", String(n));
+}
+
 /** Import rows from a spreadsheet export. Shows what will happen before it does. */
 export function ImportCsv() {
   const mutate = useAppStore((s) => s.mutate);
@@ -59,10 +63,12 @@ export function ImportCsv() {
       <Dialog open={preview !== null} onOpenChange={(o) => (o ? undefined : setPreview(null))}>
         <DialogContent>
           <DialogHeader>
-            <DialogTitle>Import {preview?.ideas.length ?? 0} ideas?</DialogTitle>
+            <DialogTitle>{plural(preview?.ideas.length ?? 0, "Import one idea?", "Import {n} ideas?")}</DialogTitle>
             <DialogDescription>
-              They are added to your matrix as new ideas. Nothing already there is changed.
-              {preview && preview.skipped > 0 ? ` ${preview.skipped} rows without a name were skipped.` : ""}
+              They will be added to your matrix as new ideas. Nothing already there is changed.
+              {preview && preview.skipped > 0
+                ? ` ${plural(preview.skipped, "One row without a name was skipped.", "{n} rows without a name were skipped.")}`
+                : ""}
             </DialogDescription>
           </DialogHeader>
           {preview && preview.ideas.length > 0 ? (

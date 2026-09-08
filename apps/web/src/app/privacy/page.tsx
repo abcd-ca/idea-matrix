@@ -43,12 +43,12 @@ export default function PrivacyPage() {
       <Section title="What the browser remembers">
         <p>
           A cached copy of your matrix and a pointer to your file live in this browser’s private storage, so the app
-          opens instantly and survives a dropped connection. They never leave the browser. Clearing site data removes
+          opens instantly and works offline. They never leave the browser. Clearing site data removes
           them; your file is untouched.
         </p>
         <p>
           On a return visit the browser asks for one click before the app may write to your file again. That prompt is
-          the browser’s, not ours, and it is a good thing.
+          the browser’s, not the app’s, and it is a good thing.
         </p>
       </Section>
 

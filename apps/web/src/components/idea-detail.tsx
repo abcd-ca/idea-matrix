@@ -137,7 +137,7 @@ export function IdeaDetail() {
           <Field
             label="Riskiest assumption"
             htmlFor="assumption"
-            hint="One testable sentence about other people's current behaviour or spending."
+            hint="What must already be true about what other people do or pay for. One sentence you can check."
           >
             <Textarea
               id="assumption"

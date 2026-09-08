@@ -131,7 +131,7 @@ function AddEvidenceDialog({
 
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>
-      <DialogContent className="max-w-lg">
+      <DialogContent className="sm:max-w-lg">
         <form
           className="flex flex-col gap-4"
           onSubmit={(e) => {
@@ -208,7 +208,7 @@ function AddEvidenceDialog({
               Cancel
             </Button>
             <Button type="submit" disabled={who.trim() === ""}>
-              Add entry
+              Add conversation
             </Button>
           </DialogFooter>
         </form>

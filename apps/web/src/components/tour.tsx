@@ -72,6 +72,7 @@ const STEPS: DriveStep[] = [
       description:
         `<p>${FORMULA_INFO.potential}</p>` +
         list(CRITERIA.map((c) => `<b>${CRITERION_INFO[c].label}</b>: ${CRITERION_INFO[c].question}`)) +
+        para("Each is a value of 1 to 5. Profitability can also be 0, for something deliberately non-commercial.") +
         para(
           "The five scores stay out of this table by default. Tick <b>Show the five scores</b> below it to see them, and <b>hover any column heading</b> to see what its numbers mean.",
         ) +
@@ -107,7 +108,7 @@ const STEPS: DriveStep[] = [
       title: "Click an idea to score it",
       description:
         "<p>This table is for comparing. Scoring happens inside an idea, where each number shows its meaning as you pick, and where the evidence log lives.</p>" +
-        para("You can replay this tour any time from Help."),
+        para("You can replay this tour any time from Help, under Show me around."),
     },
   },
 ];
