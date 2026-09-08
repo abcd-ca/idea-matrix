@@ -1,0 +1,47 @@
+name: Release
+
+# Pushing a version tag (v0.1.0) builds the Claude Desktop bundle and attaches
+# it to a GitHub Release, so the releases page the app links to always has a
+# downloadable idea-matrix.mcpb. The tag must match the version in
+# packages/mcp/package.json and packages/mcp/manifest.json.
+
+on:
+  push:
+    tags: ["v*"]
+
+permissions:
+  contents: write
+
+jobs:
+  bundle:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version-file: .node-version
+          cache: npm
+      - run: npm ci
+
+      - name: Check that the tag matches the package version
+        run: |
+          tag="${GITHUB_REF_NAME#v}"
+          pkg="$(node -p "require('./packages/mcp/package.json').version")"
+          manifest="$(node -p "require('./packages/mcp/manifest.json').version")"
+          echo "tag=$tag package.json=$pkg manifest.json=$manifest"
+          if [ "$tag" != "$pkg" ] || [ "$tag" != "$manifest" ]; then
+            echo "Tag v$tag does not match packages/mcp (package.json $pkg, manifest.json $manifest)." >&2
+            exit 1
+          fi
+
+      - run: npm test -w packages/core -w packages/mcp
+      - run: npm run bundle -w packages/mcp
+
+      - name: Create the GitHub Release with the bundle attached
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          gh release create "$GITHUB_REF_NAME" packages/mcp/dist/idea-matrix.mcpb \
+            --title "Idea Matrix $GITHUB_REF_NAME" \
+            --generate-notes \
+            --notes "Claude Desktop extension: download idea-matrix.mcpb below and double-click it. Setup steps are in packages/mcp/README.md."
