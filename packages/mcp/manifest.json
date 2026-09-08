@@ -9,7 +9,8 @@
   "documentation": "https://github.com/abcd-ca/idea-matrix/tree/main/packages/mcp",
   "support": "https://github.com/abcd-ca/idea-matrix/issues",
   "author": {
-    "name": "Andrew Blair"
+    "name": "Andrew Blair",
+    "url": "https://abcd.ca"
   },
   "license": "MIT",
   "keywords": ["ideas", "prioritization", "side projects", "mom test", "local-first"],

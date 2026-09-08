@@ -1,7 +1,7 @@
 import type { ReactNode } from "react";
 import Link from "next/link";
 import { BuildInfo } from "@/components/build-info";
-import { APP_NAME, SOURCE_URL } from "@/lib/config";
+import { APP_NAME, MAINTAINER_NAME, MAINTAINER_URL, SOURCE_URL } from "@/lib/config";
 
 export const metadata = { title: `Privacy and trust · ${APP_NAME}` };
 
@@ -80,7 +80,11 @@ export default function PrivacyPage() {
               .
             </>
           ) : null}{" "}
-          Every pull request runs the same checks, and the rule that nothing leaves your machine is written into the
+          It is maintained by {MAINTAINER_NAME} (
+          <a href={MAINTAINER_URL} className="underline underline-offset-4" target="_blank" rel="noreferrer">
+            {MAINTAINER_URL.replace("https://", "")}
+          </a>
+          ). Every pull request runs the same checks, and the rule that nothing leaves your machine is written into the
           contributor guidelines.
         </p>
       </Section>
