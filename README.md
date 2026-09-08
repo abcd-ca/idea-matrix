@@ -2,6 +2,8 @@
 
 Score your side-project ideas honestly, and keep the file yourself.
 
+Use it at [ideamatrix.io](https://ideamatrix.io). Nothing to install, nothing to sign up for.
+
 Idea Matrix is a small web app for people with more ideas than time. Each idea gets five scores from 1 to 5 (Reach, Impact, Profitability, Vision, Ease), which average into a **Potential** from 0 to 100. A separate **Confidence** score records how much real evidence sits behind those numbers, and **Score** is Potential × Confidence ÷ 5. Score only rises when you have talked to real people, so the newest, shiniest idea cannot jump the queue.
 
 The scoring philosophy comes from [*The Mom Test*](https://www.momtestbook.com/), Rob Fitzpatrick's short book on how to talk to customers without being lied to: ask about people's lives and what they already do, not about your idea, and treat only commitments as proof. In matrix terms, your scores are hunches until other people's behaviour backs them up. Every idea carries a riskiest assumption and an evidence log, and Confidence cannot go above 2 until that log records what someone actually does about the problem.
@@ -64,7 +66,7 @@ To check a running copy yourself, with nothing but Node installed:
 ```
 git clone https://github.com/abcd-ca/idea-matrix.git
 cd idea-matrix
-npm run verify -- https://the-site-you-are-using
+npm run verify -- https://ideamatrix.io
 ```
 
 That downloads `build.json`, fetches every file it lists, hashes each one, and recomputes the fingerprint from what was actually served. Then compare the fingerprint with the one GitHub shows for that commit. To go one step further, check out the commit, run `npm ci && npm run build`, and compare `apps/web/out/build.sha256` with the served one.
