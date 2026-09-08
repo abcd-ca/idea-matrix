@@ -75,4 +75,4 @@ For the Claude Desktop extension, `shasum -a 256 idea-matrix.mcpb` on your downl
 
 ## Maintainer
 
-Idea Matrix is made and maintained by [Andrew Blair](https://abcd.ca), a developer in Squamish, BC, who builds apps and tools like this one for clients. Contributions are welcome through pull requests, and everyone who has landed one is on the [contributors page](https://github.com/abcd-ca/idea-matrix/graphs/contributors).
+Idea Matrix is made and maintained by [Andrew Blair](https://abcd.ca), who builds apps and tools like this one for clients. Contributions are welcome through pull requests, and everyone who has landed one is on the [contributors page](https://github.com/abcd-ca/idea-matrix/graphs/contributors).
