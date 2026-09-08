@@ -3,7 +3,7 @@
  * screen of first-run setup and as the opening stop of the tour, from the
  * same words so the two never drift apart. App constants only, no user text.
  */
-export const OVERVIEW_TITLE = "Score your project ideas honestly";
+export const OVERVIEW_TITLE = "Score your project ideas";
 
 export const OVERVIEW_INTRO =
   "Idea Matrix is a place to keep your project ideas, at whatever stage they are, and to explore which ones deserve your time.";
