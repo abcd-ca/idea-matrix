@@ -1,20 +1,26 @@
 name: Release
 
-# Pushing a version tag (v0.1.0) builds the web app and the Claude Desktop
-# bundle and attaches the bundle, its checksum and the web build fingerprint to
-# a GitHub Release, so the releases page the app links to always has a
-# downloadable idea-matrix.mcpb and the fingerprint to compare against. The tag
-# must match the version in every package.json and in the extension manifest.
+# Every push to main whose version (package.json) has no GitHub Release yet
+# gets one: the tag is created, the web app and the Claude Desktop bundle are
+# built, and the bundle, its checksum and the web build fingerprint are
+# attached. Bump the version with `npm run bump -- minor` on a branch; merging
+# it is the release. Nobody pushes tags by hand. Re-runnable: a version that
+# already has a release is skipped.
 
 on:
   push:
-    tags: ["v*"]
+    branches: [main]
+  workflow_dispatch:
 
 permissions:
   contents: write
   # For the build provenance attestation, which GitHub only offers on public repos.
   id-token: write
   attestations: write
+
+concurrency:
+  group: release
+  cancel-in-progress: false
 
 jobs:
   release:
@@ -25,28 +31,44 @@ jobs:
         with:
           node-version-file: .node-version
           cache: npm
-      - run: npm ci
 
-      - name: Check that the tag matches the package versions
+      - name: Is there a version without a release?
+        id: version
+        env:
+          GH_TOKEN: ${{ github.token }}
         run: |
-          tag="${GITHUB_REF_NAME#v}"
+          version="$(node -p "require('./package.json').version")"
+          tag="v$version"
           status=0
           for f in package.json apps/web/package.json packages/core/package.json packages/mcp/package.json packages/mcp/manifest.json; do
             v="$(node -p "require('./$f').version")"
             echo "$f: $v"
-            if [ "$v" != "$tag" ]; then status=1; fi
+            if [ "$v" != "$version" ]; then status=1; fi
           done
           if [ "$status" != 0 ]; then
-            echo "Tag v$tag does not match every version above." >&2
+            echo "The version differs between files. Run npm run bump to set it everywhere." >&2
             exit 1
           fi
+          if gh release view "$tag" --repo "$GITHUB_REPOSITORY" >/dev/null 2>&1; then
+            echo "Release $tag already exists; nothing to do."
+            echo "release=false" >> "$GITHUB_OUTPUT"
+          else
+            echo "No release for $tag yet; creating one from $GITHUB_SHA."
+            echo "release=true" >> "$GITHUB_OUTPUT"
+            echo "tag=$tag" >> "$GITHUB_OUTPUT"
+          fi
 
-      - run: npm test
-      - run: npm run build
-      - run: npm run bundle -w packages/mcp
+      - if: steps.version.outputs.release == 'true'
+        run: npm ci
+      - if: steps.version.outputs.release == 'true'
+        run: npm test
+      - if: steps.version.outputs.release == 'true'
+        run: npm run build
+      - if: steps.version.outputs.release == 'true'
+        run: npm run bundle -w packages/mcp
 
       - name: Write the release notes
-        id: notes
+        if: steps.version.outputs.release == 'true'
         run: |
           fingerprint="$(node -p "require('./apps/web/out/build.json').fingerprint")"
           mcpb="$(sha256sum packages/mcp/dist/idea-matrix.mcpb | cut -d' ' -f1)"
@@ -67,19 +89,22 @@ jobs:
           cp apps/web/out/build.json apps/web/out/build.sha256 .
 
       - name: Attest the build (public repo only)
-        if: github.event.repository.private == false
+        if: steps.version.outputs.release == 'true' && github.event.repository.private == false
         uses: actions/attest-build-provenance@v4
         with:
           subject-path: |
             build.json
             packages/mcp/dist/idea-matrix.mcpb
 
-      - name: Create the GitHub Release
+      - name: Create the tag and the GitHub Release
+        if: steps.version.outputs.release == 'true'
         env:
           GH_TOKEN: ${{ github.token }}
+          TAG: ${{ steps.version.outputs.tag }}
         run: |
-          gh release create "$GITHUB_REF_NAME" \
+          gh release create "$TAG" \
             packages/mcp/dist/idea-matrix.mcpb build.json build.sha256 \
-            --title "Idea Matrix $GITHUB_REF_NAME" \
+            --target "$GITHUB_SHA" \
+            --title "Idea Matrix $TAG" \
             --generate-notes \
             --notes-file notes.md

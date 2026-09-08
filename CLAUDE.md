@@ -13,6 +13,7 @@ A local-first web app for scoring side-project ideas. Read `README.md` for what 
 
 - `npm run dev` from the repo root starts the app (open it in Chrome or Edge).
 - `npm run check` runs typecheck, lint, tests and the static build, the same as CI. Run it before saying a change is done.
+- `npm run bump -- patch|minor|major` sets the version in every package and in the extension manifest. Commit that on a branch; when it reaches main, the Release workflow tags it and publishes the GitHub Release with the Claude Desktop bundle and the build fingerprint. Nobody pushes tags by hand.
 
 ## Rules that do not change
 
