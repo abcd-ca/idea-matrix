@@ -6,6 +6,7 @@ import { useRouter } from "next/navigation";
 import { useState, useSyncExternalStore, type ReactNode } from "react";
 import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert";
 import { Button } from "@/components/ui/button";
+import { LogoMark } from "@/components/logo-mark";
 import { createNewFile, openExistingFile, writeDocumentNow } from "@/lib/file-session";
 import { MOM_TEST_URL } from "@/lib/config";
 import { MOM_TEST_SUMMARY, OVERVIEW_AI, OVERVIEW_CARDS, OVERVIEW_INTRO, OVERVIEW_TITLE } from "@/lib/overview";
@@ -49,6 +50,7 @@ export function SetupWizard() {
         {step === "welcome" ? (
           <>
             <header className="flex flex-col gap-2">
+              <LogoMark className="size-10" />
               <p className="text-xs font-medium tracking-wide text-muted-foreground uppercase">Welcome</p>
               <h1 className="font-heading text-3xl font-semibold">{OVERVIEW_TITLE}</h1>
               <p className="max-w-prose text-muted-foreground">{OVERVIEW_INTRO}</p>
