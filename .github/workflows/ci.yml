@@ -7,6 +7,9 @@ on:
 
 permissions:
   contents: read
+  # For the build provenance attestation, which GitHub only offers on public repos.
+  id-token: write
+  attestations: write
 
 jobs:
   check:
@@ -22,3 +25,30 @@ jobs:
       - run: npm run lint
       - run: npm test
       - run: npm run build
+      - run: npm run bundle -w packages/mcp
+
+      - name: Fingerprints
+        run: |
+          {
+            echo "### MCP bundle"
+            echo
+            echo "\`idea-matrix.mcpb\` sha256 \`$(sha256sum packages/mcp/dist/idea-matrix.mcpb | cut -d' ' -f1)\`"
+            echo
+            echo "\`dist/cli.js\` inside it sha256 \`$(sha256sum packages/mcp/dist/cli.js | cut -d' ' -f1)\`"
+          } >> "$GITHUB_STEP_SUMMARY"
+
+      - uses: actions/upload-artifact@v5
+        with:
+          name: build-fingerprint
+          path: |
+            apps/web/out/build.json
+            apps/web/out/build.sha256
+            packages/mcp/dist/idea-matrix.mcpb
+
+      - name: Attest the build (public repo only)
+        if: github.event.repository.private == false
+        uses: actions/attest-build-provenance@v3
+        with:
+          subject-path: |
+            apps/web/out/build.json
+            packages/mcp/dist/idea-matrix.mcpb

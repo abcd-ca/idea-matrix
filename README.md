@@ -54,3 +54,19 @@ Pull requests are welcome. Every pull request runs typecheck, lint, tests and a 
 ## Licence
 
 MIT. See `LICENSE`.
+
+## Verify the build
+
+Every build carries a fingerprint, so you can check that the copy you are using is the code in this repo and not something else. The fingerprint is the SHA-256 of a `sha256sum`-style list of every file the site serves. Both the list (`build.sha256`) and a summary with the commit and version (`build.json`) are served next to the app, and the app shows the fingerprint under **Settings → This build** and on the privacy page, with the commit it was built from. CI computes the same fingerprint for that commit and prints it in the job summary you reach from the commit's checks on GitHub, and every release lists it together with the SHA-256 of `idea-matrix.mcpb`.
+
+To check a running copy yourself, with nothing but Node installed:
+
+```
+git clone https://github.com/abcd-ca/idea-matrix.git
+cd idea-matrix
+npm run verify -- https://the-site-you-are-using
+```
+
+That downloads `build.json`, fetches every file it lists, hashes each one, and recomputes the fingerprint from what was actually served. Then compare the fingerprint with the one GitHub shows for that commit. To go one step further, check out the commit, run `npm ci && npm run build`, and compare `apps/web/out/build.sha256` with the served one.
+
+For the Claude Desktop extension, `shasum -a 256 idea-matrix.mcpb` on your download should match the release notes, and `idea-matrix version` prints the commit the bundle was built from.
