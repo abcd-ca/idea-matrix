@@ -5,7 +5,9 @@ import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { useState, type ReactNode } from "react";
 import { BuildInfo } from "@/components/build-info";
+import { ConnectAiPanel } from "@/components/connect-ai";
 import { ExportMenu } from "@/components/export-menu";
+import { GitHubMark } from "@/components/github-mark";
 import { ImportCsv } from "@/components/import-csv";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -93,9 +95,13 @@ export function SettingsView() {
           <ImportCsv />
         </div>
         <p className="text-xs text-muted-foreground">
-          Export downloads a file in the chosen format. Import CSV adds rows from a spreadsheet, such as the original
-          template. Imported ideas start at Confidence 2 at most, because a spreadsheet carries no evidence log.
+          Export downloads a file in the chosen format. Import CSV adds rows from a spreadsheet, such as an export
+          from one you used before. Imported ideas start at Confidence 2 at most, because a spreadsheet carries no evidence log.
         </p>
+      </Section>
+
+      <Section title="AI assistant">
+        <ConnectAiPanel />
       </Section>
 
       <Section title="Privacy and trust">
@@ -121,8 +127,13 @@ export function SettingsView() {
           {SOURCE_URL ? (
             <>
               {" · "}
-              <a href={SOURCE_URL} className="underline underline-offset-4" target="_blank" rel="noreferrer">
-                source code
+              <a
+                href={SOURCE_URL}
+                className="inline-flex items-center gap-1 underline underline-offset-4"
+                target="_blank"
+                rel="noreferrer"
+              >
+                <GitHubMark className="size-3.5" /> source on GitHub
               </a>
             </>
           ) : null}

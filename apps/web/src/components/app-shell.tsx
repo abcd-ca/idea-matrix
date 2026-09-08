@@ -12,6 +12,8 @@ import {
   DropdownMenuItem,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
+import { ConnectAiPanel } from "@/components/connect-ai";
+import { GitHubMark } from "@/components/github-mark";
 import { startTour } from "@/components/tour";
 import { APP_NAME, SOURCE_URL } from "@/lib/config";
 import { useAppStore } from "@/lib/store";
@@ -59,7 +61,8 @@ export function AppShell({ children }: { children: ReactNode }) {
           <HelpMenu />
         </div>
         <div className="hidden flex-1 md:block" />
-        <div className="hidden md:block">
+        <div className="hidden flex-col gap-3 md:flex">
+          <ConnectAiPanel compact />
           <StatusLine />
         </div>
       </aside>
@@ -84,7 +87,9 @@ function HelpMenu() {
         <DropdownMenuItem onClick={() => startTour()}>Show me around</DropdownMenuItem>
         <DropdownMenuItem render={<Link href="/privacy/" />}>Privacy and trust</DropdownMenuItem>
         {SOURCE_URL ? (
-          <DropdownMenuItem render={<a href={SOURCE_URL} target="_blank" rel="noreferrer" />}>Source code</DropdownMenuItem>
+          <DropdownMenuItem render={<a href={SOURCE_URL} target="_blank" rel="noreferrer" />}>
+            <GitHubMark className="size-4" /> Source on GitHub
+          </DropdownMenuItem>
         ) : null}
       </DropdownMenuContent>
     </DropdownMenu>

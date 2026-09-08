@@ -21,7 +21,7 @@ const bricolage = Bricolage_Grotesque({
 export const metadata: Metadata = {
   title: "Idea Matrix",
   description:
-    "Score your side-project ideas honestly, and keep the file yourself. No accounts, no server, nothing leaves your machine.",
+    "Score your project ideas honestly, and keep the file yourself. No accounts, no server, nothing leaves your machine.",
   applicationName: "Idea Matrix",
 };
 

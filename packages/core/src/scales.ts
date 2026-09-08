@@ -25,14 +25,14 @@ export const CRITERION_INFO: Record<
       1: "barely noticed",
       2: "a small convenience",
       3: "a real improvement",
-      4: "a real difference to one user",
+      4: "something they would miss if it went away",
       5: "changes something important for them",
     },
   },
   profitability: {
     label: "Profitability",
     short: "Profit",
-    question: "Revenue minus cost, once it is running?",
+    question: "What is left after costs, once it is running?",
     levels: {
       0: "deliberately non-commercial",
       1: "revenue barely covers cost",
@@ -57,7 +57,7 @@ export const CRITERION_INFO: Record<
   ease: {
     label: "Ease",
     short: "Ease",
-    question: "How easy is it to launch and keep running, with today's tools?",
+    question: "How easy is it to launch and keep running, with today’s tools?",
     levels: {
       1: "months of hard work",
       2: "a couple of months",
@@ -84,6 +84,13 @@ export const CONFIDENCE_INFO = {
     "Only a commitment counts as proof.",
   ],
 };
+
+/**
+ * The Confidence gate in one breath. Every screen that explains the gate
+ * shows this same sentence so they cannot drift apart.
+ */
+export const CONFIDENCE_GATE_SUMMARY =
+  "Confidence above 2 needs an evidence entry that records what someone currently does about the problem. Confidence 5 needs a commitment: money, an introduction, or a pilot.";
 
 export const STAGE_INFO: Record<Stage, string> = {
   Backlog: "Written down, not yet looked at.",

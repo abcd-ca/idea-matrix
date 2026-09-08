@@ -9,3 +9,6 @@ export const VERIFY_DOCS_URL = `${SOURCE_URL}#verify-the-build`;
 /** Who maintains the app; linked from Settings and the privacy page. */
 export const MAINTAINER_NAME = "Andrew Blair";
 export const MAINTAINER_URL = "https://abcd.ca";
+export const RELEASES_URL = "https://github.com/abcd-ca/idea-matrix/releases";
+export const MCP_DOCS_URL = "https://github.com/abcd-ca/idea-matrix/tree/main/packages/mcp";
+export const MOM_TEST_URL = "https://www.momtestbook.com/";

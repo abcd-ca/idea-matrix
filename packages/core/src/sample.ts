@@ -3,7 +3,7 @@ import { emptyDocument } from "./document";
 import type { Idea, MatrixDocument } from "./schema";
 
 /**
- * Eight fictional ideas for the "start with an example" door and for tests.
+ * Nine fictional ideas for the "start with an example" door and for tests.
  * Nothing here is a real idea of the author's.
  */
 export function sampleDocument(clock: Clock = () => new Date()): MatrixDocument {
@@ -40,7 +40,7 @@ export function sampleDocument(clock: Clock = () => new Date()): MatrixDocument 
         {
           id: "sample-sauna-e1",
           date: day(40),
-          who: "Cold-dip group organiser",
+          who: "Cold-dip group organizer",
           whatTheyDoNow: "Runs a weekly dip for about 30 people; they warm up in their cars afterwards.",
           commitment: "Will post the booking link to the group's chat on the first weekend.",
         },
