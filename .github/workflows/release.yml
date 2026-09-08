@@ -78,15 +78,13 @@ jobs:
           cli="$(sha256sum packages/mcp/dist/cli.js | cut -d' ' -f1)"
           node scripts/changelog.mjs section > section.md
           previous="$(gh release list --repo "$GITHUB_REPOSITORY" --limit 1 --json tagName -q '.[0].tagName')"
-          compare=""
+          cat section.md > notes.md
+          echo >> notes.md
           if [ -n "$previous" ]; then
-            compare="**Full changelog:** https://github.com/$GITHUB_REPOSITORY/compare/$previous...v$(node -p "require('./package.json').version")"
+            echo "**Full changelog:** https://github.com/$GITHUB_REPOSITORY/compare/$previous...v$(node -p "require('./package.json').version")" >> notes.md
+            echo >> notes.md
           fi
-          cat > notes.md <<EOT
-          $(cat section.md)
-
-          $compare
-
+          cat >> notes.md <<EOT
           **Claude Desktop extension:** download \`idea-matrix.mcpb\` below and double-click it. Setup steps are in \`packages/mcp/README.md\`.
 
           **Checksums for this release**, built from commit \`$GITHUB_SHA\`:
