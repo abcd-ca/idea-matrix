@@ -85,6 +85,13 @@ export const CONFIDENCE_INFO = {
   ],
 };
 
+/**
+ * The Confidence gate in one breath. Every screen that explains the gate
+ * shows this same sentence so they cannot drift apart.
+ */
+export const CONFIDENCE_GATE_SUMMARY =
+  "Confidence above 2 needs an evidence entry that records what someone currently does about the problem. Confidence 5 needs a commitment: money, an introduction, or a pilot.";
+
 export const STAGE_INFO: Record<Stage, string> = {
   Backlog: "Written down, not yet looked at.",
   Exploring: "Thinking it through and doing desk research.",

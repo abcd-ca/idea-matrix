@@ -2,7 +2,17 @@
 
 import { driver, type DriveStep } from "driver.js";
 import { useEffect } from "react";
-import { CONFIDENCE_INFO, CRITERION_INFO, CRITERIA, FORMULA_INFO, STAGE_INFO, STAGES } from "@idea-matrix/core";
+import {
+  CONFIDENCE_GATE_SUMMARY,
+  CONFIDENCE_INFO,
+  CRITERION_INFO,
+  CRITERIA,
+  FORMULA_INFO,
+  STAGE_INFO,
+  STAGES,
+} from "@idea-matrix/core";
+import { MOM_TEST_URL } from "@/lib/config";
+import { MOM_TEST_SUMMARY, OVERVIEW_AI, OVERVIEW_CARDS, OVERVIEW_INTRO, OVERVIEW_TITLE } from "@/lib/overview";
 import { useAppStore } from "@/lib/store";
 
 function list(items: string[]): string {
@@ -33,11 +43,24 @@ const BAND_LIST = list([
 // Popover text is built only from the app's own constants, never from user text.
 const STEPS: DriveStep[] = [
   {
+    // No element: driver.js centres this one on the screen.
+    popover: {
+      title: OVERVIEW_TITLE,
+      description:
+        `<p>${OVERVIEW_INTRO}</p>` +
+        list(OVERVIEW_CARDS.map((card) => `<b>${card.title}.</b> ${card.text}`)) +
+        para(
+          `The rules for what counts as evidence come from <a href="${MOM_TEST_URL}" target="_blank" rel="noreferrer" style="text-decoration:underline">The Mom Test</a>: ${MOM_TEST_SUMMARY}`,
+        ) +
+        para(OVERVIEW_AI),
+    },
+  },
+  {
     element: "[data-tour=stages]",
     popover: {
       title: "Every idea has a stage",
       description:
-        "Filter the matrix by where each idea is." +
+        "Click a stage to show only the ideas at that stage." +
         list(STAGES.filter((s) => s !== "Parked").map((s) => `<b>${s}</b>: ${STAGE_INFO[s]}`)) +
         para("Parked ideas keep their scores and live under Parked in the menu."),
     },
@@ -62,9 +85,9 @@ const STEPS: DriveStep[] = [
       title: "Confidence: how much evidence is behind those scores?",
       description:
         list(Object.entries(CONFIDENCE_INFO.levels).map(([k, v]) => `<b>${k}</b> ${v}`)) +
-        para("Every new idea starts at 1, and only talking to people moves it. Three rules for those conversations:") +
+        para("Every new idea starts at 1. Desk research can take it to 2; only recorded conversations take it further. Three rules for those conversations:") +
         list(CONFIDENCE_INFO.rules) +
-        para("The evidence log on each idea keeps the receipts, and Confidence cannot go above 2 without one."),
+        para(`The evidence log on each idea keeps the receipts. ${CONFIDENCE_GATE_SUMMARY}`),
     },
   },
   {

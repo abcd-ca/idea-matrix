@@ -1,6 +1,6 @@
 "use client";
 
-import { addEvidence, removeEvidence, CONFIDENCE_INFO, type Idea } from "@idea-matrix/core";
+import { addEvidence, removeEvidence, CONFIDENCE_GATE_SUMMARY, CONFIDENCE_INFO, type Idea } from "@idea-matrix/core";
 import { PlusIcon, Trash2Icon } from "lucide-react";
 import { useState } from "react";
 import { Button } from "@/components/ui/button";
@@ -90,7 +90,7 @@ export function EvidenceLog({ idea, onError }: { idea: Idea; onError: (message: 
       )}
 
       <p className="border-t border-dashed pt-2 text-xs text-muted-foreground">
-        Confidence above 2 needs an entry with what they do now. 5 needs a commitment.
+        {CONFIDENCE_GATE_SUMMARY}
       </p>
 
       <AddEvidenceDialog
