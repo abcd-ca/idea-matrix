@@ -49,6 +49,7 @@ jobs:
             echo "The version differs between files. Run npm run bump to set it everywhere." >&2
             exit 1
           fi
+          node scripts/changelog.mjs section "$version" > /dev/null
           if gh release view "$tag" --repo "$GITHUB_REPOSITORY" >/dev/null 2>&1; then
             echo "Release $tag already exists; nothing to do."
             echo "release=false" >> "$GITHUB_OUTPUT"
@@ -73,7 +74,17 @@ jobs:
           fingerprint="$(node -p "require('./apps/web/out/build.json').fingerprint")"
           mcpb="$(sha256sum packages/mcp/dist/idea-matrix.mcpb | cut -d' ' -f1)"
           cli="$(sha256sum packages/mcp/dist/cli.js | cut -d' ' -f1)"
+          node scripts/changelog.mjs section > section.md
+          previous="$(gh release list --repo "$GITHUB_REPOSITORY" --limit 1 --json tagName -q '.[0].tagName')"
+          compare=""
+          if [ -n "$previous" ]; then
+            compare="**Full changelog:** https://github.com/$GITHUB_REPOSITORY/compare/$previous...v$(node -p "require('./package.json').version")"
+          fi
           cat > notes.md <<EOT
+          $(cat section.md)
+
+          $compare
+
           **Claude Desktop extension:** download \`idea-matrix.mcpb\` below and double-click it. Setup steps are in \`packages/mcp/README.md\`.
 
           **Checksums for this release**, built from commit \`$GITHUB_SHA\`:
@@ -106,5 +117,4 @@ jobs:
             packages/mcp/dist/idea-matrix.mcpb build.json build.sha256 \
             --target "$GITHUB_SHA" \
             --title "Idea Matrix $TAG" \
-            --generate-notes \
             --notes-file notes.md
