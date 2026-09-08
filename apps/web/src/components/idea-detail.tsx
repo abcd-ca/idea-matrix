@@ -160,6 +160,7 @@ export function IdeaDetail() {
                 min={key === "profitability" ? 0 : 1}
                 meanings={CRITERION_INFO[key].levels}
                 onChange={(v) => change({ scores: { [key]: v } })}
+                onClear={() => change({ scores: { [key]: null } })}
               />
             ))}
             <Segmented
