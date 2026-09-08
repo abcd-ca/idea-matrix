@@ -87,7 +87,7 @@ export function IdeaDetail() {
           <div className="flex flex-col gap-3 sm:flex-row sm:items-center">
             <Input
               aria-label="Idea name"
-              className="h-11 flex-1 font-heading text-2xl font-bold md:text-2xl"
+              className="h-11 flex-1 font-heading text-2xl font-semibold md:text-2xl"
               value={idea.name}
               maxLength={200}
               onChange={(e) => change({ name: e.target.value })}
@@ -181,13 +181,13 @@ export function IdeaDetail() {
           <div className="flex flex-col gap-3 rounded-md border p-4">
             <p className="text-xs font-medium text-muted-foreground">Potential</p>
             <div className="flex items-baseline gap-3">
-              <span className="font-heading text-5xl font-bold tabular-nums">{p ?? "–"}</span>
+              <span className="font-heading text-5xl font-semibold tabular-nums">{p ?? "–"}</span>
               {pBand ? <BandPill value={p} showLabel /> : <span className="text-sm text-muted-foreground">needs all five scores</span>}
             </div>
             <p className="text-xs text-muted-foreground">{FORMULA_INFO.potential}</p>
             <p className="text-xs font-medium text-muted-foreground">Score</p>
             <div className="flex items-baseline gap-3">
-              <span className="font-heading text-5xl font-bold tabular-nums">{s ?? "–"}</span>
+              <span className="font-heading text-5xl font-semibold tabular-nums">{s ?? "–"}</span>
               {sBand ? <BandPill value={s} showLabel /> : null}
             </div>
             <p className="text-xs text-muted-foreground">
