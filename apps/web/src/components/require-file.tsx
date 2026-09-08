@@ -36,7 +36,7 @@ export function RequireFile({ children }: { children: ReactNode }) {
     return (
       <Centered>
         <div className="flex max-w-md flex-col gap-4">
-          <h1 className="font-heading text-2xl font-bold">Resume with {fileName ?? "your matrix"}</h1>
+          <h1 className="font-heading text-2xl font-semibold">Resume with {fileName ?? "your matrix"}</h1>
           <p className="text-muted-foreground">
             Your browser needs one click before the app may read and save that file again. Nothing has left your
             machine in the meantime.
@@ -74,7 +74,7 @@ export function RequireFile({ children }: { children: ReactNode }) {
     return (
       <Centered>
         <div className="flex max-w-md flex-col gap-4">
-          <h1 className="font-heading text-2xl font-bold">The file could not be opened</h1>
+          <h1 className="font-heading text-2xl font-semibold">The file could not be opened</h1>
           <p className="text-sm text-destructive">{error ?? "Something went wrong."}</p>
           <div className="flex gap-2">
             <Button onClick={() => void openExistingFile()}>Open a different file…</Button>
