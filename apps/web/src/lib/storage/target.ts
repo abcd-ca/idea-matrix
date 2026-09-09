@@ -60,13 +60,6 @@ export const HANDLE_KEY = "ideamatrix.fileHandle";
 const DRIVE_KEY = "ideamatrix.driveFile";
 const KIND_KEY = "ideamatrix.target";
 
-const WHERE: Record<TargetKind, string> = { local: "on this computer", drive: "in Google Drive" };
-
-/** "on this computer" / "in Google Drive", for sentences about the file. */
-export function describeWhere(kind: TargetKind | null | undefined): string {
-  return WHERE[kind ?? "local"];
-}
-
 // ---- a file on this computer ----------------------------------------------
 
 export class LocalTarget implements SaveTarget {

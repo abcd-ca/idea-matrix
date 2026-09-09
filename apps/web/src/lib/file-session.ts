@@ -13,6 +13,7 @@ import * as drive from "./storage/google-drive";
 import { pickExistingFile, pickNewFile } from "./storage/local-file";
 import { ConflictError, DriveTarget, LocalTarget, forgetTarget, loadTarget, type SaveTarget } from "./storage/target";
 import { useAppStore } from "./store";
+import { i18n } from "./i18n";
 
 /**
  * Everything that touches the save target: the file on disk or the file in
@@ -36,21 +37,21 @@ export function currentTarget(): SaveTarget | null {
 type OpenResult = "opened" | "cancelled" | "error";
 type CreateResult = "created" | "cancelled" | "error";
 
+const text = (key: string, values?: Record<string, unknown>) => i18n.t(key, { ns: "common", ...values });
+
 function explain(e: unknown): string {
-  if (e instanceof DocumentError) return e.message;
+  // Core's messages are English; the translations key off the error code and
+  // fall back to core's own sentence, which is how en-CA always reads.
+  if (e instanceof DocumentError) return i18n.t(`documentError.${e.code}`, { ns: "core", defaultValue: e.message });
   if (
     e instanceof drive.DriveAuthError ||
     e instanceof drive.DriveRequestError ||
     e instanceof drive.DriveFileExistsError
   )
     return e.message;
-  if (e instanceof DOMException && e.name === "NotAllowedError") {
-    return "The browser did not allow access to the file. Try again, or open a different file.";
-  }
-  if (e instanceof DOMException && e.name === "NotFoundError") {
-    return "The file can no longer be found. It may have been moved or deleted. Put it back and reload the page, or open a different file.";
-  }
-  return e instanceof Error ? e.message : "Something went wrong with the file.";
+  if (e instanceof DOMException && e.name === "NotAllowedError") return text("errors.notAllowed");
+  if (e instanceof DOMException && e.name === "NotFoundError") return text("errors.notFound");
+  return e instanceof Error ? e.message : text("errors.fileProblem");
 }
 
 async function loadFrom(t: SaveTarget): Promise<MatrixDocument> {
@@ -118,10 +119,7 @@ export async function resume(): Promise<boolean> {
   if (!target) return false;
   const ok = await target.authorize();
   if (!ok) {
-    const message =
-      target.kind === "drive"
-        ? "Google did not sign you in. Try again, or open a different file."
-        : "The browser did not grant access. You can open a different file instead.";
+    const message = target.kind === "drive" ? text("errors.driveNotSignedIn") : text("errors.localNotGranted");
     useAppStore.getState().setStatus("needs-permission", message);
     return false;
   }
@@ -211,7 +209,11 @@ export async function createDriveFile(name: string, folder: DriveFolderChoice): 
     const folderId = await chooseDriveFolder(folder);
     if (!folderId) return "cancelled";
     const fileName = ensureExtension(name);
-    const info = await drive.createFile(fileName, folderId, serializeDocument(emptyDocument("My ideas")));
+    const info = await drive.createFile(
+      fileName,
+      folderId,
+      serializeDocument(emptyDocument(i18n.t("start.defaultName", { ns: "setup" }))),
+    );
     const t = new DriveTarget(info.id, info.name);
     target = t;
     knownRevision = info.version;
@@ -280,7 +282,7 @@ export async function writeDocumentNow(doc: MatrixDocument): Promise<void> {
   store.setDoc(doc, { dirty: true });
   await saveNow();
   if (useAppStore.getState().status === "error")
-    throw new Error(useAppStore.getState().error ?? "Could not write the file.");
+    throw new Error(useAppStore.getState().error ?? text("errors.couldNotWrite"));
 }
 
 export async function closeFile(): Promise<void> {
@@ -303,9 +305,7 @@ export async function closeFile(): Promise<void> {
 export function signOutOfDrive(): void {
   drive.signOut();
   if (target?.kind === "drive") {
-    useAppStore
-      .getState()
-      .setStatus("needs-permission", "Signed out of Google. Sign in again when you want the app to reach your file.");
+    useAppStore.getState().setStatus("needs-permission", text("errors.signedOut"));
   }
 }
 
@@ -349,10 +349,7 @@ async function saveNow(): Promise<void> {
       }
     } else if (e instanceof drive.DriveAuthError) {
       // Keep the changes; the Resume screen asks for the one click Google needs.
-      store.setStatus(
-        "needs-permission",
-        "Google needs you to sign in again before the app can keep saving. Your changes are kept until then.",
-      );
+      store.setStatus("needs-permission", text("errors.driveSaveNeedsSignIn"));
     } else {
       store.setStatus("error", explain(e));
     }
@@ -378,10 +375,7 @@ async function checkForExternalChange(): Promise<void> {
     }
   } catch (e) {
     if (e instanceof drive.DriveAuthError) {
-      store.setStatus(
-        "needs-permission",
-        "Google needs you to sign in again before the app can check your file for changes.",
-      );
+      store.setStatus("needs-permission", text("errors.driveCheckNeedsSignIn"));
       return;
     }
     store.setStatus("error", explain(e));

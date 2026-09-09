@@ -8,6 +8,7 @@ A local-first web app for scoring project ideas. Read `README.md` for what it is
 - `packages/mcp`: the MCP server, CLI and Claude Desktop bundle (`manifest.json`). `src/server.ts` registers the tools, prompts and resource; `src/store.ts` is the atomic read-modify-write file store; `src/walkthrough.ts` holds the prompt text. Bundled to one file with tsup; `npm run bundle -w packages/mcp` builds `dist/idea-matrix.mcpb`. Tests use the SDK's in-memory transport.
 - `apps/web`: Next.js app router, static export (`output: "export"`). shadcn/ui on Base UI, Tailwind 4, Zustand, TanStack Table, driver.js for the guided tour, idb-keyval for the IndexedDB cache.
 - `apps/web/src/lib/store.ts` is the Zustand store; `apps/web/src/lib/file-session.ts` owns the file handle, autosave and the external-change watcher; `apps/web/src/lib/storage/local-file.ts` wraps the File System Access API.
+- `apps/web/src/lib/preferences.ts` and `preferences-store.ts` are the device preferences (language now, theme wired but without UI yet): one validated record in local storage under `ideamatrix.preferences`, a second Zustand store separate from the document, and the one inline script the root layout runs before first paint. Nothing about them goes in the matrix file. `apps/web/src/lib/i18n.ts` initializes react-i18next from the JSON under `apps/web/src/locales/<language>/<namespace>.json`; unit tests in `apps/web/test` (vitest).
 
 ## Commands
 
@@ -33,7 +34,7 @@ A local-first web app for scoring project ideas. Read `README.md` for what it is
 
 Text in the UI, docs and commit messages uses Canadian English spelling, first person singular where a person speaks, and few em-dashes. Plain and direct, not preachy: "explore which ones deserve your time" rather than "be honest with yourself".
 
-Once the app is localized (a later roadmap step), English is no longer the only copy: every copy edit also updates the locale files, and any sentence that appears in more than one place comes from one shared constant (see `CONFIDENCE_GATE_SUMMARY` in core and `apps/web/src/lib/overview.ts`).
+The web app is localized, so English is not the only copy. Every string the app shows lives in `apps/web/src/locales/<language>/<namespace>.json`; `en-CA` is the source of truth, `en-US` holds only the spellings that differ, and `fr-CA` and `es` are full translations (made by an AI, corrected by people as pull requests come in). Every copy edit updates `en-CA` and the three others, and any sentence that appears in more than one place comes from one key (see `overview` in `common.json`, used by the setup wizard and the tour) or one core constant (`CONFIDENCE_GATE_SUMMARY`). Core's own English (scales, stages, formulas, bands, gate sentences) is not duplicated: the `core` namespace is built from core's constants for `en-CA` and translated in the other languages' `core.json`. The MCP server and CLI stay English. `CONTRIBUTING.md` says how to edit or add a language.
 
 ## Git
 

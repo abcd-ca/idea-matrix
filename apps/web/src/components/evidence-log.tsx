@@ -1,6 +1,6 @@
 "use client";
 
-import { addEvidence, removeEvidence, CONFIDENCE_GATE_SUMMARY, CONFIDENCE_INFO, type Idea } from "@idea-matrix/core";
+import { addEvidence, removeEvidence, type Idea } from "@idea-matrix/core";
 import { PlusIcon, Trash2Icon } from "lucide-react";
 import { useState } from "react";
 import { Button } from "@/components/ui/button";
@@ -16,6 +16,9 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
 import { useAppStore } from "@/lib/store";
+import { formatDate } from "@/lib/format";
+import { coreRules } from "@/lib/i18n";
+import { useTranslation } from "react-i18next";
 
 function today(): string {
   const d = new Date();
@@ -29,6 +32,7 @@ function today(): string {
  * about the problem, and what they committed to. Plain structure, no model.
  */
 export function EvidenceLog({ idea, onError }: { idea: Idea; onError: (message: string | null) => void }) {
+  const { t, i18n } = useTranslation("idea");
   const mutate = useAppStore((s) => s.mutate);
   const [open, setOpen] = useState(false);
   const [confirmRemove, setConfirmRemove] = useState<string | null>(null);
@@ -37,24 +41,28 @@ export function EvidenceLog({ idea, onError }: { idea: Idea; onError: (message: 
     <div className="flex flex-col gap-3 rounded-md border p-4" data-tour="evidence">
       <div className="flex items-center justify-between">
         <p className="text-sm font-medium">
-          Evidence log <span className="font-normal text-muted-foreground">· {idea.evidence.length}</span>
+          {t("evidence.title")}{" "}
+          <span className="font-normal text-muted-foreground">
+            {t("evidence.count", { count: idea.evidence.length })}
+          </span>
         </p>
         <Button size="sm" variant="outline" onClick={() => setOpen(true)}>
-          <PlusIcon data-icon="inline-start" /> Add
+          <PlusIcon data-icon="inline-start" /> {t("evidence.add")}
         </Button>
       </div>
 
       {idea.evidence.length === 0 ? (
-        <p className="text-xs text-muted-foreground">
-          No conversations recorded yet. Confidence stays at 1 or 2 until one is.
-        </p>
+        <p className="text-xs text-muted-foreground">{t("evidence.none")}</p>
       ) : (
         <ul className="flex flex-col divide-y text-sm">
           {idea.evidence.map((e) => (
             <li key={e.id} className="flex flex-col gap-1 py-2 first:pt-0 last:pb-0">
               <div className="flex items-start justify-between gap-2">
                 <p className="font-medium">
-                  {e.who} <span className="font-normal text-muted-foreground">· {e.date}</span>
+                  {e.who}{" "}
+                  <span className="font-normal text-muted-foreground">
+                    {t("evidence.when", { date: formatDate(e.date, i18n.language) })}
+                  </span>
                 </p>
                 {confirmRemove === e.id ? (
                   <span className="flex items-center gap-1 text-xs">
@@ -66,17 +74,17 @@ export function EvidenceLog({ idea, onError }: { idea: Idea; onError: (message: 
                         setConfirmRemove(null);
                       }}
                     >
-                      Remove
+                      {t("evidence.remove")}
                     </Button>
                     <Button size="xs" variant="ghost" onClick={() => setConfirmRemove(null)}>
-                      Keep
+                      {t("evidence.keep")}
                     </Button>
                   </span>
                 ) : (
                   <Button
                     size="icon-xs"
                     variant="ghost"
-                    aria-label="Remove entry"
+                    aria-label={t("evidence.removeEntry")}
                     onClick={() => setConfirmRemove(e.id)}
                   >
                     <Trash2Icon />
@@ -86,13 +94,11 @@ export function EvidenceLog({ idea, onError }: { idea: Idea; onError: (message: 
               {e.whatTheyDoNow.trim() ? (
                 <p>{e.whatTheyDoNow}</p>
               ) : (
-                <p className="text-xs text-muted-foreground">
-                  No current behaviour recorded, so this entry does not count toward Confidence.
-                </p>
+                <p className="text-xs text-muted-foreground">{t("evidence.noBehaviour")}</p>
               )}
               {e.commitment.trim() ? (
                 <p className="text-xs">
-                  <span className="font-medium">Commitment:</span> {e.commitment}
+                  <span className="font-medium">{t("evidence.commitment")}</span> {e.commitment}
                 </p>
               ) : null}
             </li>
@@ -100,7 +106,7 @@ export function EvidenceLog({ idea, onError }: { idea: Idea; onError: (message: 
         </ul>
       )}
 
-      <p className="border-t border-dashed pt-2 text-xs text-muted-foreground">{CONFIDENCE_GATE_SUMMARY}</p>
+      <p className="border-t border-dashed pt-2 text-xs text-muted-foreground">{t("gateSummary", { ns: "core" })}</p>
 
       <AddEvidenceDialog
         open={open}
@@ -124,6 +130,7 @@ function AddEvidenceDialog({
   onOpenChange: (open: boolean) => void;
   onAdd: (input: { date: string; who: string; whatTheyDoNow: string; commitment: string }) => string | null;
 }) {
+  const { t } = useTranslation("idea");
   const [date, setDate] = useState(today);
   const [who, setWho] = useState("");
   const [whatTheyDoNow, setWhat] = useState("");
@@ -160,46 +167,46 @@ function AddEvidenceDialog({
           }}
         >
           <DialogHeader>
-            <DialogTitle>Add a conversation</DialogTitle>
-            <DialogDescription>{CONFIDENCE_INFO.rules.join(" ")}</DialogDescription>
+            <DialogTitle>{t("evidence.dialogTitle")}</DialogTitle>
+            <DialogDescription>{coreRules(t).join(" ")}</DialogDescription>
           </DialogHeader>
 
           <div className="grid gap-3 sm:grid-cols-[140px_1fr]">
             <div className="flex flex-col gap-1.5">
-              <Label htmlFor="ev-date">Date</Label>
+              <Label htmlFor="ev-date">{t("evidence.date")}</Label>
               <Input id="ev-date" type="date" value={date} onChange={(e) => setDate(e.target.value)} required />
             </div>
             <div className="flex flex-col gap-1.5">
-              <Label htmlFor="ev-who">Who</Label>
+              <Label htmlFor="ev-who">{t("evidence.who")}</Label>
               <Input
                 id="ev-who"
                 value={who}
                 maxLength={200}
-                placeholder="e.g. Strata council chair"
+                placeholder={t("evidence.whoPlaceholder")}
                 onChange={(e) => setWho(e.target.value)}
                 required
               />
             </div>
           </div>
           <div className="flex flex-col gap-1.5">
-            <Label htmlFor="ev-what">What do they currently do about this problem?</Label>
+            <Label htmlFor="ev-what">{t("evidence.what")}</Label>
             <Textarea
               id="ev-what"
               rows={3}
               value={whatTheyDoNow}
               maxLength={20000}
-              placeholder="Past and present only. What they said they would do does not count."
+              placeholder={t("evidence.whatPlaceholder")}
               onChange={(e) => setWhat(e.target.value)}
             />
           </div>
           <div className="flex flex-col gap-1.5">
-            <Label htmlFor="ev-commit">What did they commit to, if anything?</Label>
+            <Label htmlFor="ev-commit">{t("evidence.commit")}</Label>
             <Textarea
               id="ev-commit"
               rows={2}
               value={commitment}
               maxLength={20000}
-              placeholder="Money, an introduction, a pilot, their time. Leave empty if nothing."
+              placeholder={t("evidence.commitPlaceholder")}
               onChange={(e) => setCommitment(e.target.value)}
             />
           </div>
@@ -217,10 +224,10 @@ function AddEvidenceDialog({
                 onOpenChange(false);
               }}
             >
-              Cancel
+              {t("actions.cancel", { ns: "common" })}
             </Button>
             <Button type="submit" disabled={who.trim() === ""}>
-              Add conversation
+              {t("evidence.addConversation")}
             </Button>
           </DialogFooter>
         </form>

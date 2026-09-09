@@ -5,6 +5,8 @@ import "./globals.css";
 import "driver.js/dist/driver.css";
 import { FileSession } from "@/components/file-session";
 import { TooltipProvider } from "@/components/ui/tooltip";
+import { DevicePreferences } from "@/components/device-preferences";
+import { DEFAULT_LANGUAGE, PREFERENCES_SCRIPT } from "@/lib/preferences";
 
 const plexSans = IBM_Plex_Sans({
   variable: "--font-sans",
@@ -56,9 +58,31 @@ export const viewport: Viewport = {
 
 export default function RootLayout({ children }: { children: ReactNode }) {
   return (
-    <html lang="en" className={`${plexSans.variable} ${nunitoSans.variable} h-full antialiased`}>
+    // The prerendered page is en-CA with no theme class. Before first paint
+    // the inline script below sets `lang` and the `dark` class from the
+    // device preferences record, and after hydration the preferences store
+    // computes the same values from the same record and applies them
+    // (see lib/preferences-store.ts). suppressHydrationWarning covers the
+    // attributes the script changed: React does not rewrite them.
+    <html
+      lang={DEFAULT_LANGUAGE}
+      suppressHydrationWarning
+      className={`${plexSans.variable} ${nunitoSans.variable} h-full antialiased`}
+    >
+      <head>
+        {/*
+          The only dangerouslySetInnerHTML in the app, and it stays the only
+          one. CLAUDE.md forbids raw HTML of user text; this is an app-owned
+          constant with no user data in it (lib/preferences.ts), rendered as
+          a plain <script> rather than next/script so the text in the page is
+          exactly that constant and a content security policy can allow it by
+          hash.
+        */}
+        <script dangerouslySetInnerHTML={{ __html: PREFERENCES_SCRIPT }} />
+      </head>
       <body className="flex min-h-full flex-col bg-background text-foreground">
         <TooltipProvider>
+          <DevicePreferences />
           <FileSession />
           {children}
         </TooltipProvider>

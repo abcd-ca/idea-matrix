@@ -1,0 +1,11 @@
+{
+  "potential": {
+    "colour": "The color says which band a number falls in:"
+  },
+  "score": {
+    "sameColours": "Same colors as Potential:"
+  },
+  "phone": {
+    "eachColour": "Each is a value of 1 to 5. Profitability can also be 0, for something deliberately non-commercial. The color says which band a number falls in:"
+  }
+}

@@ -1,6 +1,9 @@
-import { BANDS, band, type Stage } from "@idea-matrix/core";
+"use client";
+
+import { band, type Stage } from "@idea-matrix/core";
 import { cn } from "cn";
 import { BAND_CLASSES } from "@/lib/bands";
+import { useTranslation } from "react-i18next";
 
 export function BandPill({
   value,
@@ -13,6 +16,7 @@ export function BandPill({
   className?: string;
   emptyText?: string;
 }) {
+  const { t } = useTranslation("core");
   const b = band(value);
   if (b === null || value === null) {
     return <span className={cn("text-sm text-muted-foreground", className)}>{emptyText}</span>;
@@ -24,10 +28,10 @@ export function BandPill({
         BAND_CLASSES[b],
         className,
       )}
-      title={BANDS[b].advice}
+      title={t(`band.${b}.advice`)}
     >
       {value}
-      {showLabel ? <span className="font-normal">· {BANDS[b].label}</span> : null}
+      {showLabel ? <span className="font-normal">· {t(`band.${b}.label`)}</span> : null}
     </span>
   );
 }
@@ -42,6 +46,7 @@ const STAGE_CLASSES: Record<Stage, string> = {
 };
 
 export function StageBadge({ stage, className }: { stage: Stage; className?: string }) {
+  const { t } = useTranslation("core");
   return (
     <span
       className={cn(
@@ -50,7 +55,7 @@ export function StageBadge({ stage, className }: { stage: Stage; className?: str
         className,
       )}
     >
-      {stage}
+      {t(`stageName.${stage}`)}
     </span>
   );
 }

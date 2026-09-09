@@ -12,6 +12,7 @@ import {
 } from "@/components/ui/dialog";
 import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
+import { useTranslation } from "react-i18next";
 
 /**
  * Parking is the normal way to set an idea aside: it keeps every field and
@@ -30,6 +31,7 @@ export function ParkDialog({
   onPark: (reason: string) => string | null;
   onDelete: () => void;
 }) {
+  const { t } = useTranslation("idea");
   const [reason, setReason] = useState("");
   const [error, setError] = useState<string | null>(null);
   const [confirmDelete, setConfirmDelete] = useState(false);
@@ -60,21 +62,18 @@ export function ParkDialog({
           }}
         >
           <DialogHeader>
-            <DialogTitle>Park “{ideaName}”</DialogTitle>
-            <DialogDescription>
-              Parking keeps the idea, its scores and its evidence as history, and takes it out of the matrix. A sentence
-              on why is required, so you remember later.
-            </DialogDescription>
+            <DialogTitle>{t("parkDialog.title", { name: ideaName })}</DialogTitle>
+            <DialogDescription>{t("parkDialog.description")}</DialogDescription>
           </DialogHeader>
           <div className="flex flex-col gap-1.5">
-            <Label htmlFor="park-reason">Parked because</Label>
+            <Label htmlFor="park-reason">{t("parkedBecause")}</Label>
             <Textarea
               id="park-reason"
               autoFocus
               rows={3}
               value={reason}
               maxLength={20000}
-              placeholder="e.g. Two conversations showed people are happy with what they use today."
+              placeholder={t("parkDialog.placeholder")}
               onChange={(e) => setReason(e.target.value)}
             />
           </div>
@@ -86,12 +85,12 @@ export function ParkDialog({
           <DialogFooter className="items-center sm:justify-between">
             {confirmDelete ? (
               <span className="flex items-center gap-2 text-xs">
-                <span className="text-muted-foreground">Delete for good?</span>
+                <span className="text-muted-foreground">{t("parkDialog.deleteConfirm")}</span>
                 <Button type="button" size="xs" variant="destructive" onClick={onDelete}>
-                  Yes, delete
+                  {t("parkDialog.yesDelete")}
                 </Button>
                 <Button type="button" size="xs" variant="ghost" onClick={() => setConfirmDelete(false)}>
-                  No
+                  {t("parkDialog.no")}
                 </Button>
               </span>
             ) : (
@@ -100,15 +99,15 @@ export function ParkDialog({
                 className="text-xs text-muted-foreground underline-offset-4 hover:underline"
                 onClick={() => setConfirmDelete(true)}
               >
-                Added by mistake? Delete it instead
+                {t("parkDialog.deleteInstead")}
               </button>
             )}
             <span className="flex gap-2">
               <Button type="button" variant="outline" onClick={close}>
-                Cancel
+                {t("actions.cancel", { ns: "common" })}
               </Button>
               <Button type="submit" disabled={reason.trim() === ""}>
-                Park idea
+                {t("parkDialog.park")}
               </Button>
             </span>
           </DialogFooter>

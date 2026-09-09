@@ -1,0 +1,53 @@
+{
+  "progress": "{{current}} de {{total}}",
+  "next": "Siguiente",
+  "back": "Atrás",
+  "done": "Listo",
+  "line": {
+    "card": "<b>{{title}}.</b> {{text}}",
+    "stage": "<b>{{stage}}</b>: {{description}}",
+    "criterion": "<b>{{label}}</b>: {{question}}",
+    "level": "<b>{{level}}</b> {{meaning}}"
+  },
+  "bands": {
+    "grey": "<b>39 o menos</b>: {{advice}}",
+    "amber": "<b>40 a 59</b>: {{advice}}",
+    "lightGreen": "<b>60 a 79</b>: {{advice}}",
+    "darkGreen": "<b>80 o más</b>: {{advice}}"
+  },
+  "stages": {
+    "title": "Cada idea tiene una etapa",
+    "click": "Haz clic en una etapa para mostrar solo las ideas que están en ella.",
+    "tap": "Toca una etapa para mostrar solo las ideas que están en ella.",
+    "parked": "Las ideas apartadas conservan sus puntuaciones y viven bajo Apartadas en el menú."
+  },
+  "potential": {
+    "title": "Potencial: cinco puntuaciones, promediadas",
+    "each": "Cada una es un valor de 1 a 5. La Rentabilidad también puede ser 0, para algo deliberadamente no comercial.",
+    "hidden": "Las cinco puntuaciones quedan fuera de esta tabla por defecto. Marca <b>{{showScores}}</b> debajo para verlas, y <b>pasa el cursor sobre cualquier encabezado de columna</b> para ver qué significan sus números.",
+    "colour": "El color dice en qué banda cae un número:"
+  },
+  "confidence": {
+    "title": "Confianza: ¿cuánta evidencia hay detrás de esas puntuaciones?",
+    "starts": "Cada idea nueva empieza en 1. La investigación de escritorio puede llevarla a 2; solo las conversaciones registradas la llevan más allá. Tres reglas para esas conversaciones:",
+    "receipts": "El registro de evidencia de cada idea guarda los recibos. {{gate}}"
+  },
+  "score": {
+    "title": "La Puntuación es lo que ordena tus ideas",
+    "cap": "La Puntuación nunca puede superar el Potencial. Toda la evidencia del mundo solo demuestra que la idea es tan buena como pensabas.",
+    "sameColours": "Los mismos colores que el Potencial:"
+  },
+  "open": {
+    "title": "Haz clic en una idea para puntuarla",
+    "text": "Esta tabla es para comparar. La puntuación ocurre dentro de una idea, donde cada número muestra su significado al elegirlo, y donde vive el registro de evidencia.",
+    "replay": "Puedes repetir este recorrido cuando quieras desde Ayuda, en Enséñame la aplicación."
+  },
+  "phone": {
+    "cardTitle": "Cada tarjeta es una idea",
+    "cardText": "El número de la esquina es su <b>Puntuación</b>, que es lo que ordena tus ideas. Bajo el nombre: su etapa, su <b>Potencial</b> y su <b>Confianza</b>.",
+    "eachColour": "Cada una es un valor de 1 a 5. La Rentabilidad también puede ser 0, para algo deliberadamente no comercial. El color dice en qué banda cae un número:",
+    "receipts": "{{score}} El registro de evidencia de cada idea guarda los recibos. {{gate}}",
+    "openTitle": "Toca una idea para puntuarla",
+    "openText": "Esta lista es para comparar. La puntuación ocurre dentro de una idea, donde cada número muestra su significado al elegirlo, y donde vive el registro de evidencia."
+  }
+}

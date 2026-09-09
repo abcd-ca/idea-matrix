@@ -1,0 +1,52 @@
+{
+  "backToMatrix": "Volver a la matriz",
+  "backToParked": "Volver a las apartadas",
+  "notFound": "Esa idea no está en esta matriz.",
+  "nameLabel": "Nombre de la idea",
+  "stage": "Etapa",
+  "parkedBecause": "Apartada porque",
+  "chooseAnother": "Elige otra etapa arriba para recuperarla.",
+  "description": "Descripción",
+  "assumption": "Suposición más arriesgada",
+  "assumptionHint": "Lo que ya debe ser cierto sobre lo que otras personas hacen o pagan. Una frase que puedas comprobar.",
+  "assumptionPlaceholder": "p. ej. La gente de mi calle ya se presta herramientas unas cuantas veces al año.",
+  "needsAllFive": "necesita las cinco puntuaciones",
+  "nextConfidence": "Con Confianza {{confidence}} esto puntuaría {{score}}.",
+  "needsMoreEvidence": "Eso necesita más en el registro de evidencia primero.",
+  "park": "Apartar esta idea…",
+  "segmented": {
+    "notScored": "Sin puntuar todavía",
+    "meaning": "{{value}} = {{meaning}}"
+  },
+  "evidence": {
+    "title": "Registro de evidencia",
+    "count": "· {{count}}",
+    "add": "Añadir",
+    "none": "Todavía no hay conversaciones registradas. La Confianza se queda en 1 o 2 hasta que haya una.",
+    "when": "· {{date}}",
+    "remove": "Quitar",
+    "keep": "Conservar",
+    "removeEntry": "Quitar entrada",
+    "noBehaviour": "No hay comportamiento actual registrado, así que esta entrada no cuenta para la Confianza.",
+    "commitment": "Compromiso:",
+    "dialogTitle": "Añadir una conversación",
+    "date": "Fecha",
+    "who": "Quién",
+    "whoPlaceholder": "p. ej. Presidenta de la comunidad de vecinos",
+    "what": "¿Qué hacen actualmente frente a este problema?",
+    "whatPlaceholder": "Solo pasado y presente. Lo que dijeron que harían no cuenta.",
+    "commit": "¿A qué se comprometieron, si a algo?",
+    "commitPlaceholder": "Dinero, una presentación, un piloto, su tiempo. Déjalo vacío si a nada.",
+    "addConversation": "Añadir conversación"
+  },
+  "parkDialog": {
+    "title": "Apartar “{{name}}”",
+    "description": "Apartar conserva la idea, sus puntuaciones y su evidencia como historial, y la saca de la matriz. Se requiere una frase sobre el porqué, para que lo recuerdes más adelante.",
+    "placeholder": "p. ej. Dos conversaciones mostraron que la gente está contenta con lo que usa hoy.",
+    "deleteConfirm": "¿Borrar para siempre?",
+    "yesDelete": "Sí, borrar",
+    "no": "No",
+    "deleteInstead": "¿Añadida por error? Bórrala en su lugar",
+    "park": "Apartar idea"
+  }
+}

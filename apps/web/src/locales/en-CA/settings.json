@@ -1,0 +1,48 @@
+{
+  "title": "Settings",
+  "device": {
+    "title": "This device",
+    "note": "Kept by this browser, not in your matrix file. Other devices keep their own."
+  },
+  "where": {
+    "title": "Where your ideas live",
+    "yourMatrixIs": "Your matrix is <file/> {{where}}.",
+    "aFile": "a file",
+    "createNew": "Create a new file…",
+    "needsChrome": "Needs Chrome or Edge",
+    "moveToLocal": "Move to this computer…",
+    "comingLater": "Coming in a later version",
+    "moveToDrive": "Move to Google Drive…",
+    "moveToDropbox": "Move to Dropbox…",
+    "signOut": "Sign out of Google",
+    "explain": "Opening a different file switches to it; the current file stays where it is with everything saved. Moving copies your matrix to the new place and switches to the copy; the old file is left untouched.",
+    "needsChromeLong": "Moving to this computer needs Chrome or Edge on a computer.",
+    "dropboxLater": "Dropbox is coming in a later version.",
+    "signOutExplain": "Signing out drops the key Google gave the app; the next read or save asks for one click."
+  },
+  "name": {
+    "title": "Matrix name",
+    "label": "Shown at the top of the matrix"
+  },
+  "export": {
+    "title": "Export",
+    "explain": "Downloads a copy in the chosen format. JSON is the matrix file itself, complete with the evidence log; Markdown is for reading; CSV is one row per idea for a spreadsheet."
+  },
+  "ai": {
+    "title": "AI assistant"
+  },
+  "privacy": {
+    "title": "Privacy and trust",
+    "text": "Nothing leaves your machine except to the storage you chose. You can check that yourself: open your browser’s developer tools, watch the Network tab while you edit, and see that the only traffic is the page itself.",
+    "readMore": "Read the full page"
+  },
+  "build": {
+    "title": "This build"
+  },
+  "about": {
+    "title": "About",
+    "line": "{{app}} {{version}} · open source · no telemetry · maintained by",
+    "source": "source on GitHub",
+    "report": "report a problem"
+  }
+}

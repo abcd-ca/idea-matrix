@@ -2,6 +2,7 @@
 
 import { cn } from "cn";
 import { useState } from "react";
+import { useTranslation } from "react-i18next";
 
 /** A 1 to 5 (or 0 to 5) segmented control with the meaning of the pick beneath it. */
 export function Segmented({
@@ -29,11 +30,13 @@ export function Segmented({
   hint?: string;
   id: string;
 }) {
+  const { t } = useTranslation("idea");
   const [hovered, setHovered] = useState<number | null>(null);
   const options: number[] = [];
   for (let v = min; v <= 5; v++) options.push(v);
   // The caption follows the pointer, so every value can be read before picking it.
   const shown = hovered ?? value;
+  const meaning = (v: number) => t("segmented.meaning", { value: v, meaning: meanings[v] ?? "" });
   return (
     <div className="flex flex-col gap-1.5">
       <div className="flex items-baseline justify-between gap-2">
@@ -53,7 +56,7 @@ export function Segmented({
               role="radio"
               aria-checked={selected}
               disabled={disabled}
-              title={disabled ? disabledReason : `${v} = ${meanings[v] ?? ""}`}
+              title={disabled ? disabledReason : meaning(v)}
               onClick={() => (selected && onClear ? onClear() : onChange(v))}
               onMouseEnter={() => setHovered(disabled ? null : v)}
               onFocus={() => setHovered(disabled ? null : v)}
@@ -70,7 +73,7 @@ export function Segmented({
         })}
       </div>
       <p className="min-h-4 text-xs text-muted-foreground">
-        {shown === null ? "Not scored yet" : `${shown} = ${meanings[shown] ?? ""}`}
+        {shown === null ? t("segmented.notScored") : meaning(shown)}
       </p>
     </div>
   );

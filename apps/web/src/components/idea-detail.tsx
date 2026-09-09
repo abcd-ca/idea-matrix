@@ -1,14 +1,9 @@
 "use client";
 
 import {
-  BANDS,
-  CONFIDENCE_INFO,
-  CRITERION_INFO,
   CRITERIA,
-  FORMULA_INFO,
   STAGES,
   band,
-  confidenceGateMessage,
   deleteIdea,
   findIdea,
   maxConfidenceAllowed,
@@ -33,9 +28,12 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
 import { useAppStore } from "@/lib/store";
+import { coreLevels } from "@/lib/i18n";
+import { useTranslation } from "react-i18next";
 import { useNameField } from "@/lib/use-name-field";
 
 export function IdeaDetail() {
+  const { t } = useTranslation("idea");
   const params = useSearchParams();
   const id = params.get("id") ?? "";
   const router = useRouter();
@@ -51,16 +49,17 @@ export function IdeaDetail() {
     return (
       <div className="flex flex-col gap-3">
         <Link href="/" className="inline-flex items-center gap-1 text-sm text-muted-foreground hover:text-foreground">
-          <ArrowLeftIcon className="size-4" /> Back to matrix
+          <ArrowLeftIcon className="size-4" /> {t("backToMatrix")}
         </Link>
-        <p className="text-muted-foreground">That idea is not in this matrix.</p>
+        <p className="text-muted-foreground">{t("notFound")}</p>
       </div>
     );
   }
 
   const change = (patch: Parameters<typeof updateIdea>[2]) => setError(mutate((d) => updateIdea(d, idea.id, patch)));
   const allowed = maxConfidenceAllowed(idea.evidence);
-  const gate = confidenceGateMessage(allowed);
+  // The gate sentence for the evidence so far; empty once the log allows 5.
+  const gate = allowed === 5 ? "" : t(`gate.${allowed}`, { ns: "core" });
   const p = potential(idea.scores);
   const s = score(p, idea.confidence);
   const pBand = band(p);
@@ -74,7 +73,7 @@ export function IdeaDetail() {
           href={parked ? "/parked/" : "/"}
           className="inline-flex items-center gap-1 text-sm text-muted-foreground hover:text-foreground"
         >
-          <ArrowLeftIcon className="size-4" /> {parked ? "Back to parked" : "Back to matrix"}
+          <ArrowLeftIcon className="size-4" /> {parked ? t("backToParked") : t("backToMatrix")}
         </Link>
         <SaveIndicator />
       </div>
@@ -89,14 +88,14 @@ export function IdeaDetail() {
         <div className="flex flex-col gap-5">
           <div className="flex flex-col gap-3 sm:flex-row sm:items-center">
             <Input
-              aria-label="Idea name"
+              aria-label={t("nameLabel")}
               className="h-11 flex-1 font-heading text-2xl font-semibold md:text-2xl"
               maxLength={200}
               {...ideaName}
             />
             <div className="flex items-center gap-2">
               <Label htmlFor="stage" className="sr-only">
-                Stage
+                {t("stage")}
               </Label>
               <select
                 id="stage"
@@ -111,7 +110,7 @@ export function IdeaDetail() {
               >
                 {STAGES.map((st) => (
                   <option key={st} value={st}>
-                    {st}
+                    {t(`stageName.${st}`, { ns: "core" })}
                   </option>
                 ))}
               </select>
@@ -120,13 +119,13 @@ export function IdeaDetail() {
 
           {parked ? (
             <div className="rounded-md border border-dashed p-3 text-sm">
-              <p className="font-medium">Parked because</p>
+              <p className="font-medium">{t("parkedBecause")}</p>
               <p className="text-muted-foreground">{idea.parkedReason}</p>
-              <p className="mt-2 text-xs text-muted-foreground">Choose another stage above to bring it back.</p>
+              <p className="mt-2 text-xs text-muted-foreground">{t("chooseAnother")}</p>
             </div>
           ) : null}
 
-          <Field label="Description" htmlFor="description">
+          <Field label={t("description")} htmlFor="description">
             <Textarea
               id="description"
               value={idea.description}
@@ -136,17 +135,13 @@ export function IdeaDetail() {
             />
           </Field>
 
-          <Field
-            label="Riskiest assumption"
-            htmlFor="assumption"
-            hint="What must already be true about what other people do or pay for. One sentence you can check."
-          >
+          <Field label={t("assumption")} htmlFor="assumption" hint={t("assumptionHint")}>
             <Textarea
               id="assumption"
               value={idea.riskiestAssumption}
               rows={2}
               maxLength={20000}
-              placeholder="e.g. People on my street already lend tools to each other a few times a year."
+              placeholder={t("assumptionPlaceholder")}
               onChange={(e) => change({ riskiestAssumption: e.target.value })}
             />
           </Field>
@@ -156,22 +151,22 @@ export function IdeaDetail() {
               <Segmented
                 key={key}
                 id={`score-${key}`}
-                label={CRITERION_INFO[key].label}
-                hint={CRITERION_INFO[key].question}
+                label={t(`criterion.${key}.label`, { ns: "core" })}
+                hint={t(`criterion.${key}.question`, { ns: "core" })}
                 value={idea.scores[key]}
                 min={key === "profitability" ? 0 : 1}
-                meanings={CRITERION_INFO[key].levels}
+                meanings={coreLevels(t, `criterion.${key}.levels`)}
                 onChange={(v) => change({ scores: { [key]: v } })}
                 onClear={() => change({ scores: { [key]: null } })}
               />
             ))}
             <Segmented
               id="confidence"
-              label="Confidence"
-              hint={CONFIDENCE_INFO.question}
+              label={t("confidence.label", { ns: "core" })}
+              hint={t("confidence.question", { ns: "core" })}
               value={idea.confidence}
               max={allowed}
-              meanings={CONFIDENCE_INFO.levels}
+              meanings={coreLevels(t, "confidence.levels")}
               disabledReason={gate}
               onChange={(v) => change({ confidence: v })}
             />
@@ -181,31 +176,29 @@ export function IdeaDetail() {
 
         <div className="flex flex-col gap-4">
           <div className="flex flex-col gap-3 rounded-md border p-4">
-            <p className="text-xs font-medium text-muted-foreground">Potential</p>
+            <p className="text-xs font-medium text-muted-foreground">{t("terms.potential", { ns: "common" })}</p>
             <div className="flex items-baseline gap-3">
               <span className="font-heading text-5xl font-semibold tabular-nums">{p ?? "–"}</span>
               {pBand ? (
                 <BandPill value={p} showLabel />
               ) : (
-                <span className="text-sm text-muted-foreground">needs all five scores</span>
+                <span className="text-sm text-muted-foreground">{t("needsAllFive")}</span>
               )}
             </div>
-            <p className="text-xs text-muted-foreground">{FORMULA_INFO.potential}</p>
-            <p className="text-xs font-medium text-muted-foreground">Score</p>
+            <p className="text-xs text-muted-foreground">{t("formula.potential", { ns: "core" })}</p>
+            <p className="text-xs font-medium text-muted-foreground">{t("terms.score", { ns: "common" })}</p>
             <div className="flex items-baseline gap-3">
               <span className="font-heading text-5xl font-semibold tabular-nums">{s ?? "–"}</span>
               {sBand ? <BandPill value={s} showLabel /> : null}
             </div>
             <p className="text-xs text-muted-foreground">
-              {p !== null && sBand
-                ? `${BANDS[sBand].advice.charAt(0).toUpperCase()}${BANDS[sBand].advice.slice(1)}. `
-                : ""}
-              {FORMULA_INFO.score}
+              {p !== null && sBand ? `${capitalize(t(`band.${sBand}.advice`, { ns: "core" }))}. ` : ""}
+              {t("formula.score", { ns: "core" })}
             </p>
             {p !== null && idea.confidence < 5 ? (
               <p className="text-xs text-muted-foreground">
-                At Confidence {idea.confidence + 1} this would score {score(p, idea.confidence + 1)}.
-                {idea.confidence + 1 > allowed ? " That needs more in the evidence log first." : ""}
+                {t("nextConfidence", { confidence: idea.confidence + 1, score: score(p, idea.confidence + 1) })}
+                {idea.confidence + 1 > allowed ? ` ${t("needsMoreEvidence")}` : ""}
               </p>
             ) : null}
           </div>
@@ -214,7 +207,7 @@ export function IdeaDetail() {
 
           {!parked ? (
             <Button variant="outline" onClick={() => setParkOpen(true)}>
-              Park this idea…
+              {t("park")}
             </Button>
           ) : null}
         </div>
@@ -238,6 +231,11 @@ export function IdeaDetail() {
       />
     </div>
   );
+}
+
+/** The band advice starts a sentence here, so it gets a capital. */
+function capitalize(text: string): string {
+  return text.charAt(0).toLocaleUpperCase() + text.slice(1);
 }
 
 function Field({

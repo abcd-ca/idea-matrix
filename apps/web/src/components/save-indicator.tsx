@@ -2,8 +2,8 @@
 
 import { cn } from "cn";
 import { AlertCircleIcon, CheckIcon, LoaderCircleIcon } from "lucide-react";
-import { describeWhere } from "@/lib/storage/target";
 import { useAppStore } from "@/lib/store";
+import { useTranslation } from "react-i18next";
 
 /**
  * The small "your edit is saved" readout shown beside editable content.
@@ -11,6 +11,7 @@ import { useAppStore } from "@/lib/store";
  * about a second after it happens, and this is how the user can tell.
  */
 export function SaveIndicator({ className }: { className?: string }) {
+  const { t } = useTranslation("common");
   const status = useAppStore((s) => s.status);
   const dirty = useAppStore((s) => s.dirty);
   const error = useAppStore((s) => s.error);
@@ -18,15 +19,18 @@ export function SaveIndicator({ className }: { className?: string }) {
   const target = useAppStore((s) => s.target);
 
   let icon = <CheckIcon className="size-3.5" aria-hidden />;
-  let text = `Saved to ${fileName ?? "your file"} ${describeWhere(target)}`;
+  let text = t("status.savedTo", {
+    fileName: fileName ?? t("status.yourFile"),
+    where: t(`where.${target ?? "local"}`),
+  });
   let tone = "text-muted-foreground";
   if (status === "error") {
     icon = <AlertCircleIcon className="size-3.5" aria-hidden />;
-    text = error ?? "Could not save";
+    text = error ?? t("status.couldNotSave");
     tone = "text-destructive";
   } else if (status === "saving" || dirty) {
     icon = <LoaderCircleIcon className="size-3.5 animate-spin" aria-hidden />;
-    text = "Saving…";
+    text = t("status.saving");
   }
 
   return (
@@ -34,7 +38,7 @@ export function SaveIndicator({ className }: { className?: string }) {
       className={cn("inline-flex items-center gap-1.5 text-xs", tone, className)}
       role="status"
       aria-live="polite"
-      title="Every change is saved to your file automatically. There is no Save button."
+      title={t("status.autosave")}
     >
       {icon}
       {text}

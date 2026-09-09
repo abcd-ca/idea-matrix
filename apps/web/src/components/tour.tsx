@@ -2,18 +2,12 @@
 
 import { driver, type DriveStep } from "driver.js";
 import { useEffect } from "react";
-import {
-  CONFIDENCE_GATE_SUMMARY,
-  CONFIDENCE_INFO,
-  CRITERION_INFO,
-  CRITERIA,
-  FORMULA_INFO,
-  STAGE_INFO,
-  STAGES,
-} from "@idea-matrix/core";
+import { BANDS, CRITERIA, STAGES, type Band } from "@idea-matrix/core";
 import { MOM_TEST_URL } from "@/lib/config";
-import { MOM_TEST_SUMMARY, OVERVIEW_AI, OVERVIEW_CARDS, OVERVIEW_INTRO, OVERVIEW_TITLE } from "@/lib/overview";
+import { overview } from "@/lib/overview";
 import { useAppStore } from "@/lib/store";
+import { coreLevels, coreRules, i18n } from "@/lib/i18n";
+import type { TFunction } from "i18next";
 
 function list(items: string[]): string {
   return `<ul style="margin:8px 0 0;padding-left:18px">${items.map((i) => `<li>${i}</li>`).join("")}</ul>`;
@@ -21,155 +15,158 @@ function list(items: string[]): string {
 function para(text: string): string {
   return `<p style="margin-top:8px">${text}</p>`;
 }
+/** Turn the bare `<a>` a translation carries into a real link. */
+function link(html: string, url: string): string {
+  return html.replace("<a>", `<a href="${url}" target="_blank" rel="noreferrer" style="text-decoration:underline">`);
+}
 
 // The same colours as the pills in the table (light theme values from lib/bands.ts).
-const BAND_SWATCH: Record<string, { bg: string; fg: string }> = {
+const BAND_SWATCH: Record<Band, { bg: string; fg: string }> = {
   grey: { bg: "#e5e5e5", fg: "#262626" },
   amber: { bg: "#fde68a", fg: "#451a03" },
   lightGreen: { bg: "#a7f3d0", fg: "#022c22" },
   darkGreen: { bg: "#059669", fg: "#ffffff" },
 };
-function bandChip(key: keyof typeof BAND_SWATCH, example: string, text: string): string {
+function bandChip(key: Band, text: string): string {
   const c = BAND_SWATCH[key];
-  return `<span style="display:inline-block;min-width:2.5em;text-align:center;padding:1px 8px;border-radius:6px;font-weight:600;background:${c.bg};color:${c.fg}">${example}</span> ${text}`;
+  return `<span style="display:inline-block;min-width:2.5em;text-align:center;padding:1px 8px;border-radius:6px;font-weight:600;background:${c.bg};color:${c.fg}">${BANDS[key].min}</span> ${text}`;
 }
-const BAND_LIST = list([
-  bandChip("grey", "39", "<b>39 and under</b>: not worth time yet"),
-  bandChip("amber", "40", "<b>40 to 59</b>: worth a look"),
-  bandChip("lightGreen", "60", "<b>60 to 79</b>: worth a customer conversation"),
-  bandChip("darkGreen", "80", "<b>80 and up</b>: worth a serious plan"),
-]);
-
-// Popover text is built only from the app's own constants, never from user text.
-const STEPS: DriveStep[] = [
-  {
-    // No element: driver.js centres this one on the screen.
-    popover: {
-      title: OVERVIEW_TITLE,
-      description:
-        `<p>${OVERVIEW_INTRO}</p>` +
-        list(OVERVIEW_CARDS.map((card) => `<b>${card.title}.</b> ${card.text}`)) +
-        para(
-          `The rules for what counts as evidence come from <a href="${MOM_TEST_URL}" target="_blank" rel="noreferrer" style="text-decoration:underline">The Mom Test</a>: ${MOM_TEST_SUMMARY}`,
-        ) +
-        para(OVERVIEW_AI),
-    },
-  },
-  {
-    element: "[data-tour=stages]",
-    popover: {
-      title: "Every idea has a stage",
-      description:
-        "Click a stage to show only the ideas at that stage." +
-        list(STAGES.filter((s) => s !== "Parked").map((s) => `<b>${s}</b>: ${STAGE_INFO[s]}`)) +
-        para("Parked ideas keep their scores and live under Parked in the menu."),
-    },
-  },
-  {
-    element: "[data-tour=potential]",
-    popover: {
-      title: "Potential: five scores, averaged",
-      description:
-        `<p>${FORMULA_INFO.potential}</p>` +
-        list(CRITERIA.map((c) => `<b>${CRITERION_INFO[c].label}</b>: ${CRITERION_INFO[c].question}`)) +
-        para("Each is a value of 1 to 5. Profitability can also be 0, for something deliberately non-commercial.") +
-        para(
-          "The five scores stay out of this table by default. Tick <b>Show the five scores</b> below it to see them, and <b>hover any column heading</b> to see what its numbers mean.",
-        ) +
-        para("The colour says which band a number falls in:") +
-        BAND_LIST,
-    },
-  },
-  {
-    element: "[data-tour=confidence]",
-    popover: {
-      title: "Confidence: how much evidence is behind those scores?",
-      description:
-        list(Object.entries(CONFIDENCE_INFO.levels).map(([k, v]) => `<b>${k}</b> ${v}`)) +
-        para(
-          "Every new idea starts at 1. Desk research can take it to 2; only recorded conversations take it further. Three rules for those conversations:",
-        ) +
-        list(CONFIDENCE_INFO.rules) +
-        para(`The evidence log on each idea keeps the receipts. ${CONFIDENCE_GATE_SUMMARY}`),
-    },
-  },
-  {
-    element: "[data-tour=score]",
-    popover: {
-      title: "Score is what ranks your ideas",
-      description:
-        `<p>${FORMULA_INFO.score}</p>` +
-        para(
-          "Score can never exceed Potential. The most evidence in the world only proves the idea is as good as you thought.",
-        ) +
-        para("Same colours as Potential:") +
-        BAND_LIST,
-    },
-  },
-  {
-    element: "[data-tour=first-row]",
-    popover: {
-      title: "Click an idea to score it",
-      description:
-        "<p>This table is for comparing. Scoring happens inside an idea, where each number shows its meaning as you pick, and where the evidence log lives.</p>" +
-        para("You can replay this tour any time from Help, under Show me around."),
-    },
-  },
-];
 
 /**
- * On phones the table is a list of cards, so the column headings the desktop
- * steps point at do not exist. These steps point at the stage chips and the
- * first card instead, and say the same things without "hover" or "tick".
+ * Popover text is built only from the app's own constants (the locale files
+ * and core's scales), never from user text. Built when the tour starts, in
+ * the current language.
  */
-const PHONE_STEPS: DriveStep[] = [
-  {
-    element: "[data-tour=stages]",
+function steps(t: TFunction): { desktop: DriveStep[]; phone: DriveStep[] } {
+  const core = (key: string, values?: Record<string, unknown>) => t(key, { ns: "core", ...values });
+  const o = overview(t);
+  const bandList = list(
+    (Object.keys(BANDS) as Band[]).map((key) =>
+      bandChip(key, t(`bands.${key}`, { advice: core(`band.${key}.advice`) })),
+    ),
+  );
+  const stageList = list(
+    STAGES.filter((s) => s !== "Parked").map((s) =>
+      t("line.stage", { stage: core(`stageName.${s}`), description: core(`stage.${s}`) }),
+    ),
+  );
+  const criteriaList = list(
+    CRITERIA.map((c) =>
+      t("line.criterion", { label: core(`criterion.${c}.label`), question: core(`criterion.${c}.question`) }),
+    ),
+  );
+  const confidenceLevels = list(
+    Object.entries(coreLevels(t, "confidence.levels")).map(([k, v]) => t("line.level", { level: k, meaning: v })),
+  );
+  const rules = list(coreRules(t));
+  const gate = core("gateSummary");
+  const showScores = t("showScores", { ns: "matrix" });
+
+  const welcome: DriveStep = {
+    // No element: driver.js centres this one on the screen.
     popover: {
-      title: "Every idea has a stage",
+      title: o.title,
       description:
-        "Tap a stage to show only the ideas at that stage." +
-        list(STAGES.filter((s) => s !== "Parked").map((s) => `<b>${s}</b>: ${STAGE_INFO[s]}`)) +
-        para("Parked ideas keep their scores and live under Parked in the menu."),
+        `<p>${o.intro}</p>` +
+        list(o.cards.map((card) => t("line.card", { title: card.title, text: card.text }))) +
+        para(link(t("overview.momTestFrom", { ns: "common", momTest: o.momTest }), MOM_TEST_URL)) +
+        para(o.ai),
     },
-  },
-  {
-    element: "[data-tour=first-card]",
-    popover: {
-      title: "Each card is one idea",
-      description:
-        "<p>The number in the corner is its <b>Score</b>, which is what ranks your ideas. Below the name: its stage, its <b>Potential</b> and its <b>Confidence</b>.</p>" +
-        para(FORMULA_INFO.potential) +
-        list(CRITERIA.map((c) => `<b>${CRITERION_INFO[c].label}</b>: ${CRITERION_INFO[c].question}`)) +
-        para(
-          "Each is a value of 1 to 5. Profitability can also be 0, for something deliberately non-commercial. The colour says which band a number falls in:",
-        ) +
-        BAND_LIST,
+  };
+
+  const desktop: DriveStep[] = [
+    welcome,
+    {
+      element: "[data-tour=stages]",
+      popover: {
+        title: t("stages.title"),
+        description: t("stages.click") + stageList + para(t("stages.parked")),
+      },
     },
-  },
-  {
-    element: "[data-tour=first-card]",
-    popover: {
-      title: "Confidence: how much evidence is behind those scores?",
-      description:
-        list(Object.entries(CONFIDENCE_INFO.levels).map(([k, v]) => `<b>${k}</b> ${v}`)) +
-        para(
-          "Every new idea starts at 1. Desk research can take it to 2; only recorded conversations take it further. Three rules for those conversations:",
-        ) +
-        list(CONFIDENCE_INFO.rules) +
-        para(`${FORMULA_INFO.score} The evidence log on each idea keeps the receipts. ${CONFIDENCE_GATE_SUMMARY}`),
+    {
+      element: "[data-tour=potential]",
+      popover: {
+        title: t("potential.title"),
+        description:
+          `<p>${core("formula.potential")}</p>` +
+          criteriaList +
+          para(t("potential.each")) +
+          para(t("potential.hidden", { showScores })) +
+          para(t("potential.colour")) +
+          bandList,
+      },
     },
-  },
-  {
-    element: "[data-tour=first-card]",
-    popover: {
-      title: "Tap an idea to score it",
-      description:
-        "<p>This list is for comparing. Scoring happens inside an idea, where each number shows its meaning as you pick, and where the evidence log lives.</p>" +
-        para("You can replay this tour any time from Help, under Show me around."),
+    {
+      element: "[data-tour=confidence]",
+      popover: {
+        title: t("confidence.title"),
+        description: confidenceLevels + para(t("confidence.starts")) + rules + para(t("confidence.receipts", { gate })),
+      },
     },
-  },
-];
+    {
+      element: "[data-tour=score]",
+      popover: {
+        title: t("score.title"),
+        description: `<p>${core("formula.score")}</p>` + para(t("score.cap")) + para(t("score.sameColours")) + bandList,
+      },
+    },
+    {
+      element: "[data-tour=first-row]",
+      popover: {
+        title: t("open.title"),
+        description: `<p>${t("open.text")}</p>` + para(t("open.replay")),
+      },
+    },
+  ];
+
+  /**
+   * On phones the table is a list of cards, so the column headings the desktop
+   * steps point at do not exist. These steps point at the stage chips and the
+   * first card instead, and say the same things without "hover" or "tick".
+   */
+  const phone: DriveStep[] = [
+    welcome,
+    {
+      element: "[data-tour=stages]",
+      popover: {
+        title: t("stages.title"),
+        description: t("stages.tap") + stageList + para(t("stages.parked")),
+      },
+    },
+    {
+      element: "[data-tour=first-card]",
+      popover: {
+        title: t("phone.cardTitle"),
+        description:
+          `<p>${t("phone.cardText")}</p>` +
+          para(core("formula.potential")) +
+          criteriaList +
+          para(t("phone.eachColour")) +
+          bandList,
+      },
+    },
+    {
+      element: "[data-tour=first-card]",
+      popover: {
+        title: t("confidence.title"),
+        description:
+          confidenceLevels +
+          para(t("confidence.starts")) +
+          rules +
+          para(t("phone.receipts", { score: core("formula.score"), gate })),
+      },
+    },
+    {
+      element: "[data-tour=first-card]",
+      popover: {
+        title: t("phone.openTitle"),
+        description: `<p>${t("phone.openText")}</p>` + para(t("open.replay")),
+      },
+    },
+  ];
+
+  return { desktop, phone };
+}
 
 /** The card list replaces the table below Tailwind's md breakpoint. */
 function isPhoneLayout(): boolean {
@@ -177,15 +174,18 @@ function isPhoneLayout(): boolean {
 }
 
 export function startTour(): void {
+  const t = i18n.getFixedT(null, "tour");
+  const { desktop, phone } = steps(t);
   const instance = driver({
     showProgress: true,
-    progressText: "{{current}} of {{total}}",
-    nextBtnText: "Next",
-    prevBtnText: "Back",
-    doneBtnText: "Done",
+    // driver.js fills {{current}} and {{total}} itself; i18next leaves unknown placeholders alone.
+    progressText: t("progress"),
+    nextBtnText: t("next"),
+    prevBtnText: t("back"),
+    doneBtnText: t("done"),
     allowClose: true,
     // Phones get the same welcome step first, then steps that point at the cards.
-    steps: isPhoneLayout() ? [STEPS[0], ...PHONE_STEPS] : STEPS,
+    steps: isPhoneLayout() ? phone : desktop,
     onDestroyed: () => useAppStore.getState().setTourPending(false),
   });
   instance.drive();
@@ -197,8 +197,8 @@ export function TourAutostart() {
   const hasDoc = useAppStore((s) => s.doc !== null);
   useEffect(() => {
     if (!pending || !hasDoc) return;
-    const t = setTimeout(() => startTour(), 400);
-    return () => clearTimeout(t);
+    const timer = setTimeout(() => startTour(), 400);
+    return () => clearTimeout(timer);
   }, [pending, hasDoc]);
   return null;
 }

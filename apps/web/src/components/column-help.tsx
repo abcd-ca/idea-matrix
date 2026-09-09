@@ -1,25 +1,18 @@
 "use client";
 
-import {
-  BANDS,
-  CONFIDENCE_GATE_SUMMARY,
-  CONFIDENCE_INFO,
-  CRITERION_INFO,
-  CRITERIA,
-  FORMULA_INFO,
-  STAGE_INFO,
-  STAGES,
-  type Band,
-  type Criterion,
-} from "@idea-matrix/core";
+import { BANDS, CRITERIA, STAGES, type Band, type Criterion } from "@idea-matrix/core";
 import { cn } from "cn";
 import { InfoIcon } from "lucide-react";
 import type { ReactNode } from "react";
 import { Tooltip, TooltipContent, TooltipTrigger } from "@/components/ui/tooltip";
 import { BAND_CLASSES } from "@/lib/bands";
+import { coreLevels } from "@/lib/i18n";
+import type { TFunction } from "i18next";
+import { Trans, useTranslation } from "react-i18next";
 
 /** The coloured band key, reused by the tour and the column help. */
 export function BandChips() {
+  const { t } = useTranslation("matrix");
   return (
     <ul className="flex flex-col gap-1">
       {(Object.keys(BANDS) as Band[]).map((key) => {
@@ -35,11 +28,15 @@ export function BandChips() {
               {b.min}
             </span>
             <span>
-              <b>
-                {b.min}
-                {b.max < 100 ? ` to ${b.max}` : " and up"}
-              </b>
-              : {b.advice}
+              <Trans
+                t={t}
+                i18nKey="help.bandLine"
+                values={{
+                  range: b.max < 100 ? t("help.range", { min: b.min, max: b.max }) : t("help.andUp", { min: b.min }),
+                  advice: t(`band.${key}.advice`, { ns: "core" }),
+                }}
+                components={{ b: <b /> }}
+              />
             </span>
           </li>
         );
@@ -49,11 +46,17 @@ export function BandChips() {
 }
 
 function Levels({ levels }: { levels: Record<number, string> }) {
+  const { t } = useTranslation("matrix");
   return (
     <ul className="flex flex-col gap-0.5">
       {Object.entries(levels).map(([k, v]) => (
         <li key={k}>
-          <b className="tabular-nums">{k}</b> {v}
+          <Trans
+            t={t}
+            i18nKey="help.levelLine"
+            values={{ level: k, meaning: v }}
+            components={{ b: <b className="tabular-nums" /> }}
+          />
         </li>
       ))}
     </ul>
@@ -63,13 +66,12 @@ function Levels({ levels }: { levels: Record<number, string> }) {
 const isCriterion = (id: string): id is Criterion => (CRITERIA as readonly string[]).includes(id);
 
 /** What each matrix column means, for the heading hover. Null for columns that need no help. */
-export function columnHelp(columnId: string): ReactNode | null {
+export function columnHelp(columnId: string, t: TFunction): ReactNode | null {
   if (isCriterion(columnId)) {
-    const info = CRITERION_INFO[columnId];
     return (
       <>
-        <p className="font-medium">{info.question}</p>
-        <Levels levels={info.levels} />
+        <p className="font-medium">{t(`criterion.${columnId}.question`, { ns: "core" })}</p>
+        <Levels levels={coreLevels(t, `criterion.${columnId}.levels`)} />
       </>
     );
   }
@@ -79,7 +81,12 @@ export function columnHelp(columnId: string): ReactNode | null {
         <ul className="flex flex-col gap-0.5">
           {STAGES.map((s) => (
             <li key={s}>
-              <b>{s}</b>: {STAGE_INFO[s]}
+              <Trans
+                t={t}
+                i18nKey="help.stageLine"
+                values={{ stage: t(`stageName.${s}`, { ns: "core" }), description: t(`stage.${s}`, { ns: "core" }) }}
+                components={{ b: <b /> }}
+              />
             </li>
           ))}
         </ul>
@@ -87,22 +94,22 @@ export function columnHelp(columnId: string): ReactNode | null {
     case "confidence":
       return (
         <>
-          <p className="font-medium">{CONFIDENCE_INFO.question}</p>
-          <Levels levels={CONFIDENCE_INFO.levels} />
-          <p className="opacity-80">{CONFIDENCE_GATE_SUMMARY}</p>
+          <p className="font-medium">{t("confidence.question", { ns: "core" })}</p>
+          <Levels levels={coreLevels(t, "confidence.levels")} />
+          <p className="opacity-80">{t("gateSummary", { ns: "core" })}</p>
         </>
       );
     case "potential":
       return (
         <>
-          <p>{FORMULA_INFO.potential}</p>
+          <p>{t("formula.potential", { ns: "core" })}</p>
           <BandChips />
         </>
       );
     case "score":
       return (
         <>
-          <p>{FORMULA_INFO.score}</p>
+          <p>{t("formula.score", { ns: "core" })}</p>
           <BandChips />
         </>
       );
@@ -113,7 +120,8 @@ export function columnHelp(columnId: string): ReactNode | null {
 
 /** Wraps a column heading so hovering or focusing it explains the column. */
 export function ColumnHelp({ columnId, children }: { columnId: string; children: ReactNode }) {
-  const content = columnHelp(columnId);
+  const { t } = useTranslation("matrix");
+  const content = columnHelp(columnId, t);
   if (!content) return <>{children}</>;
   return (
     <Tooltip>

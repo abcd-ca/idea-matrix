@@ -1,0 +1,145 @@
+{
+  "language": "Langue",
+  "nav": {
+    "main": "Principal",
+    "matrix": "Matrice",
+    "parked": "Mises de côté",
+    "parkedWithCount": "Mises de côté ({{count}})",
+    "settings": "Réglages"
+  },
+  "help": {
+    "label": "Aide",
+    "tour": "Faites-moi visiter",
+    "privacy": "Confidentialité et confiance",
+    "source": "Code source sur GitHub"
+  },
+  "terms": {
+    "potential": "Potentiel",
+    "score": "Score"
+  },
+  "where": {
+    "local": "sur cet ordinateur",
+    "drive": "dans Google Drive"
+  },
+  "actions": {
+    "back": "Retour",
+    "cancel": "Annuler",
+    "close": "Fermer",
+    "continue": "Continuer",
+    "copy": "Copier",
+    "copied": "Copié",
+    "openDifferentFile": "Ouvrir un autre fichier…",
+    "resume": "Reprendre",
+    "signInWithGoogle": "Se connecter avec Google",
+    "startOver": "Recommencer"
+  },
+  "gate": {
+    "opening": "Ouverture de votre matrice…",
+    "toSetup": "Direction la configuration…",
+    "resumeWith": "Reprendre avec {{fileName}}",
+    "yourMatrix": "votre matrice",
+    "resumeDrive": "Google demande un clic avant que l'application puisse lire et enregistrer ce fichier de nouveau. Il vous connecte sur sa propre page et remet à l'application une clé qui reste dans ce navigateur.",
+    "resumeLocal": "Votre navigateur demande un clic avant que l'application puisse lire et enregistrer ce fichier de nouveau. Rien n'a quitté votre machine entre-temps.",
+    "couldNotOpen": "Le fichier n'a pas pu être ouvert",
+    "somethingWrong": "Quelque chose a mal tourné."
+  },
+  "status": {
+    "couldNotSave": "Enregistrement impossible",
+    "saving": "Enregistrement…",
+    "unsaved": "Modifications non enregistrées",
+    "saved": "Enregistré {{when}}",
+    "needsPermission": "Permission requise",
+    "upToDate": "À jour",
+    "noFile": "Aucun fichier",
+    "compact": "{{fileName}} · {{text}}",
+    "storedWhere": "Les données sont conservées {{where}}",
+    "justNow": "à l'instant",
+    "secondsAgo": "il y a {{count}} s",
+    "minutesAgo": "il y a {{count}} min",
+    "savedTo": "Enregistré dans {{fileName}} {{where}}",
+    "yourFile": "votre fichier",
+    "autosave": "Chaque modification est enregistrée automatiquement dans votre fichier. Il n'y a pas de bouton Enregistrer."
+  },
+  "errors": {
+    "noMatrixOpen": "Aucune matrice n'est ouverte.",
+    "notApplied": "Cette modification n'a pas pu être appliquée.",
+    "notAllowed": "Le navigateur n'a pas autorisé l'accès au fichier. Réessayez, ou ouvrez un autre fichier.",
+    "notFound": "Le fichier est introuvable. Il a peut-être été déplacé ou supprimé. Remettez-le en place et rechargez la page, ou ouvrez un autre fichier.",
+    "fileProblem": "Quelque chose a mal tourné avec le fichier.",
+    "driveNotSignedIn": "Google ne vous a pas connecté. Réessayez, ou ouvrez un autre fichier.",
+    "localNotGranted": "Le navigateur n'a pas accordé l'accès. Vous pouvez ouvrir un autre fichier à la place.",
+    "couldNotWrite": "Le fichier n'a pas pu être écrit.",
+    "signedOut": "Déconnecté de Google. Reconnectez-vous quand vous voudrez que l'application accède à votre fichier.",
+    "driveSaveNeedsSignIn": "Google demande que vous vous reconnectiez avant que l'application puisse continuer à enregistrer. Vos modifications sont conservées d'ici là.",
+    "driveCheckNeedsSignIn": "Google demande que vous vous reconnectiez avant que l'application puisse vérifier si votre fichier a changé.",
+    "driveAuth": "Google demande que vous vous reconnectiez avant que l'application puisse accéder à votre fichier.",
+    "driveFileExists": "Il y a déjà un fichier nommé {{name}} dans ce dossier. Ouvrez celui-là, ou choisissez un autre nom ou un autre dossier.",
+    "driveScript": "Le script de connexion de Google n'a pas pu être chargé. Vérifiez votre connexion et réessayez.",
+    "driveGone": "Le fichier est introuvable dans Google Drive. Il a peut-être été supprimé, ou l'accès de l'application retiré.",
+    "driveError": "Google Drive a renvoyé une erreur ({{status}}).",
+    "driveErrorDetail": "Google Drive a renvoyé une erreur ({{status}}) : {{detail}}",
+    "driveTrashed": "Le fichier est dans la corbeille de Google Drive. Restaurez-le là-bas, ou ouvrez un autre fichier.",
+    "noLocalFileApi": "Ce navigateur ne peut pas réenregistrer les modifications dans un fichier sur le disque. Ouvrez cette page dans Chrome ou Edge."
+  },
+  "picker": {
+    "fileType": "Fichier Idea Matrix",
+    "openTitle": "Ouvrez votre fichier Idea Matrix",
+    "folderTitle": "Choisissez un dossier pour votre fichier Idea Matrix"
+  },
+  "overview": {
+    "title": "Évaluez vos idées de projets",
+    "intro": "Idea Matrix est un endroit où garder vos idées de projets, quelle que soit leur étape, et où explorer celles qui méritent votre temps.",
+    "cards": {
+      "scoring": {
+        "title": "Comment une idée est évaluée",
+        "text": "Chaque idée reçoit une valeur de 1 à 5 pour la Portée, l'Impact, la Rentabilité, la Vision et la Facilité. Ensemble, elles donnent son Potentiel : à quel point elle pourrait être bonne."
+      },
+      "confidence": {
+        "title": "La Confiance compte les preuves",
+        "text": "Une note à part pour la quantité de preuves derrière ces chiffres, de l'intuition à l'engagement d'un client. Le Score est Potentiel × Confiance ÷ 5, alors rien ne se classe haut tant que de vraies personnes ne l'ont pas confirmé."
+      },
+      "private": {
+        "title": "Privé par conception",
+        "text": "Vos idées restent les vôtres, c'est voulu. Il n'y a ni comptes ni serveur : votre matrice est un seul fichier dans votre propre espace de stockage, et rien ne quitte votre ordinateur. Vous n'avez pas à croire l'application sur parole. Surveillez l'onglet Réseau du navigateur, ou lisez le code source ouvert."
+      }
+    },
+    "ai": "Utilisez-la ici dans le navigateur, ou connectez-la à votre assistant IA et passez vos idées en revue en conversant.",
+    "momTest": "parlez de la vie des gens, pas de votre idée; demandez ce qu'ils ont fait, pas ce qu'ils feraient; seul un engagement compte comme preuve.",
+    "momTestFrom": "Les règles de ce qui compte comme preuve viennent de <a>The Mom Test</a> : {{momTest}}"
+  },
+  "connectAi": {
+    "title": "Assistant IA",
+    "pitch": "Évaluez et discutez vos idées depuis Claude ou un autre assistant, par un petit serveur MCP qui tourne sur cet ordinateur.",
+    "learnMore": "En savoir plus",
+    "button": "Connecter à un agent IA",
+    "dialogTitle": "Connecter à un agent IA",
+    "description": "Le serveur MCP d'Idea Matrix tourne sur cet ordinateur et travaille sur <file/>, le même fichier que l'application, selon les mêmes règles : la Confiance ne peut pas monter sans preuve, et rien n'est supprimé. Seul le texte de l'idée dont vous parlez est envoyé à l'assistant, sur votre propre compte.",
+    "claudeDesktop": "Claude Desktop",
+    "desktopSteps": "Téléchargez <code>idea-matrix.mcpb</code> depuis la <a>page des versions</a>, double-cliquez dessus, et choisissez <file/> quand Claude demande votre fichier de matrice.",
+    "claudeCode": "Claude Code",
+    "codeSteps": "Exécutez ceci une fois dans un terminal, avec le vrai chemin de votre fichier :",
+    "otherClients": "Autres clients MCP",
+    "otherSteps": "Pointez le client vers cette commande (transport stdio) :",
+    "then": "Dites ensuite « montre-moi ma matrice d'idées », ou choisissez l'invite <code>idea_matrix</code>. L'application remarque les changements enregistrés par l'assistant en quelques secondes.",
+    "fullInstructions": "Instructions complètes",
+    "copyCommand": "Copier la commande"
+  },
+  "export": {
+    "button": "Exporter",
+    "json": "JSON",
+    "jsonHint": "Une copie du fichier de matrice lui-même. Toujours réimportable.",
+    "markdown": "Markdown",
+    "markdownHint": "Une section par idée, pour lire et conserver.",
+    "csv": "CSV",
+    "csvHint": "Une ligne par idée, pour un tableur."
+  },
+  "build": {
+    "line": "{{app}} {{version}}, construit à partir du commit <a>{{commit}}</a> du dépôt public.",
+    "withLocalChanges": " (avec des modifications locales)",
+    "reading": "Lecture de l'empreinte…",
+    "missing": "Pas d'empreinte ici : ceci est une version de développement, pas une version déployée.",
+    "fingerprint": "Empreinte",
+    "mismatch": "Le fichier d'empreinte vient du commit {{fileCommit}} mais cette page vient du commit {{pageCommit}}. Rechargez la page; si cela persiste, vous voyez deux déploiements mélangés.",
+    "explain": "L'empreinte est un hachage de chaque fichier que ce site sert. <checks>GitHub affiche la même empreinte pour ce commit</checks>, donc le code que vous pouvez lire là-bas est le code qui tourne ici. <how>Comment le vérifier vous-même</how>."
+  }
+}

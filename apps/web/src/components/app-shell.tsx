@@ -19,14 +19,16 @@ import { startTour } from "@/components/tour";
 import { APP_NAME, SOURCE_URL } from "@/lib/config";
 import { useAppStore } from "@/lib/store";
 import { StatusLine } from "@/components/status-line";
+import { useTranslation } from "react-i18next";
 
 const NAV = [
-  { href: "/", label: "Matrix" },
-  { href: "/parked/", label: "Parked" },
-  { href: "/settings/", label: "Settings" },
+  { href: "/", label: "nav.matrix" },
+  { href: "/parked/", label: "nav.parked" },
+  { href: "/settings/", label: "nav.settings" },
 ] as const;
 
 export function AppShell({ children }: { children: ReactNode }) {
+  const { t } = useTranslation("common");
   const pathname = usePathname();
   const parkedCount = useAppStore((s) => s.doc?.ideas.filter((i) => i.stage === "Parked").length ?? 0);
 
@@ -45,7 +47,7 @@ export function AppShell({ children }: { children: ReactNode }) {
             <HelpMenu />
           </div>
         </div>
-        <nav className="flex gap-1 md:flex-col" aria-label="Main">
+        <nav className="flex gap-1 md:flex-col" aria-label={t("nav.main")}>
           {NAV.map((item) => (
             <Link
               key={item.href}
@@ -55,8 +57,9 @@ export function AppShell({ children }: { children: ReactNode }) {
                 isActive(item.href) ? "bg-primary text-primary-foreground" : "hover:bg-muted",
               )}
             >
-              {item.label}
-              {item.href === "/parked/" && parkedCount > 0 ? ` (${parkedCount})` : ""}
+              {item.href === "/parked/" && parkedCount > 0
+                ? t("nav.parkedWithCount", { count: parkedCount })
+                : t(item.label)}
             </Link>
           ))}
         </nav>
@@ -78,20 +81,21 @@ export function AppShell({ children }: { children: ReactNode }) {
 }
 
 function HelpMenu() {
+  const { t } = useTranslation("common");
   return (
     <DropdownMenu>
       <DropdownMenuTrigger
         className="inline-flex items-center gap-1 rounded-md px-3 py-1.5 text-sm hover:bg-muted"
-        aria-label="Help"
+        aria-label={t("help.label")}
       >
-        <CircleHelpIcon className="size-4" /> Help
+        <CircleHelpIcon className="size-4" /> {t("help.label")}
       </DropdownMenuTrigger>
       <DropdownMenuContent>
-        <DropdownMenuItem onClick={() => startTour()}>Show me around</DropdownMenuItem>
-        <DropdownMenuItem render={<Link href="/privacy/" />}>Privacy and trust</DropdownMenuItem>
+        <DropdownMenuItem onClick={() => startTour()}>{t("help.tour")}</DropdownMenuItem>
+        <DropdownMenuItem render={<Link href="/privacy/" />}>{t("help.privacy")}</DropdownMenuItem>
         {SOURCE_URL ? (
           <DropdownMenuItem render={<a href={SOURCE_URL} target="_blank" rel="noreferrer" />}>
-            <GitHubMark className="size-4" /> Source on GitHub
+            <GitHubMark className="size-4" /> {t("help.source")}
           </DropdownMenuItem>
         ) : null}
       </DropdownMenuContent>

@@ -1,0 +1,48 @@
+{
+  "title": "Ajustes",
+  "device": {
+    "title": "Este dispositivo",
+    "note": "Lo guarda este navegador, no tu archivo de matriz. Cada dispositivo conserva el suyo."
+  },
+  "where": {
+    "title": "Dónde viven tus ideas",
+    "yourMatrixIs": "Tu matriz es <file/> {{where}}.",
+    "aFile": "un archivo",
+    "createNew": "Crear un archivo nuevo…",
+    "needsChrome": "Necesita Chrome o Edge",
+    "moveToLocal": "Mover a este ordenador…",
+    "comingLater": "Próximamente en una versión posterior",
+    "moveToDrive": "Mover a Google Drive…",
+    "moveToDropbox": "Mover a Dropbox…",
+    "signOut": "Cerrar sesión de Google",
+    "explain": "Abrir otro archivo cambia a ese; el archivo actual se queda donde está con todo guardado. Mover copia tu matriz al nuevo lugar y cambia a la copia; el archivo antiguo queda intacto.",
+    "needsChromeLong": "Mover a este ordenador necesita Chrome o Edge en un ordenador.",
+    "dropboxLater": "Dropbox llegará en una versión posterior.",
+    "signOutExplain": "Cerrar sesión descarta la clave que Google dio a la aplicación; la próxima lectura o guardado pedirá un clic."
+  },
+  "name": {
+    "title": "Nombre de la matriz",
+    "label": "Se muestra en la parte superior de la matriz"
+  },
+  "export": {
+    "title": "Exportar",
+    "explain": "Descarga una copia en el formato elegido. JSON es el propio archivo de matriz, con el registro de evidencia; Markdown es para leer; CSV es una fila por idea para una hoja de cálculo."
+  },
+  "ai": {
+    "title": "Asistente de IA"
+  },
+  "privacy": {
+    "title": "Privacidad y confianza",
+    "text": "Nada sale de tu máquina salvo hacia el almacenamiento que elegiste. Puedes comprobarlo tú mismo: abre las herramientas de desarrollo de tu navegador, mira la pestaña Red mientras editas, y verás que el único tráfico es la página misma.",
+    "readMore": "Leer la página completa"
+  },
+  "build": {
+    "title": "Esta versión"
+  },
+  "about": {
+    "title": "Acerca de",
+    "line": "{{app}} {{version}} · código abierto · sin telemetría · mantenido por",
+    "source": "código fuente en GitHub",
+    "report": "informar de un problema"
+  }
+}

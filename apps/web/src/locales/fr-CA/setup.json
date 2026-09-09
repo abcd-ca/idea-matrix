@@ -1,0 +1,63 @@
+{
+  "welcome": "Bienvenue",
+  "tourNote": "Une courte visite explique l'écran une fois votre matrice ouverte.",
+  "getStarted": "Commencer",
+  "where": {
+    "title": "Où voulez-vous garder vos idées?",
+    "intro": "Idea Matrix n'a ni comptes ni serveur à lui. Votre matrice est un seul fichier, et vous choisissez où il se trouve. Vous pourrez ouvrir un autre fichier plus tard depuis les Réglages.",
+    "needsChromeTitle": "« Cet ordinateur » demande Chrome ou Edge",
+    "needsChromeBody": "Votre navigateur ne peut pas réenregistrer les modifications dans un fichier sur le disque, alors cette option est désactivée. Ouvrez cette page dans Chrome ou Edge pour l'utiliser, ou gardez vos idées dans Google Drive, qui fonctionne dans tous les navigateurs.",
+    "groupLabel": "Où garder vos idées",
+    "local": "Cet ordinateur",
+    "localTag": "Chrome ou Edge",
+    "localText": "Un fichier que vous pouvez voir, sauvegarder, ou garder dans votre dossier iCloud, Dropbox ou Drive.",
+    "drive": "Google Drive",
+    "driveTag": "Tous les navigateurs",
+    "comingLater": "à venir",
+    "driveText": "Tous les navigateurs, y compris votre téléphone. L'application ne voit que le seul fichier qu'elle crée ou que vous ouvrez.",
+    "dropbox": "Dropbox",
+    "dropboxText": "Un dossier Apps/Idea Matrix visible dans votre Dropbox.",
+    "chooseToContinue": "Choisissez un emplacement pour continuer"
+  },
+  "file": {
+    "title": "Ouvrir une matrice que vous avez déjà, ou en créer une nouvelle?",
+    "keeping": "Vos idées seront gardées <strong>{{where}}</strong>.",
+    "openTitle": "Ouvrir une matrice existante",
+    "openDriveText": "Vous avez déjà un fichier de matrice dans votre Drive, peut-être d'un autre ordinateur. Google vous demande de vous connecter, puis un sélecteur affiche vos fichiers JSON. En choisir un est ce qui donne à l'application l'accès à ce fichier, et à rien d'autre dans votre Drive.",
+    "openFromDrive": "Ouvrir depuis Drive…",
+    "lastStep": "C'est la dernière étape : votre matrice s'ouvre telle quelle.",
+    "createTitle": "Créer une nouvelle matrice",
+    "createDriveText": "Google vous demande de vous connecter, puis le fichier est créé :",
+    "folderGroup": "Quel dossier",
+    "newFolder": "Dans un nouveau dossier à la racine de Mon Drive, nommé",
+    "newFolderName": "Nom du nouveau dossier",
+    "pickFolder": "Dans un dossier que je choisis (un sélecteur s'ouvre)",
+    "fileName": "Nom du fichier",
+    "fileNameLabel": "Nom du fichier, sans l'extension",
+    "createInDrive": "Créer dans Drive…",
+    "oneMoreStep": "Encore une étape : ce qui va dans le nouveau fichier.",
+    "openLocalText": "Vous avez déjà un fichier de matrice, peut-être d'un autre ordinateur ou d'une sauvegarde. Le sélecteur affiche les fichiers JSON, et l'application vérifie que celui que vous choisissez est bien une matrice avant de le charger.",
+    "openFile": "Ouvrir un fichier…",
+    "createLocalText": "Une boîte de dialogue s'ouvre pour que vous choisissiez le dossier et le nom. Le nom suggéré est ideas.ideamatrix.json.",
+    "createFile": "Créer un fichier…"
+  },
+  "start": {
+    "title": "Que doit-il contenir?",
+    "defaultName": "Mes idées",
+    "saved": "<file/> est enregistré {{where}}. Il est vide tant que vous n'avez pas choisi ce qui va dedans.",
+    "yourFile": "Votre fichier",
+    "groupLabel": "Par quoi commencer",
+    "example": "Une matrice d'exemple",
+    "exampleText": "Neuf idées fictives, déjà évaluées, pour voir à quoi ressemble une matrice remplie avant d'ajouter les vôtres. Mettez-les de côté quand vous voulez.",
+    "empty": "Rien pour l'instant",
+    "emptyText": "Seulement les colonnes. Vous ajouterez votre première idée depuis la matrice, après une courte visite.",
+    "open": "Ouvrir ma matrice"
+  },
+  "progress": {
+    "where": "1 Où",
+    "newFile": "2 Nouveau fichier",
+    "whichFile": "2 Quel fichier",
+    "startWith": "3 Contenu de départ",
+    "oneMore": "+ une étape de plus si vous créez un nouveau fichier"
+  }
+}

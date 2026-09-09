@@ -1,0 +1,118 @@
+{
+  "criterion": {
+    "reach": {
+      "label": "Portée",
+      "short": "Portée",
+      "question": "Combien de personnes cela pourrait-il servir?",
+      "levels": {
+        "1": "moi et quelques amis",
+        "2": "un club ou une entreprise",
+        "3": "un créneau régional",
+        "4": "un créneau national ou mondial",
+        "5": "le grand public"
+      }
+    },
+    "impact": {
+      "label": "Impact",
+      "short": "Impact",
+      "question": "Quelle différence cela fait-il pour un utilisateur?",
+      "levels": {
+        "1": "à peine remarqué",
+        "2": "une petite commodité",
+        "3": "une vraie amélioration",
+        "4": "quelque chose qui manquerait s'il disparaissait",
+        "5": "change quelque chose d'important pour lui"
+      }
+    },
+    "profitability": {
+      "label": "Rentabilité",
+      "short": "Rentab.",
+      "question": "Que reste-t-il après les coûts, une fois que ça tourne?",
+      "levels": {
+        "0": "délibérément non commercial",
+        "1": "les revenus couvrent à peine les coûts",
+        "2": "un petit surplus",
+        "3": "une marge modeste et stable",
+        "4": "clairement rentable",
+        "5": "très rentable"
+      }
+    },
+    "vision": {
+      "label": "Vision",
+      "short": "Vision",
+      "question": "À quel point cela correspond-il à la vie professionnelle que vous voulez?",
+      "levels": {
+        "1": "pas comme ça que je veux passer mon temps",
+        "2": "tolérable",
+        "3": "correspond à une partie de ce que je veux",
+        "4": "correspond à ma façon de vouloir travailler",
+        "5": "exactement le travail que je veux faire"
+      }
+    },
+    "ease": {
+      "label": "Facilité",
+      "short": "Facilité",
+      "question": "Est-ce facile à lancer et à faire tourner, avec les outils d'aujourd'hui?",
+      "levels": {
+        "1": "des mois de travail acharné",
+        "2": "quelques mois",
+        "3": "quelques semaines",
+        "4": "quelques fins de semaine",
+        "5": "une fin de semaine"
+      }
+    }
+  },
+  "confidence": {
+    "label": "Confiance",
+    "question": "Combien de preuves y a-t-il derrière ces notes?",
+    "levels": {
+      "1": "intuition",
+      "2": "recherche documentaire, ou quelqu'un a soulevé le problème de lui-même",
+      "3": "quelques vraies conversations avec des gens qui ont le problème",
+      "4": "plusieurs conversations qui pointent toutes dans la même direction",
+      "5": "un engagement : de l'argent, une présentation ou un projet pilote"
+    },
+    "rules": {
+      "0": "Parlez de leur vie, pas de votre idée.",
+      "1": "Demandez ce qu'ils ont fait, pas ce qu'ils feraient.",
+      "2": "Seul un engagement compte comme preuve."
+    }
+  },
+  "gateSummary": "Une Confiance au-dessus de 2 demande une entrée de preuve qui note ce que quelqu'un fait actuellement face au problème. Une Confiance de 5 demande un engagement : de l'argent, une présentation ou un projet pilote.",
+  "gate": {
+    "2": "Une Confiance au-dessus de 2 demande une entrée de preuve qui note ce que quelqu'un fait actuellement face au problème.",
+    "4": "Une Confiance de 5 demande une entrée de preuve avec un engagement : de l'argent, une présentation ou un projet pilote."
+  },
+  "stage": {
+    "Backlog": "Notée, pas encore examinée.",
+    "Exploring": "En réflexion et en recherche documentaire.",
+    "Talking to customers": "En vraies conversations sur le problème.",
+    "Validated": "Les conversations ont confirmé le problème et quelqu'un s'est engagé.",
+    "Building": "En train de la réaliser.",
+    "Parked": "Mise de côté, avec la raison notée. Jamais supprimée."
+  },
+  "stageName": {
+    "Backlog": "Réserve",
+    "Exploring": "Exploration",
+    "Talking to customers": "Conversations clients",
+    "Validated": "Validée",
+    "Building": "Construction",
+    "Parked": "Mise de côté"
+  },
+  "formula": {
+    "potential": "Le Potentiel est la moyenne des cinq notes, ramenée de 0 à 100. Il reste vide tant que les cinq ne sont pas remplies.",
+    "score": "Le Score est Potentiel × Confiance ÷ 5. Il ne monte qu'avec des preuves, alors une idée qui sonne bien ne peut pas dépasser une que vous avez réellement testée."
+  },
+  "band": {
+    "grey": { "label": "pas encore", "advice": "ne vaut pas encore votre temps" },
+    "amber": { "label": "à regarder", "advice": "vaut un coup d'œil" },
+    "lightGreen": { "label": "parlez à des clients", "advice": "vaut une conversation avec un client" },
+    "darkGreen": { "label": "plan sérieux", "advice": "vaut un plan sérieux" }
+  },
+  "documentError": {
+    "too-large": "Ce fichier est plus gros qu'une matrice ne peut l'être.",
+    "not-json": "Ce fichier n'est pas du JSON valide.",
+    "not-a-matrix": "Ce fichier n'est pas un fichier Idea Matrix.",
+    "newer-version": "Ce fichier a été enregistré par une version plus récente d'Idea Matrix. Rechargez la page pour obtenir la dernière version, puis ouvrez-le de nouveau."
+  }
+}

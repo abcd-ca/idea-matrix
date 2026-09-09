@@ -1,19 +1,21 @@
 "use client";
 
-import { LogoMark } from "@/components/logo-mark";
-import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert";
-import { Button } from "@/components/ui/button";
-import { MOM_TEST_URL } from "@/lib/config";
-import { createDriveFile, createNewFile, openDriveFile, openExistingFile, writeDocumentNow } from "@/lib/file-session";
-import { MOM_TEST_SUMMARY, OVERVIEW_AI, OVERVIEW_CARDS, OVERVIEW_INTRO, OVERVIEW_TITLE } from "@/lib/overview";
-import { driveConfigured } from "@/lib/storage/google-drive";
-import { supportsLocalFile } from "@/lib/storage/local-file";
-import { describeWhere, type TargetKind } from "@/lib/storage/target";
-import { useAppStore } from "@/lib/store";
-import { emptyDocument, sampleDocument } from "@idea-matrix/core";
+import { FILE_EXTENSION, emptyDocument, sampleDocument } from "@idea-matrix/core";
 import { cn } from "cn";
 import { useRouter } from "next/navigation";
 import { useEffect, useRef, useState, useSyncExternalStore, type ReactNode } from "react";
+import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert";
+import { Button } from "@/components/ui/button";
+import { LogoMark } from "@/components/logo-mark";
+import { createDriveFile, createNewFile, openDriveFile, openExistingFile, writeDocumentNow } from "@/lib/file-session";
+import { MOM_TEST_URL } from "@/lib/config";
+import { overview } from "@/lib/overview";
+import { driveConfigured } from "@/lib/storage/google-drive";
+import { supportsLocalFile } from "@/lib/storage/local-file";
+import type { TargetKind } from "@/lib/storage/target";
+import { useAppStore } from "@/lib/store";
+import { LanguageSelect } from "@/components/device-preferences";
+import { Trans, useTranslation } from "react-i18next";
 
 // Dropbox is a card on the screen but not a target yet.
 type Where = TargetKind | "dropbox";
@@ -25,6 +27,7 @@ type Step = "welcome" | "where" | "file" | "start";
  * a new one) what goes in it.
  */
 export function SetupWizard() {
+  const { t } = useTranslation("setup");
   const router = useRouter();
   const setTourPending = useAppStore((s) => s.setTourPending);
   const storeError = useAppStore((s) => s.error);
@@ -54,6 +57,10 @@ export function SetupWizard() {
     router.replace("/");
   };
 
+  const o = overview(t);
+  // "on this computer" / "in Google Drive", for the sentences about the file.
+  const whereText = t(`where.${where === "drive" ? "drive" : "local"}`, { ns: "common" });
+
   return (
     <div className="flex min-h-svh items-center justify-center bg-muted/30 p-3 sm:p-4">
       <div className="flex w-full max-w-3xl flex-col gap-5 rounded-lg border bg-background p-5 shadow-sm sm:gap-6 sm:p-6 md:p-10">
@@ -63,13 +70,13 @@ export function SetupWizard() {
           <>
             <header className="flex flex-col gap-2">
               <LogoMark className="size-10" />
-              <p className="text-xs font-medium tracking-wide text-muted-foreground uppercase">Welcome</p>
-              <h1 className="font-heading text-2xl font-semibold sm:text-3xl">{OVERVIEW_TITLE}</h1>
-              <p className="max-w-prose text-muted-foreground">{OVERVIEW_INTRO}</p>
+              <p className="text-xs font-medium tracking-wide text-muted-foreground uppercase">{t("welcome")}</p>
+              <h1 className="font-heading text-2xl font-semibold sm:text-3xl">{o.title}</h1>
+              <p className="max-w-prose text-muted-foreground">{o.intro}</p>
             </header>
 
             <div className="grid gap-3 sm:grid-cols-3 sm:gap-4">
-              {OVERVIEW_CARDS.map((card) => (
+              {o.cards.map((card) => (
                 <Overview key={card.title} title={card.title}>
                   {card.text}
                 </Overview>
@@ -77,15 +84,22 @@ export function SetupWizard() {
             </div>
 
             <p className="max-w-prose text-sm text-muted-foreground">
-              The rules for what counts as evidence come from{" "}
-              <a href={MOM_TEST_URL} target="_blank" rel="noreferrer" className="underline underline-offset-4">
-                The Mom Test
-              </a>
-              : {MOM_TEST_SUMMARY} {OVERVIEW_AI} A short tour explains the screen once your matrix is open.
+              <Trans
+                t={t}
+                i18nKey="common:overview.momTestFrom"
+                values={{ momTest: o.momTest }}
+                components={{
+                  a: (
+                    <a href={MOM_TEST_URL} target="_blank" rel="noreferrer" className="underline underline-offset-4" />
+                  ),
+                }}
+              />{" "}
+              {o.ai} {t("tourNote")}
             </p>
 
-            <footer className="flex items-center justify-end">
-              <Button onClick={() => setStep("where")}>Get started</Button>
+            <footer className="flex items-center justify-between gap-3">
+              <LanguageSelect compact />
+              <Button onClick={() => setStep("where")}>{t("getStarted")}</Button>
             </footer>
           </>
         ) : null}
@@ -93,57 +107,57 @@ export function SetupWizard() {
         {step === "where" ? (
           <>
             <header className="flex flex-col gap-2">
-              <h1 className="font-heading text-2xl font-semibold sm:text-3xl">Where do you want to keep your ideas?</h1>
-              <p className="max-w-prose text-muted-foreground">
-                Idea Matrix has no accounts and no server of its own. Your matrix is one file, and you choose where it
-                lives. You can open a different file later from Settings.
-              </p>
+              <h1 className="font-heading text-2xl font-semibold sm:text-3xl">{t("where.title")}</h1>
+              <p className="max-w-prose text-muted-foreground">{t("where.intro")}</p>
             </header>
 
             {supported === false ? (
               <Alert>
-                <AlertTitle>“This computer” needs Chrome or Edge</AlertTitle>
-                <AlertDescription>
-                  Your browser can’t save changes back to a file on disk, so this option is off. Open this page in
-                  Chrome or Edge to use it, or keep your ideas in Google Drive, which works in any browser.
-                </AlertDescription>
+                <AlertTitle>{t("where.needsChromeTitle")}</AlertTitle>
+                <AlertDescription>{t("where.needsChromeBody")}</AlertDescription>
               </Alert>
             ) : null}
 
-            <div className="grid gap-4 sm:grid-cols-3" role="radiogroup" aria-label="Where to keep your ideas">
+            <div className="grid gap-4 sm:grid-cols-3" role="radiogroup" aria-label={t("where.groupLabel")}>
               <ChoiceCard
                 selected={where === "local"}
                 disabled={supported !== true}
                 onSelect={() => setWhere("local")}
-                title="This computer"
-                tag="Chrome or Edge"
+                title={t("where.local")}
+                tag={t("where.localTag")}
               >
-                A file you can see, back up, or keep in your iCloud, Dropbox or Drive folder.
+                {t("where.localText")}
               </ChoiceCard>
               <ChoiceCard
                 selected={where === "drive"}
                 disabled={!driveConfigured()}
                 onSelect={() => setWhere("drive")}
-                title="Google Drive"
-                tag={driveConfigured() ? "Any browser" : "coming later"}
+                title={t("where.drive")}
+                tag={driveConfigured() ? t("where.driveTag") : t("where.comingLater")}
               >
-                Any browser, including your phone. The app only sees the one file it creates or you open.
+                {t("where.driveText")}
               </ChoiceCard>
-              <ChoiceCard selected={false} disabled onSelect={() => undefined} title="Dropbox" tag="coming later">
-                A visible Apps/Idea Matrix folder in your Dropbox.
+              <ChoiceCard
+                selected={false}
+                disabled
+                onSelect={() => undefined}
+                title={t("where.dropbox")}
+                tag={t("where.comingLater")}
+              >
+                {t("where.dropboxText")}
               </ChoiceCard>
             </div>
 
             <footer className="flex items-center justify-between gap-3">
               <Button variant="ghost" onClick={() => setStep("welcome")}>
-                Back
+                {t("actions.back", { ns: "common" })}
               </Button>
               <span className="flex items-center gap-3">
                 {where === null ? (
-                  <span className="hidden text-xs text-muted-foreground sm:inline">Choose a location to continue</span>
+                  <span className="hidden text-xs text-muted-foreground sm:inline">{t("where.chooseToContinue")}</span>
                 ) : null}
                 <Button disabled={where === null} onClick={() => setStep("file")}>
-                  Continue
+                  {t("actions.continue", { ns: "common" })}
                 </Button>
               </span>
             </footer>
@@ -153,11 +167,9 @@ export function SetupWizard() {
         {step === "file" ? (
           <>
             <header className="flex flex-col gap-2">
-              <h1 className="font-heading text-2xl font-semibold sm:text-3xl">
-                Open a matrix you already have, or create a new one?
-              </h1>
+              <h1 className="font-heading text-2xl font-semibold sm:text-3xl">{t("file.title")}</h1>
               <p className="text-muted-foreground">
-                Keeping your ideas <strong>{describeWhere(where === "dropbox" ? null : where)}</strong>.
+                <Trans t={t} i18nKey="file.keeping" values={{ where: whereText }} components={{ strong: <strong /> }} />
               </p>
             </header>
 
@@ -170,12 +182,8 @@ export function SetupWizard() {
             {where === "drive" ? (
               <div className="grid gap-4 sm:grid-cols-2">
                 <div className="flex flex-col gap-3 rounded-md border p-5">
-                  <h2 className="font-heading text-xl font-bold">Open an existing matrix</h2>
-                  <p className="flex-1 text-sm text-muted-foreground">
-                    You already have a matrix file in your Drive, maybe from another computer. Google asks you to sign
-                    in, then a picker shows your JSON files. Picking one is what gives the app access to it, and to
-                    nothing else in your Drive.
-                  </p>
+                  <h2 className="font-heading text-xl font-bold">{t("file.openTitle")}</h2>
+                  <p className="flex-1 text-sm text-muted-foreground">{t("file.openDriveText")}</p>
                   <Button
                     variant="outline"
                     disabled={busy}
@@ -188,14 +196,14 @@ export function SetupWizard() {
                       else if (result === "error") setError(useAppStore.getState().error);
                     }}
                   >
-                    Open from Drive…
+                    {t("file.openFromDrive")}
                   </Button>
-                  <p className="text-xs text-muted-foreground">This is the last step: your matrix opens as it is.</p>
+                  <p className="text-xs text-muted-foreground">{t("file.lastStep")}</p>
                 </div>
                 <div className="flex flex-col gap-3 rounded-md border p-5">
-                  <h2 className="font-heading text-xl font-bold">Create a new matrix</h2>
-                  <p className="text-sm text-muted-foreground">Google asks you to sign in, then the file is created:</p>
-                  <div className="flex flex-col gap-2 text-sm" role="radiogroup" aria-label="Which folder">
+                  <h2 className="font-heading text-xl font-bold">{t("file.createTitle")}</h2>
+                  <p className="text-sm text-muted-foreground">{t("file.createDriveText")}</p>
+                  <div className="flex flex-col gap-2 text-sm" role="radiogroup" aria-label={t("file.folderGroup")}>
                     <label className="flex items-start gap-2">
                       <input
                         type="radio"
@@ -205,14 +213,14 @@ export function SetupWizard() {
                         onChange={() => setDriveFolder("new")}
                       />
                       <span className="flex flex-1 flex-col gap-1">
-                        <span>In a new folder at the top of My Drive, called</span>
+                        <span>{t("file.newFolder")}</span>
                         <input
                           className="w-full min-w-0 rounded-md border bg-background px-2 py-1"
                           value={driveFolderName}
                           maxLength={100}
                           disabled={driveFolder !== "new"}
                           onChange={(e) => setDriveFolderName(e.target.value)}
-                          aria-label="New folder name"
+                          aria-label={t("file.newFolderName")}
                         />
                       </span>
                     </label>
@@ -223,24 +231,24 @@ export function SetupWizard() {
                         checked={driveFolder === "pick"}
                         onChange={() => setDriveFolder("pick")}
                       />
-                      <span>In a folder I choose (a picker opens)</span>
+                      <span>{t("file.pickFolder")}</span>
                     </label>
                   </div>
                   <label className="flex flex-1 flex-col gap-1.5 text-sm">
-                    <span className="text-muted-foreground">File name</span>
+                    <span className="text-muted-foreground">{t("file.fileName")}</span>
                     <span className="flex items-center gap-1">
                       <input
                         className="w-full min-w-0 rounded-md border bg-background px-2 py-1"
                         value={driveName}
                         maxLength={100}
                         onChange={(e) => setDriveName(e.target.value)}
-                        aria-label="File name, without the extension"
+                        aria-label={t("file.fileNameLabel")}
                         // A file name, not a sentence: no capital, no autocorrect on a phone keyboard.
                         autoCapitalize="none"
                         autoCorrect="off"
                         spellCheck={false}
                       />
-                      <span className="shrink-0 text-muted-foreground">.ideamatrix.json</span>
+                      <span className="shrink-0 text-muted-foreground">{FILE_EXTENSION}</span>
                     </span>
                   </label>
                   <Button
@@ -259,19 +267,16 @@ export function SetupWizard() {
                       else if (result === "error") setError(useAppStore.getState().error);
                     }}
                   >
-                    Create in Drive…
+                    {t("file.createInDrive")}
                   </Button>
-                  <p className="text-xs text-muted-foreground">One more step: what goes in the new file.</p>
+                  <p className="text-xs text-muted-foreground">{t("file.oneMoreStep")}</p>
                 </div>
               </div>
             ) : (
               <div className="grid gap-4 sm:grid-cols-2">
                 <div className="flex flex-col gap-3 rounded-md border p-5">
-                  <h2 className="font-heading text-xl font-bold">Open an existing matrix</h2>
-                  <p className="flex-1 text-sm text-muted-foreground">
-                    You already have a matrix file, maybe from another computer or a backup. The picker shows JSON
-                    files, and the app checks that the one you choose really is a matrix before loading it.
-                  </p>
+                  <h2 className="font-heading text-xl font-bold">{t("file.openTitle")}</h2>
+                  <p className="flex-1 text-sm text-muted-foreground">{t("file.openLocalText")}</p>
                   <Button
                     variant="outline"
                     disabled={busy}
@@ -284,15 +289,13 @@ export function SetupWizard() {
                       else if (result === "error") setError(useAppStore.getState().error);
                     }}
                   >
-                    Open a file…
+                    {t("file.openFile")}
                   </Button>
-                  <p className="text-xs text-muted-foreground">This is the last step: your matrix opens as it is.</p>
+                  <p className="text-xs text-muted-foreground">{t("file.lastStep")}</p>
                 </div>
                 <div className="flex flex-col gap-3 rounded-md border p-5">
-                  <h2 className="font-heading text-xl font-bold">Create a new matrix</h2>
-                  <p className="flex-1 text-sm text-muted-foreground">
-                    A save dialog opens so you pick the folder and name. The suggested name is ideas.ideamatrix.json.
-                  </p>
+                  <h2 className="font-heading text-xl font-bold">{t("file.createTitle")}</h2>
+                  <p className="flex-1 text-sm text-muted-foreground">{t("file.createLocalText")}</p>
                   <Button
                     disabled={busy}
                     onClick={async () => {
@@ -304,9 +307,9 @@ export function SetupWizard() {
                       else if (result === "error") setError(useAppStore.getState().error);
                     }}
                   >
-                    Create a file…
+                    {t("file.createFile")}
                   </Button>
-                  <p className="text-xs text-muted-foreground">One more step: what goes in the new file.</p>
+                  <p className="text-xs text-muted-foreground">{t("file.oneMoreStep")}</p>
                 </div>
               </div>
             )}
@@ -314,7 +317,7 @@ export function SetupWizard() {
             <footer className="flex items-center justify-start">
               {/* Never disabled: going back while a picker is open is harmless, and a picker that never answers must not trap the person here. */}
               <Button variant="ghost" onClick={() => setStep("where")}>
-                Back
+                {t("actions.back", { ns: "common" })}
               </Button>
             </footer>
           </>
@@ -323,20 +326,23 @@ export function SetupWizard() {
         {step === "start" ? (
           <>
             <header className="flex flex-col gap-2">
-              <h1 className="font-heading text-2xl font-semibold sm:text-3xl">What should go in it?</h1>
+              <h1 className="font-heading text-2xl font-semibold sm:text-3xl">{t("start.title")}</h1>
               <p className="text-muted-foreground">
-                <strong>{useAppStore.getState().fileName ?? "Your file"}</strong> is saved{" "}
-                {describeWhere(where === "dropbox" ? null : where)}. It is empty until you choose what goes in it.
+                <Trans
+                  t={t}
+                  i18nKey="start.saved"
+                  values={{ where: whereText }}
+                  components={{ file: <strong>{useAppStore.getState().fileName ?? t("start.yourFile")}</strong> }}
+                />
               </p>
             </header>
 
-            <div className="grid gap-4 sm:grid-cols-2" role="radiogroup" aria-label="What to start with">
-              <ChoiceCard selected={seed === "example"} onSelect={() => setSeed("example")} title="An example matrix">
-                Nine fictional ideas, already scored, so you can see what a filled-in matrix looks like before adding
-                your own. Park them whenever you like.
+            <div className="grid gap-4 sm:grid-cols-2" role="radiogroup" aria-label={t("start.groupLabel")}>
+              <ChoiceCard selected={seed === "example"} onSelect={() => setSeed("example")} title={t("start.example")}>
+                {t("start.exampleText")}
               </ChoiceCard>
-              <ChoiceCard selected={seed === "empty"} onSelect={() => setSeed("empty")} title="Nothing yet">
-                Just the columns. You’ll add your first idea from the matrix, after a short tour.
+              <ChoiceCard selected={seed === "empty"} onSelect={() => setSeed("empty")} title={t("start.empty")}>
+                {t("start.emptyText")}
               </ChoiceCard>
             </div>
 
@@ -348,7 +354,7 @@ export function SetupWizard() {
 
             <footer className="flex items-center justify-between">
               <Button variant="ghost" onClick={() => setStep("file")} disabled={busy}>
-                Back
+                {t("actions.back", { ns: "common" })}
               </Button>
               <Button
                 disabled={busy}
@@ -356,16 +362,18 @@ export function SetupWizard() {
                   setBusy(true);
                   setError(null);
                   try {
-                    await writeDocumentNow(seed === "example" ? sampleDocument() : emptyDocument("My ideas"));
+                    await writeDocumentNow(
+                      seed === "example" ? sampleDocument() : emptyDocument(t("start.defaultName")),
+                    );
                     finish();
                   } catch (e) {
-                    setError(e instanceof Error ? e.message : "Could not write the file.");
+                    setError(e instanceof Error ? e.message : t("errors.couldNotWrite", { ns: "common" }));
                   } finally {
                     setBusy(false);
                   }
                 }}
               >
-                Open my matrix
+                {t("start.open")}
               </Button>
             </footer>
           </>
@@ -376,11 +384,12 @@ export function SetupWizard() {
 }
 
 function Progress({ step }: { step: Step }) {
+  const { t } = useTranslation("setup");
   const items: { key: Step; label: string }[] = [
-    { key: "where", label: "1 Where" },
-    { key: "file", label: step === "start" ? "2 New file" : "2 Which file" },
+    { key: "where", label: t("progress.where") },
+    { key: "file", label: step === "start" ? t("progress.newFile") : t("progress.whichFile") },
   ];
-  if (step === "start") items.push({ key: "start", label: "3 Start with" });
+  if (step === "start") items.push({ key: "start", label: t("progress.startWith") });
   const order: Step[] = ["where", "file", "start"];
   return (
     <ol className="flex flex-wrap items-center gap-2 text-xs">
@@ -403,9 +412,7 @@ function Progress({ step }: { step: Step }) {
         );
       })}
       {step !== "start" ? (
-        <li className="rounded-md border border-dashed px-2 py-0.5 text-muted-foreground">
-          + one more step if you create a new file
-        </li>
+        <li className="rounded-md border border-dashed px-2 py-0.5 text-muted-foreground">{t("progress.oneMore")}</li>
       ) : null}
     </ol>
   );

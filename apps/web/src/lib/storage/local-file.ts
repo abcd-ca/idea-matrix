@@ -4,11 +4,15 @@
  * is remembered by `target.ts`.
  */
 
+import { i18n } from "../i18n";
+
 const PICKER_ID = "ideamatrix";
 
-const FILE_TYPES: FilePickerAcceptType[] = [
-  { description: "Idea Matrix file", accept: { "application/json": [".json"] } },
+const fileTypes = (): FilePickerAcceptType[] => [
+  { description: i18n.t("picker.fileType", { ns: "common" }), accept: { "application/json": [".json"] } },
 ];
+
+const noLocalFileApi = () => new Error(i18n.t("errors.noLocalFileApi", { ns: "common" }));
 
 /** Feature detection, never browser sniffing. */
 export function supportsLocalFile(): boolean {
@@ -25,10 +29,9 @@ function isAbort(e: unknown): boolean {
 
 /** Returns null when the user cancels the dialog. */
 export async function pickExistingFile(): Promise<FileSystemFileHandle | null> {
-  if (!window.showOpenFilePicker)
-    throw new Error("This browser cannot save changes back to a file on disk. Open this page in Chrome or Edge.");
+  if (!window.showOpenFilePicker) throw noLocalFileApi();
   try {
-    const [handle] = await window.showOpenFilePicker({ types: FILE_TYPES, multiple: false, id: PICKER_ID });
+    const [handle] = await window.showOpenFilePicker({ types: fileTypes(), multiple: false, id: PICKER_ID });
     return handle ?? null;
   } catch (e) {
     if (isAbort(e)) return null;
@@ -38,10 +41,9 @@ export async function pickExistingFile(): Promise<FileSystemFileHandle | null> {
 
 /** Returns null when the user cancels the dialog. */
 export async function pickNewFile(suggestedName: string): Promise<FileSystemFileHandle | null> {
-  if (!window.showSaveFilePicker)
-    throw new Error("This browser cannot save changes back to a file on disk. Open this page in Chrome or Edge.");
+  if (!window.showSaveFilePicker) throw noLocalFileApi();
   try {
-    return await window.showSaveFilePicker({ types: FILE_TYPES, suggestedName, id: PICKER_ID });
+    return await window.showSaveFilePicker({ types: fileTypes(), suggestedName, id: PICKER_ID });
   } catch (e) {
     if (isAbort(e)) return null;
     throw e;

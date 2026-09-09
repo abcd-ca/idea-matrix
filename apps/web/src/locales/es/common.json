@@ -1,0 +1,145 @@
+{
+  "language": "Idioma",
+  "nav": {
+    "main": "Principal",
+    "matrix": "Matriz",
+    "parked": "Apartadas",
+    "parkedWithCount": "Apartadas ({{count}})",
+    "settings": "Ajustes"
+  },
+  "help": {
+    "label": "Ayuda",
+    "tour": "Enséñame la aplicación",
+    "privacy": "Privacidad y confianza",
+    "source": "Código fuente en GitHub"
+  },
+  "terms": {
+    "potential": "Potencial",
+    "score": "Puntuación"
+  },
+  "where": {
+    "local": "en este ordenador",
+    "drive": "en Google Drive"
+  },
+  "actions": {
+    "back": "Atrás",
+    "cancel": "Cancelar",
+    "close": "Cerrar",
+    "continue": "Continuar",
+    "copy": "Copiar",
+    "copied": "Copiado",
+    "openDifferentFile": "Abrir otro archivo…",
+    "resume": "Reanudar",
+    "signInWithGoogle": "Iniciar sesión con Google",
+    "startOver": "Empezar de nuevo"
+  },
+  "gate": {
+    "opening": "Abriendo tu matriz…",
+    "toSetup": "Vamos a la configuración…",
+    "resumeWith": "Reanudar con {{fileName}}",
+    "yourMatrix": "tu matriz",
+    "resumeDrive": "Google necesita un clic antes de que la aplicación pueda volver a leer y guardar ese archivo. Te identifica en su propia página y entrega a la aplicación una clave que se queda en este navegador.",
+    "resumeLocal": "Tu navegador necesita un clic antes de que la aplicación pueda volver a leer y guardar ese archivo. Nada ha salido de tu máquina mientras tanto.",
+    "couldNotOpen": "No se pudo abrir el archivo",
+    "somethingWrong": "Algo salió mal."
+  },
+  "status": {
+    "couldNotSave": "No se pudo guardar",
+    "saving": "Guardando…",
+    "unsaved": "Cambios sin guardar",
+    "saved": "Guardado {{when}}",
+    "needsPermission": "Necesita permiso",
+    "upToDate": "Al día",
+    "noFile": "Sin archivo",
+    "compact": "{{fileName}} · {{text}}",
+    "storedWhere": "Los datos se guardan {{where}}",
+    "justNow": "ahora mismo",
+    "secondsAgo": "hace {{count}} s",
+    "minutesAgo": "hace {{count}} min",
+    "savedTo": "Guardado en {{fileName}} {{where}}",
+    "yourFile": "tu archivo",
+    "autosave": "Cada cambio se guarda automáticamente en tu archivo. No hay botón de guardar."
+  },
+  "errors": {
+    "noMatrixOpen": "No hay ninguna matriz abierta.",
+    "notApplied": "No se pudo aplicar ese cambio.",
+    "notAllowed": "El navegador no permitió el acceso al archivo. Inténtalo de nuevo, o abre otro archivo.",
+    "notFound": "El archivo ya no se encuentra. Puede que se haya movido o borrado. Vuelve a ponerlo en su sitio y recarga la página, o abre otro archivo.",
+    "fileProblem": "Algo salió mal con el archivo.",
+    "driveNotSignedIn": "Google no inició tu sesión. Inténtalo de nuevo, o abre otro archivo.",
+    "localNotGranted": "El navegador no concedió el acceso. Puedes abrir otro archivo en su lugar.",
+    "couldNotWrite": "No se pudo escribir el archivo.",
+    "signedOut": "Sesión de Google cerrada. Vuelve a iniciarla cuando quieras que la aplicación llegue a tu archivo.",
+    "driveSaveNeedsSignIn": "Google necesita que vuelvas a iniciar sesión antes de que la aplicación pueda seguir guardando. Tus cambios se conservan hasta entonces.",
+    "driveCheckNeedsSignIn": "Google necesita que vuelvas a iniciar sesión antes de que la aplicación pueda comprobar si tu archivo cambió.",
+    "driveAuth": "Google necesita que vuelvas a iniciar sesión antes de que la aplicación pueda llegar a tu archivo.",
+    "driveFileExists": "Ya hay un archivo llamado {{name}} en esa carpeta. Abre ese, o elige otro nombre u otra carpeta.",
+    "driveScript": "No se pudo cargar el script de inicio de sesión de Google. Comprueba tu conexión e inténtalo de nuevo.",
+    "driveGone": "El archivo ya no se encuentra en Google Drive. Puede que se haya borrado o que se haya retirado el acceso de la aplicación.",
+    "driveError": "Google Drive devolvió un error ({{status}}).",
+    "driveErrorDetail": "Google Drive devolvió un error ({{status}}): {{detail}}",
+    "driveTrashed": "El archivo está en la papelera de Google Drive. Restáuralo allí, o abre otro archivo.",
+    "noLocalFileApi": "Este navegador no puede guardar los cambios en un archivo del disco. Abre esta página en Chrome o Edge."
+  },
+  "picker": {
+    "fileType": "Archivo de Idea Matrix",
+    "openTitle": "Abre tu archivo de Idea Matrix",
+    "folderTitle": "Elige una carpeta para tu archivo de Idea Matrix"
+  },
+  "overview": {
+    "title": "Puntúa tus ideas de proyectos",
+    "intro": "Idea Matrix es un lugar donde guardar tus ideas de proyectos, en la etapa que estén, y explorar cuáles merecen tu tiempo.",
+    "cards": {
+      "scoring": {
+        "title": "Cómo se puntúa una idea",
+        "text": "Cada idea recibe un valor de 1 a 5 en Alcance, Impacto, Rentabilidad, Visión y Facilidad. Juntos dan su Potencial: lo buena que podría ser."
+      },
+      "confidence": {
+        "title": "La Confianza cuenta la evidencia",
+        "text": "Una puntuación aparte para cuánta evidencia hay detrás de esos números, desde la intuición hasta el compromiso de un cliente. La Puntuación es Potencial × Confianza ÷ 5, así que nada queda arriba hasta que personas reales lo respalden."
+      },
+      "private": {
+        "title": "Privado por diseño",
+        "text": "Tus ideas siguen siendo tuyas, a propósito. No hay cuentas ni servidor: tu matriz es un solo archivo en tu propio almacenamiento, y nada sale de tu ordenador. No tienes que fiarte de la palabra de la aplicación. Mira la pestaña Red del navegador, o lee el código abierto."
+      }
+    },
+    "ai": "Úsala aquí en el navegador, o conéctala a tu asistente de IA y repasa tus ideas conversando.",
+    "momTest": "habla de la vida de la gente, no de tu idea; pregunta qué hicieron, no qué harían; solo un compromiso cuenta como prueba.",
+    "momTestFrom": "Las reglas sobre qué cuenta como evidencia vienen de <a>The Mom Test</a>: {{momTest}}"
+  },
+  "connectAi": {
+    "title": "Asistente de IA",
+    "pitch": "Puntúa y comenta tus ideas desde Claude u otro asistente, a través de un pequeño servidor MCP que corre en este ordenador.",
+    "learnMore": "Más información",
+    "button": "Conectar a un agente de IA",
+    "dialogTitle": "Conectar a un agente de IA",
+    "description": "El servidor MCP de Idea Matrix corre en este ordenador y trabaja sobre <file/>, el mismo archivo que la aplicación, con las mismas reglas: la Confianza no puede subir sin evidencia, y nada se borra. Solo el texto de la idea sobre la que preguntas va al asistente, en tu propia cuenta.",
+    "claudeDesktop": "Claude Desktop",
+    "desktopSteps": "Descarga <code>idea-matrix.mcpb</code> desde la <a>página de versiones</a>, haz doble clic en él, y elige <file/> cuando Claude pida tu archivo de matriz.",
+    "claudeCode": "Claude Code",
+    "codeSteps": "Ejecuta esto una vez en una terminal, con la ruta real de tu archivo:",
+    "otherClients": "Otros clientes MCP",
+    "otherSteps": "Apunta el cliente a este comando (transporte stdio):",
+    "then": "Luego di “muéstrame mi matriz de ideas”, o elige el prompt <code>idea_matrix</code>. La aplicación nota los cambios que guarda el asistente en pocos segundos.",
+    "fullInstructions": "Instrucciones completas",
+    "copyCommand": "Copiar comando"
+  },
+  "export": {
+    "button": "Exportar",
+    "json": "JSON",
+    "jsonHint": "Una copia del propio archivo de matriz. Siempre se puede volver a abrir.",
+    "markdown": "Markdown",
+    "markdownHint": "Una sección por idea, para leer y conservar.",
+    "csv": "CSV",
+    "csvHint": "Una fila por idea, para una hoja de cálculo."
+  },
+  "build": {
+    "line": "{{app}} {{version}}, construido a partir del commit <a>{{commit}}</a> del repositorio público.",
+    "withLocalChanges": " (con cambios locales)",
+    "reading": "Leyendo la huella…",
+    "missing": "Aquí no hay huella: esta es una versión de desarrollo, no una desplegada.",
+    "fingerprint": "Huella",
+    "mismatch": "El archivo de huella es del commit {{fileCommit}} pero esta página es del commit {{pageCommit}}. Recarga la página; si sigue así, estás viendo dos despliegues mezclados.",
+    "explain": "La huella es un hash de cada archivo que sirve este sitio. <checks>GitHub muestra la misma huella para ese commit</checks>, así que el código que puedes leer allí es el código que corre aquí. <how>Cómo comprobarlo tú mismo</how>."
+  }
+}

@@ -1,0 +1,63 @@
+{
+  "welcome": "Bienvenida",
+  "tourNote": "Un breve recorrido explica la pantalla una vez abierta tu matriz.",
+  "getStarted": "Empezar",
+  "where": {
+    "title": "¿Dónde quieres guardar tus ideas?",
+    "intro": "Idea Matrix no tiene cuentas ni servidor propio. Tu matriz es un solo archivo, y tú eliges dónde vive. Puedes abrir otro archivo más adelante desde Ajustes.",
+    "needsChromeTitle": "“Este ordenador” necesita Chrome o Edge",
+    "needsChromeBody": "Tu navegador no puede guardar los cambios en un archivo del disco, así que esta opción está desactivada. Abre esta página en Chrome o Edge para usarla, o guarda tus ideas en Google Drive, que funciona en cualquier navegador.",
+    "groupLabel": "Dónde guardar tus ideas",
+    "local": "Este ordenador",
+    "localTag": "Chrome o Edge",
+    "localText": "Un archivo que puedes ver, respaldar, o guardar en tu carpeta de iCloud, Dropbox o Drive.",
+    "drive": "Google Drive",
+    "driveTag": "Cualquier navegador",
+    "comingLater": "próximamente",
+    "driveText": "Cualquier navegador, incluido tu teléfono. La aplicación solo ve el único archivo que crea o que tú abres.",
+    "dropbox": "Dropbox",
+    "dropboxText": "Una carpeta Apps/Idea Matrix visible en tu Dropbox.",
+    "chooseToContinue": "Elige una ubicación para continuar"
+  },
+  "file": {
+    "title": "¿Abrir una matriz que ya tienes, o crear una nueva?",
+    "keeping": "Tus ideas se guardarán <strong>{{where}}</strong>.",
+    "openTitle": "Abrir una matriz existente",
+    "openDriveText": "Ya tienes un archivo de matriz en tu Drive, quizá de otro ordenador. Google te pide iniciar sesión, y luego un selector muestra tus archivos JSON. Elegir uno es lo que da a la aplicación acceso a él, y a nada más de tu Drive.",
+    "openFromDrive": "Abrir desde Drive…",
+    "lastStep": "Este es el último paso: tu matriz se abre tal como está.",
+    "createTitle": "Crear una matriz nueva",
+    "createDriveText": "Google te pide iniciar sesión, y luego se crea el archivo:",
+    "folderGroup": "Qué carpeta",
+    "newFolder": "En una carpeta nueva en la raíz de Mi unidad, llamada",
+    "newFolderName": "Nombre de la carpeta nueva",
+    "pickFolder": "En una carpeta que yo elija (se abre un selector)",
+    "fileName": "Nombre del archivo",
+    "fileNameLabel": "Nombre del archivo, sin la extensión",
+    "createInDrive": "Crear en Drive…",
+    "oneMoreStep": "Un paso más: qué va en el archivo nuevo.",
+    "openLocalText": "Ya tienes un archivo de matriz, quizá de otro ordenador o de una copia de seguridad. El selector muestra archivos JSON, y la aplicación comprueba que el que elijas sea de verdad una matriz antes de cargarlo.",
+    "openFile": "Abrir un archivo…",
+    "createLocalText": "Se abre un diálogo de guardado para que elijas la carpeta y el nombre. El nombre sugerido es ideas.ideamatrix.json.",
+    "createFile": "Crear un archivo…"
+  },
+  "start": {
+    "title": "¿Qué debe contener?",
+    "defaultName": "Mis ideas",
+    "saved": "<file/> está guardado {{where}}. Está vacío hasta que elijas qué va dentro.",
+    "yourFile": "Tu archivo",
+    "groupLabel": "Con qué empezar",
+    "example": "Una matriz de ejemplo",
+    "exampleText": "Nueve ideas ficticias, ya puntuadas, para que veas cómo luce una matriz completa antes de añadir las tuyas. Apártalas cuando quieras.",
+    "empty": "Nada todavía",
+    "emptyText": "Solo las columnas. Añadirás tu primera idea desde la matriz, tras un breve recorrido.",
+    "open": "Abrir mi matriz"
+  },
+  "progress": {
+    "where": "1 Dónde",
+    "newFile": "2 Archivo nuevo",
+    "whichFile": "2 Qué archivo",
+    "startWith": "3 Contenido inicial",
+    "oneMore": "+ un paso más si creas un archivo nuevo"
+  }
+}

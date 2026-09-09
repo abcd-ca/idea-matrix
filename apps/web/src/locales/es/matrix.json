@@ -1,0 +1,34 @@
+{
+  "columns": {
+    "idea": "Idea",
+    "stage": "Etapa"
+  },
+  "scoreIt": "puntúala",
+  "parkedTitle": "Ideas apartadas",
+  "newIdea": "Nueva idea",
+  "stageFilter": "Etapa",
+  "all": "Todas",
+  "parkedIntro": "Las ideas apartadas conservan sus puntuaciones como historial. Abre una para ver por qué se apartó, o para recuperarla.",
+  "hint": "Haz clic en una idea para abrirla y puntuarla. Pasa el cursor sobre un encabezado de columna para ver su escala.",
+  "showScores": "Mostrar las cinco puntuaciones",
+  "cardMeta": "Potencial {{potential}} · Confianza {{confidence}}",
+  "empty": {
+    "parked": "No hay nada apartado. Cuando apartes una idea, aparecerá aquí con su motivo.",
+    "filtered": "No hay ideas en esta etapa.",
+    "none": "Todavía no hay ideas. Añade la primera y puntúala."
+  },
+  "newDialog": {
+    "title": "Nueva idea",
+    "description": "Basta con un nombre corto. Podrás describirla y puntuarla a continuación.",
+    "placeholder": "p. ej. Panel del tiempo al inicio del sendero",
+    "nameLabel": "Nombre de la idea",
+    "add": "Añadir idea"
+  },
+  "help": {
+    "range": "{{min}} a {{max}}",
+    "andUp": "{{min}} o más",
+    "bandLine": "<b>{{range}}</b>: {{advice}}",
+    "levelLine": "<b>{{level}}</b> {{meaning}}",
+    "stageLine": "<b>{{stage}}</b>: {{description}}"
+  }
+}

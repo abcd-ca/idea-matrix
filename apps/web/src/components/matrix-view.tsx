@@ -1,17 +1,6 @@
 "use client";
 
-import {
-  CONFIDENCE_INFO,
-  CRITERION_INFO,
-  CRITERIA,
-  STAGES,
-  STAGE_INFO,
-  addIdea,
-  potential,
-  score,
-  type Idea,
-  type Stage,
-} from "@idea-matrix/core";
+import { CRITERIA, STAGES, addIdea, potential, score, type Idea, type Stage } from "@idea-matrix/core";
 import {
   createColumnHelper,
   flexRender,
@@ -38,6 +27,8 @@ import {
 } from "@/components/ui/dialog";
 import { Input } from "@/components/ui/input";
 import { useAppStore } from "@/lib/store";
+import { coreLevels } from "@/lib/i18n";
+import { useTranslation } from "react-i18next";
 
 type Row = Idea & { potential: number | null; score: number | null };
 
@@ -47,6 +38,7 @@ const SHOW_SCORES_KEY = "ideamatrix.showScores";
 const CENTERED = new Set<string>(["potential", "score", "confidence", ...CRITERIA]);
 
 export function MatrixView({ parked = false }: { parked?: boolean }) {
+  const { t } = useTranslation("matrix");
   const router = useRouter();
   const doc = useAppStore((s) => s.doc);
   const mutate = useAppStore((s) => s.mutate);
@@ -87,19 +79,19 @@ export function MatrixView({ parked = false }: { parked?: boolean }) {
   const columns = useMemo(
     () => [
       columnHelper.accessor("name", {
-        header: "Idea",
+        header: t("columns.idea"),
         cell: (info) => <span className="font-medium">{info.getValue()}</span>,
         sortingFn: "alphanumeric",
       }),
       columnHelper.accessor("stage", {
-        header: "Stage",
+        header: t("columns.stage"),
         cell: (info) => <StageBadge stage={info.getValue()} />,
       }),
       ...(showScores
         ? CRITERIA.map((key) =>
             columnHelper.accessor((row) => row.scores[key], {
               id: key,
-              header: CRITERION_INFO[key].short,
+              header: t(`criterion.${key}.short`, { ns: "core" }),
               sortUndefined: "last",
               cell: (info) => {
                 const v = info.getValue();
@@ -113,25 +105,25 @@ export function MatrixView({ parked = false }: { parked?: boolean }) {
           )
         : []),
       columnHelper.accessor("potential", {
-        header: "Potential",
+        header: t("terms.potential", { ns: "common" }),
         sortUndefined: "last",
-        cell: (info) => <BandPill value={info.getValue()} showLabel emptyText="score it" />,
+        cell: (info) => <BandPill value={info.getValue()} showLabel emptyText={t("scoreIt")} />,
       }),
       columnHelper.accessor("confidence", {
-        header: "Confidence",
+        header: t("confidence.label", { ns: "core" }),
         cell: (info) => (
-          <span className="tabular-nums" title={CONFIDENCE_INFO.levels[info.getValue()]}>
+          <span className="tabular-nums" title={coreLevels(t, "confidence.levels")[info.getValue()]}>
             {info.getValue()}
           </span>
         ),
       }),
       columnHelper.accessor("score", {
-        header: "Score",
+        header: t("terms.score", { ns: "common" }),
         sortUndefined: "last",
         cell: (info) => <BandPill value={info.getValue()} showLabel />,
       }),
     ],
-    [showScores],
+    [showScores, t],
   );
 
   const table = useReactTable({
@@ -151,12 +143,12 @@ export function MatrixView({ parked = false }: { parked?: boolean }) {
   return (
     <div className="flex flex-col gap-4">
       <div className="flex flex-wrap items-center justify-between gap-3">
-        <h1 className="font-heading text-2xl font-semibold sm:text-3xl">{parked ? "Parked ideas" : doc.name}</h1>
+        <h1 className="font-heading text-2xl font-semibold sm:text-3xl">{parked ? t("parkedTitle") : doc.name}</h1>
         <div className="flex items-center gap-4">
           <SaveIndicator className="hidden sm:inline-flex" />
           {!parked ? (
             <Button onClick={() => setNewOpen(true)}>
-              <PlusIcon data-icon="inline-start" /> New idea
+              <PlusIcon data-icon="inline-start" /> {t("newIdea")}
             </Button>
           ) : null}
         </div>
@@ -164,20 +156,23 @@ export function MatrixView({ parked = false }: { parked?: boolean }) {
 
       {!parked ? (
         <div className="flex flex-wrap items-center gap-2" data-tour="stages">
-          <span className="text-sm text-muted-foreground">Stage</span>
+          <span className="text-sm text-muted-foreground">{t("stageFilter")}</span>
           <Chip active={stageFilter === "all"} onClick={() => setStageFilter("all")}>
-            All
+            {t("all")}
           </Chip>
           {ACTIVE_STAGES.map((s) => (
-            <Chip key={s} active={stageFilter === s} onClick={() => setStageFilter(s)} title={STAGE_INFO[s]}>
-              {s}
+            <Chip
+              key={s}
+              active={stageFilter === s}
+              onClick={() => setStageFilter(s)}
+              title={t(`stage.${s}`, { ns: "core" })}
+            >
+              {t(`stageName.${s}`, { ns: "core" })}
             </Chip>
           ))}
         </div>
       ) : (
-        <p className="max-w-prose text-sm text-muted-foreground">
-          Parked ideas keep their scores as history. Open one to see why it was parked, or to bring it back.
-        </p>
+        <p className="max-w-prose text-sm text-muted-foreground">{t("parkedIntro")}</p>
       )}
 
       {error ? (
@@ -257,7 +252,7 @@ export function MatrixView({ parked = false }: { parked?: boolean }) {
           </div>
 
           <div className="hidden items-center justify-between gap-3 text-xs text-muted-foreground md:flex">
-            <span>Click an idea to open and score it. Hover a column heading for its scale.</span>
+            <span>{t("hint")}</span>
             <label className="inline-flex cursor-pointer items-center gap-2">
               <input
                 type="checkbox"
@@ -265,7 +260,7 @@ export function MatrixView({ parked = false }: { parked?: boolean }) {
                 checked={showScores}
                 onChange={(e) => toggleScores(e.target.checked)}
               />
-              Show the five scores
+              {t("showScores")}
             </label>
           </div>
 
@@ -285,9 +280,7 @@ export function MatrixView({ parked = false }: { parked?: boolean }) {
                   </span>
                   <span className="flex items-center justify-between gap-2 text-xs text-muted-foreground">
                     <StageBadge stage={idea.stage} />
-                    <span>
-                      Potential {idea.potential ?? "–"} · Confidence {idea.confidence}
-                    </span>
+                    <span>{t("cardMeta", { potential: idea.potential ?? "–", confidence: idea.confidence })}</span>
                   </span>
                 </button>
               </li>
@@ -342,17 +335,18 @@ function Chip({
 }
 
 function EmptyState({ parked, filtered, onNew }: { parked: boolean; filtered: boolean; onNew: () => void }) {
+  const { t } = useTranslation("matrix");
   return (
     <div className="rounded-md border border-dashed p-8 text-center text-sm text-muted-foreground">
       {parked ? (
-        <p>Nothing is parked. When you park an idea, it lands here with its reason.</p>
+        <p>{t("empty.parked")}</p>
       ) : filtered ? (
-        <p>No ideas at this stage.</p>
+        <p>{t("empty.filtered")}</p>
       ) : (
         <div className="flex flex-col items-center gap-3">
-          <p>No ideas yet. Add the first one and score it.</p>
+          <p>{t("empty.none")}</p>
           <Button onClick={onNew}>
-            <PlusIcon data-icon="inline-start" /> New idea
+            <PlusIcon data-icon="inline-start" /> {t("newIdea")}
           </Button>
         </div>
       )}
@@ -369,6 +363,7 @@ function NewIdeaDialog({
   onOpenChange: (open: boolean) => void;
   onCreate: (name: string) => void;
 }) {
+  const { t } = useTranslation("matrix");
   const [name, setName] = useState("");
   return (
     <Dialog open={open} onOpenChange={(o) => onOpenChange(o)}>
@@ -384,23 +379,23 @@ function NewIdeaDialog({
           className="flex flex-col gap-4"
         >
           <DialogHeader>
-            <DialogTitle>New idea</DialogTitle>
-            <DialogDescription>A short name is enough. You can describe and score it next.</DialogDescription>
+            <DialogTitle>{t("newDialog.title")}</DialogTitle>
+            <DialogDescription>{t("newDialog.description")}</DialogDescription>
           </DialogHeader>
           <Input
             autoFocus
             value={name}
             onChange={(e) => setName(e.target.value)}
-            placeholder="e.g. Trailhead weather board"
+            placeholder={t("newDialog.placeholder")}
             maxLength={200}
-            aria-label="Idea name"
+            aria-label={t("newDialog.nameLabel")}
           />
           <DialogFooter>
             <Button type="button" variant="outline" onClick={() => onOpenChange(false)}>
-              Cancel
+              {t("actions.cancel", { ns: "common" })}
             </Button>
             <Button type="submit" disabled={name.trim() === ""}>
-              Add idea
+              {t("newDialog.add")}
             </Button>
           </DialogFooter>
         </form>

@@ -1,0 +1,45 @@
+{
+  "back": "← Volver a la aplicación",
+  "title": "Privacidad y confianza",
+  "intro": "Esta página no es una política. Es una lista de cosas que puedes comprobar por ti mismo.",
+  "where": {
+    "title": "Dónde están tus ideas",
+    "p1": "En un solo archivo que tú elegiste: en tu propio ordenador, o en tu propio Google Drive. {{app}} no tiene cuentas ni base de datos. El sitio que cargaste es una carpeta de archivos estáticos; no hay código de servidor en absoluto.",
+    "p2": "En tu ordenador, puedes ver el archivo en el Finder o el Explorador. Puedes copiarlo, respaldarlo, ponerlo en una carpeta que sincronice tu cliente de iCloud, Dropbox, OneDrive o Google Drive, o abrirlo en un editor de texto. Es JSON normal. En Google Drive es el mismo archivo, en la carpeta que elegiste, y puedes descargarlo desde allí."
+  },
+  "network": {
+    "title": "Comprueba la red tú mismo",
+    "step1": "Abre las herramientas de desarrollo de tu navegador (F12, o Cmd-Option-I en un Mac) y elige la pestaña Red.",
+    "step2": "Usa la aplicación: puntúa una idea, añade una conversación, aparta algo.",
+    "step3": "Mira la lista. Después de cargar la página, no se pide nada más. La única excepción es un pequeño archivo llamado build.json, que se obtiene de este mismo sitio cuando abres Ajustes o esta página, para que la aplicación pueda mostrar su huella. No hay llamadas a ningún servidor, porque no hay nada a lo que llamar.",
+    "drive": "Si guardas tu matriz en Google Drive, también verás peticiones a googleapis.com: una para leer o escribir tu archivo, y una cada medio minuto para preguntar si cambió en otro sitio. Van a Google, en tu cuenta, con el contenido del archivo. Nada va a ningún otro lugar."
+  },
+  "drive": {
+    "title": "Si eliges Google Drive",
+    "p1": "Se cargan dos scripts propios de Google, desde accounts.google.com y apis.google.com, y solo después de que elijas Drive: uno para iniciar sesión, otro para el selector de archivos. Google te identifica en su propia página y entrega a la aplicación una clave que le permite leer y escribir archivos en tu Drive durante aproximadamente una hora. Esa clave se queda en este navegador, en su almacenamiento local, para que una recarga o una pestaña nueva no te pida iniciar sesión otra vez. Desaparece cuando se cumple la hora o cuando cierras sesión en Ajustes, y la aplicación no tiene ningún servidor al que enviarla; después, un clic consigue una nueva.",
+    "p2": "El permiso que pide la aplicación es el más estrecho que ofrece Google: solo los archivos que la aplicación creó, o que tú elegiste en el selector. No puede listar tu Drive, y no puede leer nada más en él. Puedes retirar el permiso en cualquier momento en tu cuenta de Google, en Seguridad, Aplicaciones de terceros.",
+    "p3": "Google puede ver el archivo, porque es JSON normal en su almacenamiento, igual que cualquier documento que guardes allí. Si eso te preocupa, guarda el archivo en este ordenador en su lugar."
+  },
+  "browser": {
+    "title": "Lo que recuerda el navegador",
+    "p1": "Una copia en caché de tu matriz y un puntero a tu archivo viven en el almacenamiento privado de este navegador, para que la aplicación se abra al instante y funcione sin conexión. Nunca salen del navegador. Borrar los datos del sitio los elimina; tu archivo queda intacto.",
+    "p2": "En una visita posterior, el navegador pide un clic antes de que la aplicación pueda volver a escribir en tu archivo. Ese aviso es del navegador, no de la aplicación, y es algo bueno."
+  },
+  "telemetry": {
+    "title": "Sin telemetría",
+    "p1": "Sin analítica, sin informes de fallos, sin señales de uso, y sin scripts de terceros más allá de los dos de Google, que se cargan solo si eliges Drive. No hay nada en el código que pudiera enviar tus ideas, ni nada sobre cómo usas la aplicación, a ninguna parte."
+  },
+  "ai": {
+    "title": "Asistentes de IA",
+    "p1": "{{app}} viene con un pequeño programa que puedes instalar para que Claude Desktop, Claude Code o un modelo local pueda leer y actualizar tu matriz a través del Model Context Protocol. Corre en tu ordenador, sobre el mismo archivo que la aplicación. Cuando lo usas, el texto de la idea sobre la que preguntas va al asistente que conectaste, en tu cuenta, y a ningún otro sitio. No hay ningún servidor de la aplicación en medio."
+  },
+  "source": {
+    "title": "Lee el código fuente",
+    "licence": "{{app}} es código abierto bajo licencia MIT.",
+    "code": "El código está en <a><icon/> {{repo}}</a>.",
+    "maintained": "Lo mantiene {{maintainer}} (<a>{{site}}</a>). Cada pull request pasa las mismas comprobaciones, y la regla de que nada sale de tu máquina está escrita en las pautas para contribuir."
+  },
+  "build": {
+    "title": "La versión que estás usando"
+  }
+}
