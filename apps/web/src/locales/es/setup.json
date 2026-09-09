@@ -22,7 +22,6 @@
   "file": {
     "title": "¿Abrir una matriz que ya tienes, o crear una nueva?",
     "keeping": "Tus ideas se guardarán <strong>{{where}}</strong>.",
-    "change": "Cambiar",
     "openTitle": "Abrir una matriz existente",
     "openDriveText": "Ya tienes un archivo de matriz en tu Drive, quizá de otro ordenador. Google te pide iniciar sesión, y luego un selector muestra tus archivos JSON. Elegir uno es lo que da a la aplicación acceso a él, y a nada más de tu Drive.",
     "openFromDrive": "Abrir desde Drive…",

@@ -22,7 +22,6 @@
   "file": {
     "title": "Ouvrir une matrice que vous avez déjà, ou en créer une nouvelle?",
     "keeping": "Vos idées seront gardées <strong>{{where}}</strong>.",
-    "change": "Changer",
     "openTitle": "Ouvrir une matrice existante",
     "openDriveText": "Vous avez déjà un fichier de matrice dans votre Drive, peut-être d'un autre ordinateur. Google vous demande de vous connecter, puis un sélecteur affiche vos fichiers JSON. En choisir un est ce qui donne à l'application l'accès à ce fichier, et à rien d'autre dans votre Drive.",
     "openFromDrive": "Ouvrir depuis Drive…",

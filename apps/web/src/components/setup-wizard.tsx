@@ -169,10 +169,7 @@ export function SetupWizard() {
             <header className="flex flex-col gap-2">
               <h1 className="font-heading text-2xl font-semibold sm:text-3xl">{t("file.title")}</h1>
               <p className="text-muted-foreground">
-                <Trans t={t} i18nKey="file.keeping" values={{ where: whereText }} components={{ strong: <strong /> }} />{" "}
-                <button type="button" className="underline underline-offset-4" onClick={() => setStep("where")}>
-                  {t("file.change")}
-                </button>
+                <Trans t={t} i18nKey="file.keeping" values={{ where: whereText }} components={{ strong: <strong /> }} />
               </p>
             </header>
 
@@ -314,7 +311,8 @@ export function SetupWizard() {
             )}
 
             <footer className="flex items-center justify-start">
-              <Button variant="ghost" onClick={() => setStep("where")} disabled={busy}>
+              {/* Never disabled: going back while a picker is open is harmless, and a picker that never answers must not trap the person here. */}
+              <Button variant="ghost" onClick={() => setStep("where")}>
                 {t("actions.back", { ns: "common" })}
               </Button>
             </footer>

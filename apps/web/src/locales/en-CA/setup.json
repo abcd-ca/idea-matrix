@@ -22,7 +22,6 @@
   "file": {
     "title": "Open a matrix you already have, or create a new one?",
     "keeping": "Keeping your ideas <strong>{{where}}</strong>.",
-    "change": "Change",
     "openTitle": "Open an existing matrix",
     "openDriveText": "You already have a matrix file in your Drive, maybe from another computer. Google asks you to sign in, then a picker shows your JSON files. Picking one is what gives the app access to it, and to nothing else in your Drive.",
     "openFromDrive": "Open from Drive…",
