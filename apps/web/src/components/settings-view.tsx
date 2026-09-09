@@ -13,13 +13,17 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { APP_NAME, APP_VERSION, ISSUES_URL, MAINTAINER_NAME, MAINTAINER_URL, SOURCE_URL } from "@/lib/config";
-import { closeFile, flushSave, openExistingFile } from "@/lib/file-session";
+import { closeFile, flushSave, moveToDrive, moveToLocal, openDriveFile, openExistingFile } from "@/lib/file-session";
+import { driveConfigured } from "@/lib/storage/google-drive";
+import { supportsLocalFile } from "@/lib/storage/local-file";
+import { describeWhere } from "@/lib/storage/target";
 import { useAppStore } from "@/lib/store";
 
 export function SettingsView() {
   const router = useRouter();
   const doc = useAppStore((s) => s.doc);
   const fileName = useAppStore((s) => s.fileName);
+  const target = useAppStore((s) => s.target);
   const mutate = useAppStore((s) => s.mutate);
   const [busy, setBusy] = useState(false);
   const [error, setError] = useState<string | null>(null);
@@ -32,7 +36,7 @@ export function SettingsView() {
 
       <Section title="Where your ideas live">
         <p>
-          Your matrix is <strong>{fileName ?? "a file"}</strong> on this computer.
+          Your matrix is <strong>{fileName ?? "a file"}</strong> {describeWhere(target)}.
         </p>
         <div className="flex flex-wrap gap-2">
           <Button
@@ -41,7 +45,7 @@ export function SettingsView() {
             onClick={async () => {
               setBusy(true);
               await flushSave();
-              const result = await openExistingFile();
+              const result = target === "drive" ? await openDriveFile() : await openExistingFile();
               setBusy(false);
               if (result === "error") setError(useAppStore.getState().error);
             }}
@@ -60,15 +64,44 @@ export function SettingsView() {
           >
             Create a new file…
           </Button>
-          <Button variant="outline" disabled title="Coming in a later version">
-            Move to Google Drive…
-          </Button>
+          {target === "drive" ? (
+            <Button
+              variant="outline"
+              disabled={busy || !supportsLocalFile()}
+              title={supportsLocalFile() ? undefined : "Needs Chrome or Edge"}
+              onClick={async () => {
+                setBusy(true);
+                setError(null);
+                const result = await moveToLocal();
+                setBusy(false);
+                if (result === "error") setError(useAppStore.getState().error);
+              }}
+            >
+              Move to this computer…
+            </Button>
+          ) : (
+            <Button
+              variant="outline"
+              disabled={busy || !driveConfigured()}
+              title={driveConfigured() ? undefined : "Coming in a later version"}
+              onClick={async () => {
+                setBusy(true);
+                setError(null);
+                const result = await moveToDrive({ kind: "pick" });
+                setBusy(false);
+                if (result === "error") setError(useAppStore.getState().error);
+              }}
+            >
+              Move to Google Drive…
+            </Button>
+          )}
           <Button variant="outline" disabled title="Coming in a later version">
             Move to Dropbox…
           </Button>
         </div>
         <p className="text-xs text-muted-foreground">
-          Opening a different file switches to it; the current file stays where it is with everything saved.
+          Opening a different file switches to it; the current file stays where it is with everything saved. Moving
+          copies your matrix to the new place and switches to the copy; the old file is left untouched.
         </p>
         {error ? (
           <p role="alert" className="text-sm text-destructive">

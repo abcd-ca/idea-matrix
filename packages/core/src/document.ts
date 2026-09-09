@@ -233,3 +233,35 @@ export function removeEvidence(doc: MatrixDocument, ideaId: string, entryId: str
 export function renameDocument(doc: MatrixDocument, name: string, clock: Clock = defaultClock): MatrixDocument {
   return touch({ ...doc, name: name.trim() || doc.name }, clock);
 }
+
+/**
+ * Reconcile two copies of the same matrix after a save conflict, when another
+ * computer wrote to the shared file first. Idea by idea, the copy with the
+ * newer updatedAt wins; ideas present in only one copy are kept, because a
+ * missing idea is far more often "added over there" than "deleted here". The
+ * matrix name follows whichever document was touched last. Nothing is lost
+ * silently: the worst case is an older edit to one field of one idea.
+ */
+export function mergeDocuments(local: MatrixDocument, remote: MatrixDocument): MatrixDocument {
+  const byId = new Map<string, Idea>();
+  for (const idea of remote.ideas) byId.set(idea.id, idea);
+  for (const idea of local.ideas) {
+    const other = byId.get(idea.id);
+    if (!other || idea.updatedAt >= other.updatedAt) byId.set(idea.id, idea);
+  }
+  // Keep the remote order for ideas both copies know, then anything only local knows.
+  const ideas: Idea[] = [];
+  const seen = new Set<string>();
+  for (const idea of remote.ideas) {
+    ideas.push(byId.get(idea.id)!);
+    seen.add(idea.id);
+  }
+  for (const idea of local.ideas) if (!seen.has(idea.id)) ideas.push(idea);
+  const newer = local.updatedAt >= remote.updatedAt ? local : remote;
+  return {
+    ...newer,
+    ideas,
+    createdAt: local.createdAt <= remote.createdAt ? local.createdAt : remote.createdAt,
+    updatedAt: newer.updatedAt,
+  };
+}
