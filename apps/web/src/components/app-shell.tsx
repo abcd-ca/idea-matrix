@@ -16,6 +16,7 @@ import { ConnectAiPanel } from "@/components/connect-ai";
 import { GitHubMark } from "@/components/github-mark";
 import { LogoMark } from "@/components/logo-mark";
 import { startTour } from "@/components/tour";
+import { WhatsNewBell } from "@/components/whats-new";
 import { APP_NAME, SOURCE_URL } from "@/lib/config";
 import { useAppStore } from "@/lib/store";
 import { StatusLine } from "@/components/status-line";
@@ -38,13 +39,16 @@ export function AppShell({ children }: { children: ReactNode }) {
   return (
     <div className="flex min-h-svh flex-col md:flex-row">
       <aside className="flex shrink-0 flex-col gap-1 border-b bg-muted/30 p-3 md:w-52 md:border-r md:border-b-0 md:p-4">
-        <div className="flex items-center justify-between md:mb-4 md:block">
+        <div className="flex items-center justify-between gap-2 md:mb-4">
           <Link href="/" className="inline-flex items-center gap-2 font-heading text-xl font-bold">
             <LogoMark className="size-5" />
             {APP_NAME}
           </Link>
-          <div className="md:hidden">
-            <HelpMenu />
+          <div className="flex items-center gap-1">
+            <WhatsNewBell />
+            <div className="md:hidden">
+              <HelpMenu />
+            </div>
           </div>
         </div>
         <nav className="flex gap-1 md:flex-col" aria-label={t("nav.main")}>

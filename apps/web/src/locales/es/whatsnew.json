@@ -1,0 +1,27 @@
+{
+  "label": "Novedades",
+  "unread": "Novedades, {{count}} sin leer",
+  "title": "Novedades",
+  "entries": {
+    "2026-09-09-start-over": {
+      "title": "Empezar de nuevo en este dispositivo",
+      "text": "Desde Ajustes puedes desconectar este dispositivo de tu archivo de ideas sin eliminarlo, útil en un ordenador compartido."
+    },
+    "2026-09-09-whats-new": {
+      "title": "Novedades",
+      "text": "Esta campana muestra las funciones añadidas desde la última vez que miraste."
+    },
+    "2026-09-09-languages": {
+      "title": "Cuatro idiomas",
+      "text": "La aplicación ahora habla inglés canadiense y estadounidense, francés y español; elige el tuyo en Ajustes."
+    },
+    "2026-09-09-phone-layout": {
+      "title": "Pensada para el teléfono",
+      "text": "En un teléfono, la matriz se convierte en una lista de tarjetas, con su propio recorrido."
+    },
+    "2026-09-08-google-drive": {
+      "title": "Google Drive",
+      "text": "Guarda tu matriz en Google Drive y ábrela desde cualquier navegador, también en el teléfono."
+    }
+  }
+}

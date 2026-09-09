@@ -44,6 +44,7 @@ export const NAMESPACES = [
   "settings",
   "tour",
   "privacy",
+  "whatsnew",
   "core",
   "sample",
 ] as const;

@@ -1,0 +1,27 @@
+{
+  "label": "What's new",
+  "unread": "What's new, {{count}} unread",
+  "title": "What's new",
+  "entries": {
+    "2026-09-09-start-over": {
+      "title": "Start over on this device",
+      "text": "Settings can disconnect this device from your ideas file without deleting it, handy on a shared computer."
+    },
+    "2026-09-09-whats-new": {
+      "title": "What's new",
+      "text": "This bell lists the features added since you last looked."
+    },
+    "2026-09-09-languages": {
+      "title": "Four languages",
+      "text": "The app now speaks Canadian and American English, French and Spanish; choose yours in Settings."
+    },
+    "2026-09-09-phone-layout": {
+      "title": "Made for phones",
+      "text": "On a phone the matrix becomes a list of cards, with a tour of its own."
+    },
+    "2026-09-08-google-drive": {
+      "title": "Google Drive",
+      "text": "Keep your matrix in Google Drive and reach it from any browser, including on a phone."
+    }
+  }
+}

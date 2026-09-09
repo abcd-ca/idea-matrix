@@ -26,6 +26,7 @@ import {
   DialogTitle,
 } from "@/components/ui/dialog";
 import { Input } from "@/components/ui/input";
+import { SHOW_SCORES_KEY } from "@/lib/preferences";
 import { useAppStore } from "@/lib/store";
 import { coreLevels } from "@/lib/i18n";
 import { useTranslation } from "react-i18next";
@@ -34,7 +35,6 @@ type Row = Idea & { potential: number | null; score: number | null };
 
 const columnHelper = createColumnHelper<Row>();
 const ACTIVE_STAGES = STAGES.filter((s) => s !== "Parked");
-const SHOW_SCORES_KEY = "ideamatrix.showScores";
 const CENTERED = new Set<string>(["potential", "score", "confidence", ...CRITERIA]);
 
 export function MatrixView({ parked = false }: { parked?: boolean }) {

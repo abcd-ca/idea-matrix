@@ -12,9 +12,13 @@ import {
 import * as drive from "./storage/google-drive";
 import { pickExistingFile, pickNewFile } from "./storage/local-file";
 import { ConflictError, DriveTarget, LocalTarget, forgetTarget, loadTarget, type SaveTarget } from "./storage/target";
-import { useAppStore } from "./store";
+import { CACHE_KEY, useAppStore } from "./store";
 import { explainDocumentError } from "./errors";
 import { i18n } from "./i18n";
+import { SHOW_SCORES_KEY, readPreferences } from "./preferences";
+import { usePreferences } from "./preferences-store";
+import { WHATS_NEW, seenIdAtStart } from "./whats-new";
+import { del } from "idb-keyval";
 
 /**
  * Everything that touches the save target: the file on disk or the file in
@@ -76,6 +80,7 @@ export async function startSession(): Promise<void> {
   started = true;
   const store = useAppStore.getState();
   const remembered = await loadTarget();
+  settleWhatsNewMarker(remembered !== null);
   if (!remembered) {
     // Nothing remembered: whatever is cached is stale, since the file is the truth.
     if (store.doc && !store.dirty) store.setDoc(null);
@@ -89,6 +94,20 @@ export async function startSession(): Promise<void> {
     return;
   }
   await readIntoStore();
+}
+
+/**
+ * The first run is the moment the app finds nothing remembered on this
+ * device, and that is when the "What's new" marker is set to the latest entry
+ * (see seenIdAtStart): the bell starts quiet for someone who has never used
+ * the app, and anyone with a remembered file or a marker is left alone. The
+ * record is read straight from storage rather than the preferences store so
+ * this does not depend on which layout effect ran first.
+ */
+function settleWhatsNewMarker(rememberedFile: boolean): void {
+  const seenId = readPreferences().whatsNewSeen;
+  const next = seenIdAtStart(WHATS_NEW, { rememberedFile, seenId });
+  if (next !== undefined && next !== seenId) usePreferences.getState().markWhatsNewSeen(next);
 }
 
 /**
@@ -307,6 +326,41 @@ export function signOutOfDrive(): void {
   if (target?.kind === "drive") {
     useAppStore.getState().setStatus("needs-permission", text("errors.signedOut"));
   }
+}
+
+/**
+ * "Start over on this device": forget everything the app keeps in this
+ * browser, so the next visit is the welcome screen exactly as a newcomer
+ * sees it. For a shared or borrowed computer, and for testing.
+ *
+ * The matrix file itself is never deleted, renamed or written, on disk or in
+ * Drive. What goes, in order: any pending save is flushed and the file
+ * closed (target gone, status no-file, the remembered target forgotten:
+ * the file handle, the Drive pointer and the target kind); the Google token
+ * is dropped and revoked; the cached document, which also carries the
+ * tour-pending flag, is cleared, along with the "show the five scores" flag
+ * and the preferences record, so the language and theme go back to the
+ * device defaults at once. Every clear tolerates a missing key or a storage
+ * that is not there. It ends with a full page load of setup rather than a
+ * client-side route change, so everything held in memory (this module's
+ * session, Google's token client, the stores) starts fresh too.
+ */
+export async function startOver(): Promise<void> {
+  await closeFile();
+  drive.signOut();
+  useAppStore.getState().setTourPending(false);
+  try {
+    await del(CACHE_KEY);
+  } catch {
+    // IndexedDB unavailable: nothing was cached.
+  }
+  try {
+    localStorage.removeItem(SHOW_SCORES_KEY);
+  } catch {
+    // Local storage unavailable: nothing was kept.
+  }
+  usePreferences.getState().reset();
+  window.location.replace("/setup/");
 }
 
 function scheduleSave(): void {

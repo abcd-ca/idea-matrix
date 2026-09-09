@@ -42,7 +42,7 @@ Text in the app, the docs and commit messages uses Canadian English spelling ("c
 
 ## Editing or adding a language
 
-Every string the app shows lives in `apps/web/src/locales/<language>/<namespace>.json`: `common`, `setup`, `matrix`, `idea`, `settings`, `tour` and `privacy`, plus `core` for the text that comes from `packages/core` (scale labels, questions and level meanings, stage descriptions, formulas, bands, the Confidence gate, the errors it can raise, the labels in a Markdown or CSV export) and `sample` for the words of the nine example ideas, whose English also lives in core (`SAMPLE_TEXT`). `en-CA` is the source of truth. `en-US` holds only the strings whose spelling differs from `en-CA`; everything it leaves out falls back to the Canadian text. `fr-CA` and `es` are full translations, made by an AI, and corrections from people who speak the language are the most welcome pull requests there are.
+Every string the app shows lives in `apps/web/src/locales/<language>/<namespace>.json`: `common`, `setup`, `matrix`, `idea`, `settings`, `tour`, `privacy` and `whatsnew`, plus `core` for the text that comes from `packages/core` (scale labels, questions and level meanings, stage descriptions, formulas, bands, the Confidence gate, the errors it can raise, the labels in a Markdown or CSV export) and `sample` for the words of the nine example ideas, whose English also lives in core (`SAMPLE_TEXT`). `en-CA` is the source of truth. `en-US` holds only the strings whose spelling differs from `en-CA`; everything it leaves out falls back to the Canadian text. `fr-CA` and `es` are full translations, made by an AI, and corrections from people who speak the language are the most welcome pull requests there are.
 
 - To fix a translation, edit the value in that language's file and leave the key alone. `{{name}}` is a placeholder the app fills in; `<a>…</a>`, `<b>…</b>`, `<strong>…</strong>`, `<code>…</code>` mark text the app wraps in a link or emphasis, so keep the tags and translate what is inside them; a self-closing tag such as `<file/>` stands for something the app inserts whole (a file name, an icon) and must stay as it is.
 - Keep the scale words consistent throughout a language: Reach, Impact, Profitability, Vision, Ease, Confidence, Potential and Score each get one translation, used everywhere. Product names (Idea Matrix, Google Drive, Claude, The Mom Test) stay as they are.
@@ -55,6 +55,7 @@ Every string the app shows lives in `apps/web/src/locales/<language>/<namespace>
 ## Pull requests
 
 - One concern per pull request, from a branch on your fork.
+- A pull request that adds a feature people will see also adds an entry to `apps/web/src/lib/whats-new.ts`, with its title and one sentence in every language; a bug fix does not.
 - Say what changed and why. A screenshot helps for anything visual.
 - CI must be green. Main only takes pull requests.
 - I review and merge. I am one person, so give me a few days.

@@ -6,4 +6,5 @@ export { default as privacy } from "./privacy.json";
 export { default as settings } from "./settings.json";
 export { default as setup } from "./setup.json";
 export { default as tour } from "./tour.json";
+export { default as whatsnew } from "./whatsnew.json";
 export { default as sample } from "./sample.json";

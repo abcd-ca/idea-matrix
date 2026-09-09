@@ -188,6 +188,7 @@ export async function requestToken(): Promise<boolean> {
 
 /** Forget the token and tell Google to invalidate it. */
 export function signOut(): void {
+  restoreToken();
   const current = token;
   setToken(null);
   if (current && typeof google !== "undefined") {

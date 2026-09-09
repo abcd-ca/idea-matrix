@@ -2,7 +2,8 @@ import { z } from "zod";
 
 /**
  * Preferences of the device, not of the matrix file: the language the app
- * speaks and, later, the theme. Nothing here goes into the document, so
+ * speaks, later the theme, and how far through the "What's new" feed this
+ * device has read. Nothing here goes into the document, so
  * saving, revisions and the MCP server never see them. One small record in
  * local storage, read through a schema at the boundary; a missing or
  * unreadable record means the defaults, which need no record at all.
@@ -12,6 +13,13 @@ import { z } from "zod";
  */
 
 export const PREFERENCES_KEY = "ideamatrix.preferences";
+
+/**
+ * The matrix screen's "show the five scores" toggle, kept under its own key
+ * from before the preferences record existed. Named here so "start over on
+ * this device" knows to clear it.
+ */
+export const SHOW_SCORES_KEY = "ideamatrix.showScores";
 
 export const LANGUAGES = ["en-CA", "fr-CA", "en-US", "es"] as const;
 export type Language = (typeof LANGUAGES)[number];
@@ -37,6 +45,13 @@ export const DEFAULT_THEME: Theme = "system";
 export const preferencesSchema = z.object({
   language: z.enum(LANGUAGES).optional(),
   theme: z.enum(THEMES).optional(),
+  /**
+   * The id of the newest "What's new" entry this device has seen (see
+   * whats-new.ts). Any string, on purpose: a newer copy of the app may have
+   * written an id this one does not know, and it must survive a round trip
+   * through this schema rather than be dropped.
+   */
+  whatsNewSeen: z.string().min(1).optional(),
 });
 export type Preferences = z.infer<typeof preferencesSchema>;
 
@@ -100,6 +115,15 @@ export function writePreferences(patch: Preferences): void {
     localStorage.setItem(PREFERENCES_KEY, JSON.stringify(next));
   } catch {
     // Local storage unavailable: the choice lasts until the page is closed.
+  }
+}
+
+/** Drop the record: the next read is the defaults, as on a device that never had one. */
+export function clearPreferences(): void {
+  try {
+    localStorage.removeItem(PREFERENCES_KEY);
+  } catch {
+    // Local storage unavailable: there was nothing stored to begin with.
   }
 }
 

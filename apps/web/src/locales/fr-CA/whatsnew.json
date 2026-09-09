@@ -1,0 +1,28 @@
+{
+  "label": "Nouveautés",
+  "unread_one": "Nouveautés, {{count}} non lue",
+  "unread_other": "Nouveautés, {{count}} non lues",
+  "title": "Nouveautés",
+  "entries": {
+    "2026-09-09-start-over": {
+      "title": "Recommencer sur cet appareil",
+      "text": "Les Réglages peuvent détacher cet appareil de votre fichier d'idées sans le supprimer, pratique sur un ordinateur partagé."
+    },
+    "2026-09-09-whats-new": {
+      "title": "Nouveautés",
+      "text": "Cette cloche liste les fonctions ajoutées depuis votre dernière visite."
+    },
+    "2026-09-09-languages": {
+      "title": "Quatre langues",
+      "text": "L'application parle maintenant anglais canadien et américain, français et espagnol; choisissez la vôtre dans les Réglages."
+    },
+    "2026-09-09-phone-layout": {
+      "title": "Pensée pour le téléphone",
+      "text": "Sur un téléphone, la matrice devient une liste de cartes, avec sa propre visite guidée."
+    },
+    "2026-09-08-google-drive": {
+      "title": "Google Drive",
+      "text": "Gardez votre matrice dans Google Drive et ouvrez-la depuis n'importe quel navigateur, y compris sur un téléphone."
+    }
+  }
+}
