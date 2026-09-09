@@ -128,3 +128,18 @@
     @apply font-sans;
   }
 }
+/*
+ * Tour popovers (driver.js) are never taller than the screen. The title and
+ * the buttons stay in place; a long step's text scrolls instead of clipping.
+ */
+body .driver-popover {
+  /* !important: driver.js sets display: block inline when it shows a popover. */
+  display: flex !important;
+  flex-direction: column;
+  max-height: calc(100dvh - 2rem);
+}
+body .driver-popover-description {
+  min-height: 0;
+  overflow-y: auto;
+  overscroll-behavior: contain;
+}

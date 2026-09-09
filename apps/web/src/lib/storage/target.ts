@@ -129,12 +129,17 @@ export class DriveTarget implements SaveTarget {
     readonly name: string,
   ) {}
 
+  /**
+   * Only a token already in hand counts. Google's token client opens a popup
+   * even when asked quietly, and browsers block popups outside a click, so a
+   * silent request never succeeds; it just logs an error on every load.
+   */
   async ready(): Promise<boolean> {
-    return drive.hasToken() || drive.requestToken(false);
+    return drive.hasToken();
   }
 
   authorize(): Promise<boolean> {
-    return drive.requestToken(true);
+    return drive.requestToken();
   }
 
   async read(): Promise<Snapshot> {

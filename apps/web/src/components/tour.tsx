@@ -176,7 +176,8 @@ export function startTour(): void {
     prevBtnText: "Back",
     doneBtnText: "Done",
     allowClose: true,
-    steps: isPhoneLayout() ? PHONE_STEPS : STEPS,
+    // Phones get the same welcome step first, then steps that point at the cards.
+    steps: isPhoneLayout() ? [STEPS[0], ...PHONE_STEPS] : STEPS,
     onDestroyed: () => useAppStore.getState().setTourPending(false),
   });
   instance.drive();
