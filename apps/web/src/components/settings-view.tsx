@@ -8,7 +8,6 @@ import { BuildInfo } from "@/components/build-info";
 import { ConnectAiPanel } from "@/components/connect-ai";
 import { ExportMenu } from "@/components/export-menu";
 import { GitHubMark } from "@/components/github-mark";
-import { ImportCsv } from "@/components/import-csv";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
@@ -127,15 +126,13 @@ export function SettingsView() {
         </div>
       </Section>
 
-      <Section title="Export and import">
+      <Section title="Export">
         <div className="flex flex-wrap items-start gap-2">
           <ExportMenu />
-          <ImportCsv />
         </div>
         <p className="text-xs text-muted-foreground">
-          Export downloads a file in the chosen format. Import CSV adds rows from a spreadsheet, such as an export from
-          one you used before. Imported ideas start at Confidence 2 at most, because a spreadsheet carries no evidence
-          log.
+          Downloads a copy in the chosen format. JSON is the matrix file itself, complete with the evidence log;
+          Markdown is for reading; CSV is one row per idea for a spreadsheet.
         </p>
       </Section>
 
