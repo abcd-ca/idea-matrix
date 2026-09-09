@@ -49,8 +49,8 @@ export function SetupWizard() {
   };
 
   return (
-    <div className="flex min-h-svh items-center justify-center bg-muted/30 p-4">
-      <div className="flex w-full max-w-3xl flex-col gap-6 rounded-lg border bg-background p-6 shadow-sm md:p-10">
+    <div className="flex min-h-svh items-center justify-center bg-muted/30 p-3 sm:p-4">
+      <div className="flex w-full max-w-3xl flex-col gap-5 rounded-lg border bg-background p-5 shadow-sm sm:gap-6 sm:p-6 md:p-10">
         {step !== "welcome" ? <Progress step={step} /> : null}
 
         {step === "welcome" ? (
@@ -58,11 +58,11 @@ export function SetupWizard() {
             <header className="flex flex-col gap-2">
               <LogoMark className="size-10" />
               <p className="text-xs font-medium tracking-wide text-muted-foreground uppercase">Welcome</p>
-              <h1 className="font-heading text-3xl font-semibold">{OVERVIEW_TITLE}</h1>
+              <h1 className="font-heading text-2xl font-semibold sm:text-3xl">{OVERVIEW_TITLE}</h1>
               <p className="max-w-prose text-muted-foreground">{OVERVIEW_INTRO}</p>
             </header>
 
-            <div className="grid gap-4 sm:grid-cols-3">
+            <div className="grid gap-3 sm:grid-cols-3 sm:gap-4">
               {OVERVIEW_CARDS.map((card) => (
                 <Overview key={card.title} title={card.title}>
                   {card.text}
@@ -87,7 +87,7 @@ export function SetupWizard() {
         {step === "where" ? (
           <>
             <header className="flex flex-col gap-2">
-              <h1 className="font-heading text-3xl font-semibold">Where do you want to keep your ideas?</h1>
+              <h1 className="font-heading text-2xl font-semibold sm:text-3xl">Where do you want to keep your ideas?</h1>
               <p className="max-w-prose text-muted-foreground">
                 Idea Matrix has no accounts and no server of its own. Your matrix is one file, and you choose where it
                 lives. You can open a different file later from Settings.
@@ -133,7 +133,7 @@ export function SetupWizard() {
                 Back
               </Button>
               <span className="flex items-center gap-3">
-                {where === null ? <span className="text-xs text-muted-foreground">Choose a location to continue</span> : null}
+                {where === null ? <span className="hidden text-xs text-muted-foreground sm:inline">Choose a location to continue</span> : null}
                 <Button disabled={where === null} onClick={() => setStep("file")}>
                   Continue
                 </Button>
@@ -145,7 +145,7 @@ export function SetupWizard() {
         {step === "file" ? (
           <>
             <header className="flex flex-col gap-2">
-              <h1 className="font-heading text-3xl font-semibold">Open a matrix you already have, or create a new one?</h1>
+              <h1 className="font-heading text-2xl font-semibold sm:text-3xl">Open a matrix you already have, or create a new one?</h1>
               <p className="text-muted-foreground">
                 Keeping your ideas <strong>{describeWhere(where === "dropbox" ? null : where)}</strong>.{" "}
                 <button type="button" className="underline underline-offset-4" onClick={() => setStep("where")}>
@@ -309,7 +309,7 @@ export function SetupWizard() {
         {step === "start" ? (
           <>
             <header className="flex flex-col gap-2">
-              <h1 className="font-heading text-3xl font-semibold">What should go in it?</h1>
+              <h1 className="font-heading text-2xl font-semibold sm:text-3xl">What should go in it?</h1>
               <p className="text-muted-foreground">
                 <strong>{useAppStore.getState().fileName ?? "Your file"}</strong> is saved {describeWhere(where === "dropbox" ? null : where)}. It is
                 empty until you choose what goes in it.

@@ -113,6 +113,61 @@ const STEPS: DriveStep[] = [
   },
 ];
 
+/**
+ * On phones the table is a list of cards, so the column headings the desktop
+ * steps point at do not exist. These steps point at the stage chips and the
+ * first card instead, and say the same things without "hover" or "tick".
+ */
+const PHONE_STEPS: DriveStep[] = [
+  {
+    element: "[data-tour=stages]",
+    popover: {
+      title: "Every idea has a stage",
+      description:
+        "Tap a stage to show only the ideas at that stage." +
+        list(STAGES.filter((s) => s !== "Parked").map((s) => `<b>${s}</b>: ${STAGE_INFO[s]}`)) +
+        para("Parked ideas keep their scores and live under Parked in the menu."),
+    },
+  },
+  {
+    element: "[data-tour=first-card]",
+    popover: {
+      title: "Each card is one idea",
+      description:
+        "<p>The number in the corner is its <b>Score</b>, which is what ranks your ideas. Below the name: its stage, its <b>Potential</b> and its <b>Confidence</b>.</p>" +
+        para(FORMULA_INFO.potential) +
+        list(CRITERIA.map((c) => `<b>${CRITERION_INFO[c].label}</b>: ${CRITERION_INFO[c].question}`)) +
+        para("Each is a value of 1 to 5. Profitability can also be 0, for something deliberately non-commercial. The colour says which band a number falls in:") +
+        BAND_LIST,
+    },
+  },
+  {
+    element: "[data-tour=first-card]",
+    popover: {
+      title: "Confidence: how much evidence is behind those scores?",
+      description:
+        list(Object.entries(CONFIDENCE_INFO.levels).map(([k, v]) => `<b>${k}</b> ${v}`)) +
+        para("Every new idea starts at 1. Desk research can take it to 2; only recorded conversations take it further. Three rules for those conversations:") +
+        list(CONFIDENCE_INFO.rules) +
+        para(`${FORMULA_INFO.score} The evidence log on each idea keeps the receipts. ${CONFIDENCE_GATE_SUMMARY}`),
+    },
+  },
+  {
+    element: "[data-tour=first-card]",
+    popover: {
+      title: "Tap an idea to score it",
+      description:
+        "<p>This list is for comparing. Scoring happens inside an idea, where each number shows its meaning as you pick, and where the evidence log lives.</p>" +
+        para("You can replay this tour any time from Help, under Show me around."),
+    },
+  },
+];
+
+/** The card list replaces the table below Tailwind's md breakpoint. */
+function isPhoneLayout(): boolean {
+  return typeof window !== "undefined" && window.matchMedia("(max-width: 767px)").matches;
+}
+
 export function startTour(): void {
   const instance = driver({
     showProgress: true,
@@ -121,7 +176,7 @@ export function startTour(): void {
     prevBtnText: "Back",
     doneBtnText: "Done",
     allowClose: true,
-    steps: STEPS,
+    steps: isPhoneLayout() ? PHONE_STEPS : STEPS,
     onDestroyed: () => useAppStore.getState().setTourPending(false),
   });
   instance.drive();

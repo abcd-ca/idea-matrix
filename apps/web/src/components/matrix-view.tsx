@@ -147,7 +147,7 @@ export function MatrixView({ parked = false }: { parked?: boolean }) {
   return (
     <div className="flex flex-col gap-4">
       <div className="flex flex-wrap items-center justify-between gap-3">
-        <h1 className="font-heading text-3xl font-semibold">{parked ? "Parked ideas" : doc.name}</h1>
+        <h1 className="font-heading text-2xl font-semibold sm:text-3xl">{parked ? "Parked ideas" : doc.name}</h1>
         <div className="flex items-center gap-4">
           <SaveIndicator className="hidden sm:inline-flex" />
           {!parked ? (
@@ -263,10 +263,11 @@ export function MatrixView({ parked = false }: { parked?: boolean }) {
 
           {/* Cards on phones */}
           <ul className="flex flex-col gap-2 md:hidden">
-            {table.getRowModel().rows.map(({ original: idea }) => (
+            {table.getRowModel().rows.map(({ original: idea }, index) => (
               <li key={idea.id}>
                 <button
                   type="button"
+                  data-tour={index === 0 ? "first-card" : undefined}
                   className="flex w-full flex-col gap-1 rounded-md border p-3 text-left hover:bg-muted/40"
                   onClick={() => open(idea.id)}
                 >
