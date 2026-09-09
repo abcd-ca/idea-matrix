@@ -25,6 +25,7 @@ import { driveConfigured } from "@/lib/storage/google-drive";
 import { supportsLocalFile } from "@/lib/storage/local-file";
 import { describeWhere } from "@/lib/storage/target";
 import { useAppStore } from "@/lib/store";
+import { useNameField } from "@/lib/use-name-field";
 
 export function SettingsView() {
   const router = useRouter();
@@ -34,6 +35,7 @@ export function SettingsView() {
   const mutate = useAppStore((s) => s.mutate);
   const [busy, setBusy] = useState(false);
   const [error, setError] = useState<string | null>(null);
+  const matrixName = useNameField(doc?.name ?? "", (name) => setError(mutate((d) => renameDocument(d, name))));
 
   if (!doc) return null;
 
@@ -133,12 +135,7 @@ export function SettingsView() {
       <Section title="Matrix name">
         <div className="flex max-w-sm flex-col gap-1.5">
           <Label htmlFor="matrix-name">Shown at the top of the matrix</Label>
-          <Input
-            id="matrix-name"
-            value={doc.name}
-            maxLength={200}
-            onChange={(e) => setError(mutate((d) => renameDocument(d, e.target.value)))}
-          />
+          <Input id="matrix-name" maxLength={200} {...matrixName} />
         </div>
       </Section>
 
