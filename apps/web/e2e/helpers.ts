@@ -105,9 +105,10 @@ export async function expectSaved(page: Page): Promise<void> {
 
 /**
  * First run, all the way to the example matrix on screen with the tour
- * closed. Tests that are not about setup itself start here.
+ * closed. Tests that are not about setup itself start here; a test about the
+ * first-run tour itself asks for it to be left open.
  */
-export async function setUpWithExample(page: Page): Promise<void> {
+export async function setUpWithExample(page: Page, { keepTour = false } = {}): Promise<void> {
   await installOpfsPickers(page);
   await page.goto("/setup/");
   await page.getByRole("button", { name: "Get started" }).click();
@@ -117,7 +118,7 @@ export async function setUpWithExample(page: Page): Promise<void> {
   await expect(page.getByRole("heading", { name: "What should go in it?" })).toBeVisible();
   await page.getByRole("button", { name: "Open my matrix" }).click();
   await expect(page.getByRole("heading", { name: "Example ideas" })).toBeVisible();
-  await closeTour(page);
+  if (!keepTour) await closeTour(page);
 }
 
 /** Open an idea from the matrix table by its name. */
