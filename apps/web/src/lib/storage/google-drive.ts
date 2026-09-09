@@ -162,17 +162,16 @@ async function ensureTokenClient(): Promise<google.accounts.oauth2.TokenClient> 
 }
 
 /**
- * Get an access token. `interactive` may open Google's popup, so it must run
- * inside a click handler; without it Google is asked quietly and the answer
- * is no if the user's session cannot vouch for them.
+ * Get an access token. This opens Google's popup, so it must run inside a
+ * click handler. A stored token that has not expired is used without asking.
  */
-export async function requestToken(interactive: boolean): Promise<boolean> {
+export async function requestToken(): Promise<boolean> {
   if (hasToken()) return true;
   const client = await ensureTokenClient();
   if (pending) return false;
   return new Promise<boolean>((resolve) => {
     pending = { resolve };
-    client.requestAccessToken({ prompt: interactive ? "" : "none" });
+    client.requestAccessToken();
   });
 }
 
@@ -191,14 +190,14 @@ export function signOut(): void {
 
 // ---- REST ----------------------------------------------------------------
 
-async function call(url: string, init: RequestInit = {}, retry = true): Promise<Response> {
-  if (!hasToken() && !(await requestToken(false))) throw new DriveAuthError();
+async function call(url: string, init: RequestInit = {}): Promise<Response> {
+  if (!hasToken()) throw new DriveAuthError();
   const headers = new Headers(init.headers);
   headers.set("Authorization", `Bearer ${token!.value}`);
   const response = await fetch(url, { ...init, headers });
   if (response.status === 401) {
+    // The token is no longer good. Forget it so the next click asks again.
     setToken(null);
-    if (retry && (await requestToken(false))) return call(url, init, false);
     throw new DriveAuthError();
   }
   if (!response.ok) {
@@ -278,7 +277,7 @@ export interface Picked {
 
 /** The view is built by a callback because `google.picker` exists only once the script has loaded. */
 async function openPicker(makeView: () => google.picker.DocsView, title: string): Promise<Picked | null> {
-  if (!hasToken() && !(await requestToken(true))) throw new DriveAuthError();
+  if (!hasToken() && !(await requestToken())) throw new DriveAuthError();
   await loadPicker();
   return new Promise<Picked | null>((resolve) => {
     const picker = new google.picker.PickerBuilder()

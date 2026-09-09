@@ -196,7 +196,7 @@ export type DriveFolderChoice = { kind: "pick" } | { kind: "new"; name: string }
 /** Returns the folder id, or null when the user cancelled the picker. */
 async function chooseDriveFolder(choice: DriveFolderChoice): Promise<string | null> {
   if (choice.kind === "new") {
-    if (!(await drive.requestToken(true))) throw new drive.DriveAuthError();
+    if (!(await drive.requestToken())) throw new drive.DriveAuthError();
     const folder = await drive.createFolder(choice.name.trim() || "Idea Matrix", null);
     return folder.id;
   }

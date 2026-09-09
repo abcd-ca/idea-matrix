@@ -102,6 +102,9 @@ export function SettingsView() {
         <p className="text-xs text-muted-foreground">
           Opening a different file switches to it; the current file stays where it is with everything saved. Moving
           copies your matrix to the new place and switches to the copy; the old file is left untouched.
+          {/* The buttons' title attributes never show on a touch screen, so the reasons are spelled out here too. */}
+          {target === "drive" && !supportsLocalFile() ? " Moving to this computer needs Chrome or Edge on a computer." : ""}
+          {" Dropbox is coming in a later version."}
         </p>
         {error ? (
           <p role="alert" className="text-sm text-destructive">
