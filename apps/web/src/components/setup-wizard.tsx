@@ -13,6 +13,7 @@ import { overview } from "@/lib/overview";
 import { driveConfigured } from "@/lib/storage/google-drive";
 import { supportsLocalFile } from "@/lib/storage/local-file";
 import type { TargetKind } from "@/lib/storage/target";
+import { sampleText } from "@/lib/i18n";
 import { useAppStore } from "@/lib/store";
 import { LanguageSelect } from "@/components/device-preferences";
 import { Trans, useTranslation } from "react-i18next";
@@ -34,7 +35,7 @@ export function SetupWizard() {
   const [step, setStep] = useState<Step>("welcome");
   const [where, setWhere] = useState<Where | null>(null);
   const [seed, setSeed] = useState<"example" | "empty">("example");
-  const [driveName, setDriveName] = useState("ideas");
+  const [driveName, setDriveName] = useState(() => t("defaultFileName", { ns: "common" }));
   const [driveFolder, setDriveFolder] = useState<"new" | "pick">("new");
   const [driveFolderName, setDriveFolderName] = useState("Idea Matrix");
   const [busy, setBusy] = useState(false);
@@ -363,7 +364,9 @@ export function SetupWizard() {
                   setError(null);
                   try {
                     await writeDocumentNow(
-                      seed === "example" ? sampleDocument() : emptyDocument(t("start.defaultName")),
+                      seed === "example"
+                        ? sampleDocument(undefined, sampleText(t))
+                        : emptyDocument(t("start.defaultName")),
                     );
                     finish();
                   } catch (e) {

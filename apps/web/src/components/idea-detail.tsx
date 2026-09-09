@@ -28,7 +28,7 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
 import { useAppStore } from "@/lib/store";
-import { coreLevels } from "@/lib/i18n";
+import { coreLevels, i18n } from "@/lib/i18n";
 import { useTranslation } from "react-i18next";
 import { useNameField } from "@/lib/use-name-field";
 
@@ -233,9 +233,9 @@ export function IdeaDetail() {
   );
 }
 
-/** The band advice starts a sentence here, so it gets a capital. */
+/** The band advice starts a sentence here, so it gets a capital, by the rules of the current language. */
 function capitalize(text: string): string {
-  return text.charAt(0).toLocaleUpperCase() + text.slice(1);
+  return text.charAt(0).toLocaleUpperCase(i18n.language) + text.slice(1);
 }
 
 function Field({

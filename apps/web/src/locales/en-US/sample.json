@@ -1,0 +1,15 @@
+{
+  "ideas": {
+    "tools": {
+      "description": "Neighbors lend drills, ladders and pressure washers to each other through a shared list, instead of everyone owning one of everything.",
+      "evidence": {
+        "e1": {
+          "who": "Neighbor, three doors down"
+        }
+      }
+    },
+    "snow": {
+      "name": "Neighborhood snow-clearing roster"
+    }
+  }
+}

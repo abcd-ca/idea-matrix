@@ -5,10 +5,15 @@ import { GitHubMark } from "@/components/github-mark";
 import { APP_NAME, MAINTAINER_NAME, MAINTAINER_URL, SOURCE_URL } from "@/lib/config";
 import Link from "next/link";
 import type { ReactNode } from "react";
+import { useEffect } from "react";
 import { Trans, useTranslation } from "react-i18next";
 
 export function PrivacyView() {
   const { t } = useTranslation("privacy");
+  // The static export's <title> is English; the tab follows the language once the page is up.
+  useEffect(() => {
+    document.title = `${t("title")} · ${APP_NAME}`;
+  }, [t]);
   const app = { app: APP_NAME };
   return (
     <main className="mx-auto flex max-w-2xl flex-col gap-6 p-6 md:p-10">

@@ -29,12 +29,13 @@ A local-first web app for scoring project ideas. Read `README.md` for what it is
 - **No user-editable weights.** Potential is the plain average scaled to 100.
 - **Sample data is fictional.** Never add anything that looks like a real idea of mine.
 - **Feature-detect, never browser-sniff.** `supportsLocalFile()` is the only check.
+- **Every string the app shows is translated.** Any text added to the app (not user data) goes into `apps/web/src/locales/en-CA` and the three other languages in the same change, or into a core constant the `core` namespace picks up; nothing is hard-coded in a component, and an error the UI can show carries a code the translations key off. See Writing conventions.
 
 ## Writing conventions
 
 Text in the UI, docs and commit messages uses Canadian English spelling, first person singular where a person speaks, and few em-dashes. Plain and direct, not preachy: "explore which ones deserve your time" rather than "be honest with yourself".
 
-The web app is localized, so English is not the only copy. Every string the app shows lives in `apps/web/src/locales/<language>/<namespace>.json`; `en-CA` is the source of truth, `en-US` holds only the spellings that differ, and `fr-CA` and `es` are full translations (made by an AI, corrected by people as pull requests come in). Every copy edit updates `en-CA` and the three others, and any sentence that appears in more than one place comes from one key (see `overview` in `common.json`, used by the setup wizard and the tour) or one core constant (`CONFIDENCE_GATE_SUMMARY`). Core's own English (scales, stages, formulas, bands, gate sentences) is not duplicated: the `core` namespace is built from core's constants for `en-CA` and translated in the other languages' `core.json`. The MCP server and CLI stay English. `CONTRIBUTING.md` says how to edit or add a language.
+The web app is localized, so English is not the only copy. Every string the app shows lives in `apps/web/src/locales/<language>/<namespace>.json`; `en-CA` is the source of truth, `en-US` holds only the spellings that differ, and `fr-CA` and `es` are full translations (made by an AI, corrected by people as pull requests come in). Every copy edit updates `en-CA` and the three others, and any sentence that appears in more than one place comes from one key (see `overview` in `common.json`, used by the setup wizard and the tour) or one core constant (`CONFIDENCE_GATE_SUMMARY`). Core's own English (scales, stages, formulas, bands, gate sentences) is not duplicated: the `core` namespace is built from core's constants for `en-CA` and translated in the other languages' `core.json`, and the `sample` namespace does the same for the example ideas' words (`SAMPLE_TEXT` in core), which `sampleText` in `i18n.ts` hands back to `sampleDocument` when the setup wizard seeds a file. The MCP server and CLI stay English. `CONTRIBUTING.md` says how to edit or add a language.
 
 ## Git
 

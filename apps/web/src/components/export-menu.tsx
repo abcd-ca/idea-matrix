@@ -10,6 +10,7 @@ import {
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 import { downloadText, safeFileStem } from "@/lib/download";
+import { exportText } from "@/lib/i18n";
 import { useAppStore } from "@/lib/store";
 import { useTranslation } from "react-i18next";
 
@@ -18,7 +19,7 @@ export function ExportMenu() {
   const { t } = useTranslation("common");
   const doc = useAppStore((s) => s.doc);
   if (!doc) return null;
-  const stem = safeFileStem(doc.name);
+  const stem = safeFileStem(doc.name, t("defaultFileName"));
   return (
     <DropdownMenu>
       <DropdownMenuTrigger className={buttonVariants({ variant: "default" })}>
@@ -33,13 +34,15 @@ export function ExportMenu() {
             <p className="text-xs text-muted-foreground">{t("export.jsonHint")}</p>
           </div>
         </DropdownMenuItem>
-        <DropdownMenuItem onClick={() => downloadText(`${stem}.md`, exportMarkdown(doc), "text/markdown")}>
+        <DropdownMenuItem
+          onClick={() => downloadText(`${stem}.md`, exportMarkdown(doc, exportText(t)), "text/markdown")}
+        >
           <div>
             <p>{t("export.markdown")}</p>
             <p className="text-xs text-muted-foreground">{t("export.markdownHint")}</p>
           </div>
         </DropdownMenuItem>
-        <DropdownMenuItem onClick={() => downloadText(`${stem}.csv`, exportCsv(doc), "text/csv")}>
+        <DropdownMenuItem onClick={() => downloadText(`${stem}.csv`, exportCsv(doc, exportText(t)), "text/csv")}>
           <div>
             <p>{t("export.csv")}</p>
             <p className="text-xs text-muted-foreground">{t("export.csvHint")}</p>
