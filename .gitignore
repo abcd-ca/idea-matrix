@@ -26,6 +26,8 @@ dist/
 coverage/
 *.tsbuildinfo
 .eslintcache
+# tsup writes this beside tsup.config.ts while it loads the config; without this line every local build stamps itself dirty
+tsup.config.bundled_*.mjs
 
 # env and local
 .env*
