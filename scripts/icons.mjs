@@ -9,7 +9,8 @@
 //   apps/web/public/icons/icon-192.png  installable-app icons, same tile
 //   apps/web/public/icons/icon-512.png
 //   apps/web/public/icons/icon-maskable-512.png   mark inside the safe zone for Android masks
-//   apps/web/public/og.png              1200 × 630, mark and wordmark, for link previews
+//   apps/web/src/app/opengraph-image.png 1200 × 630, mark and wordmark, for link previews; Next puts a
+//   apps/web/src/app/twitter-image.png    content hash in its URL, so a changed image is fetched afresh
 //   apps/web/public/social-preview.png  1280 × 640, the same, for GitHub's repository preview
 //   packages/mcp/icon.png               512 px tile, the Claude Desktop extension card
 //
@@ -126,11 +127,13 @@ async function main() {
   await out("public/icons/icon-512.png", await png(markSvg(body, 512, 80, TILE)));
   // Maskable: platforms may crop to a circle covering the central 80 %, so keep the mark well inside it.
   await out("public/icons/icon-maskable-512.png", await png(markSvg(body, 512, 128, TILE)));
-  await out("public/og.png", await png(previewSvg(body, 1200, 630, fonts)));
+  const preview = await png(previewSvg(body, 1200, 630, fonts));
+  await out("src/app/opengraph-image.png", preview);
+  await out("src/app/twitter-image.png", preview);
   await out("public/social-preview.png", await png(previewSvg(body, 1280, 640, fonts)));
   await out("icon.png", await png(markSvg(body, 512, 80, TILE)), MCP);
   console.log(
-    "icons: favicon.ico, apple-icon.png, icons/ (192, 512, maskable), og.png, social-preview.png, packages/mcp/icon.png",
+    "icons: favicon.ico, apple-icon.png, icons/ (192, 512, maskable), opengraph-image.png, twitter-image.png, social-preview.png, packages/mcp/icon.png",
   );
 }
 
