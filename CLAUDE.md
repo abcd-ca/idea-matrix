@@ -35,4 +35,4 @@ Once the app is localized (a later roadmap step), English is no longer the only 
 
 ## Git
 
-Main is protected; work on branches and open pull requests. Do not commit or push unless asked. When asked to commit and the working tree holds unrelated changes, make one commit per concern rather than one commit for everything.
+Main takes pull requests only, with a green CI check; GitHub enforces that now the repo is public. Work on branches and open pull requests. Do not commit or push unless asked. When asked to commit and the working tree holds unrelated changes, make one commit per concern rather than one commit for everything.
