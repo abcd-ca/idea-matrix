@@ -58,15 +58,34 @@ export function blankIdea(name: string, clock: Clock = defaultClock): Idea {
   };
 }
 
+/**
+ * An error the UI can show. The message is core's English sentence; the
+ * code is what a translation keys off, with `values` for its placeholders
+ * (`confidence-needs-evidence` carries `allowed`).
+ */
+export type DocumentErrorCode =
+  | "too-large"
+  | "not-json"
+  | "not-a-matrix"
+  | "newer-version"
+  | "invalid"
+  | "no-such-idea"
+  | "confidence-needs-evidence"
+  | "park-needs-reason"
+  | "unpark-needs-stage";
+
 export class DocumentError extends Error {
   constructor(
     message: string,
-    public readonly code: "too-large" | "not-json" | "not-a-matrix" | "newer-version" | "invalid",
+    public readonly code: DocumentErrorCode,
+    public readonly values: Record<string, string | number> = {},
   ) {
     super(message);
     this.name = "DocumentError";
   }
 }
+
+const noSuchIdea = () => new DocumentError("No such idea.", "no-such-idea");
 
 /**
  * Parse text from any source into a validated document, migrating older
@@ -161,15 +180,21 @@ export function updateIdea(
 ): MatrixDocument {
   const clean = ideaPatchSchema.parse(patch);
   const current = findIdea(doc, ideaId);
-  if (!current) throw new Error("No such idea.");
+  if (!current) throw noSuchIdea();
   let next: Idea = { ...current, ...clean, scores: { ...current.scores, ...(clean.scores ?? {}) } };
 
   const allowed = maxConfidenceAllowed(next.evidence);
   if (next.confidence > allowed) {
-    throw new Error(`The evidence log only supports Confidence up to ${allowed} so far.`);
+    throw new DocumentError(
+      `The evidence log only supports Confidence up to ${allowed} so far.`,
+      "confidence-needs-evidence",
+      {
+        allowed,
+      },
+    );
   }
   if (next.stage === "Parked" && next.parkedReason.trim() === "") {
-    throw new Error("A parked idea needs a reason.");
+    throw new DocumentError("A parked idea needs a reason.", "park-needs-reason");
   }
   if (next.stage !== "Parked" && current.stage === "Parked" && clean.stage !== undefined) {
     next = { ...next, parkedReason: "" };
@@ -193,12 +218,12 @@ export function unparkIdea(
   stage: Stage = "Backlog",
   clock: Clock = defaultClock,
 ): MatrixDocument {
-  if (stage === "Parked") throw new Error("Unparking needs a stage other than Parked.");
+  if (stage === "Parked") throw new DocumentError("Unparking needs a stage other than Parked.", "unpark-needs-stage");
   return updateIdea(doc, ideaId, { stage }, clock);
 }
 
 export function deleteIdea(doc: MatrixDocument, ideaId: string, clock: Clock = defaultClock): MatrixDocument {
-  if (!findIdea(doc, ideaId)) throw new Error("No such idea.");
+  if (!findIdea(doc, ideaId)) throw noSuchIdea();
   return touch({ ...doc, ideas: doc.ideas.filter((i) => i.id !== ideaId) }, clock);
 }
 
@@ -210,7 +235,7 @@ export function addEvidence(
 ): { doc: MatrixDocument; entryId: string } {
   const clean = evidencePatchSchema.parse(input);
   const current = findIdea(doc, ideaId);
-  if (!current) throw new Error("No such idea.");
+  if (!current) throw noSuchIdea();
   const entry = { id: newId(), ...clean };
   const next: Idea = {
     ...current,
@@ -230,7 +255,7 @@ export function removeEvidence(
   clock: Clock = defaultClock,
 ): MatrixDocument {
   const current = findIdea(doc, ideaId);
-  if (!current) throw new Error("No such idea.");
+  if (!current) throw noSuchIdea();
   const evidence = current.evidence.filter((e) => e.id !== entryId);
   const allowed = maxConfidenceAllowed(evidence);
   const next: Idea = {

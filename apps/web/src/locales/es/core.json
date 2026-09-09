@@ -104,15 +104,66 @@
     "score": "La Puntuación es Potencial × Confianza ÷ 5. Solo sube con evidencia, así que una idea que suena estupenda no puede superar a una que de verdad has probado."
   },
   "band": {
-    "grey": { "label": "todavía no", "advice": "todavía no merece tu tiempo" },
-    "amber": { "label": "merece un vistazo", "advice": "merece un vistazo" },
-    "lightGreen": { "label": "habla con clientes", "advice": "merece una conversación con un cliente" },
-    "darkGreen": { "label": "plan serio", "advice": "merece un plan serio" }
+    "grey": {
+      "label": "todavía no",
+      "advice": "todavía no merece tu tiempo"
+    },
+    "amber": {
+      "label": "merece un vistazo",
+      "advice": "merece un vistazo"
+    },
+    "lightGreen": {
+      "label": "habla con clientes",
+      "advice": "merece una conversación con un cliente"
+    },
+    "darkGreen": {
+      "label": "plan serio",
+      "advice": "merece un plan serio"
+    }
   },
   "documentError": {
     "too-large": "Este archivo es más grande de lo que puede ser una matriz.",
     "not-json": "Este archivo no es JSON válido.",
     "not-a-matrix": "Este archivo no es un archivo de Idea Matrix.",
-    "newer-version": "Este archivo lo guardó una versión más reciente de Idea Matrix. Recarga la página para obtener la última versión, y luego ábrelo de nuevo."
+    "newer-version": "Este archivo lo guardó una versión más reciente de Idea Matrix. Recarga la página para obtener la última versión, y luego ábrelo de nuevo.",
+    "no-such-idea": "Esa idea no existe.",
+    "confidence-needs-evidence": "El registro de evidencia solo permite una Confianza de hasta {{allowed}} por ahora.",
+    "park-needs-reason": "Una idea apartada necesita un motivo.",
+    "unpark-needs-stage": "Para retomar una idea, elige una etapa distinta de Apartada."
+  },
+  "export": {
+    "column": {
+      "idea": "Idea",
+      "description": "Descripción",
+      "stage": "Etapa",
+      "riskiestAssumption": "Suposición más arriesgada",
+      "reach": "Alcance",
+      "impact": "Impacto",
+      "profitability": "Rentabilidad",
+      "vision": "Visión",
+      "ease": "Facilidad",
+      "confidence": "Confianza",
+      "potential": "Potencial",
+      "score": "Puntuación",
+      "parkedReason": "Apartada / descartada porque"
+    },
+    "markdown": {
+      "stage": "Etapa",
+      "description": "Descripción",
+      "riskiestAssumption": "Suposición más arriesgada",
+      "scores": "Puntuaciones",
+      "confidence": "Confianza",
+      "notScored": "sin puntuar",
+      "potential": "Potencial",
+      "score": "Puntuación",
+      "needsAllFiveScores": "faltan puntuaciones",
+      "parkedBecause": "Apartada porque",
+      "evidence": "Evidencia",
+      "whatTheyDoNow": "Lo que hacen ahora",
+      "commitment": "Compromiso",
+      "exported": "Exportado el {{date}} desde Idea Matrix. {{count}} ideas.",
+      "formula": "El Potencial es el promedio de cinco puntuaciones de 1 a 5, escalado a 100. La Puntuación es Potencial × Confianza ÷ 5, así que solo sube con evidencia.",
+      "parked": "Apartadas"
+    }
   }
 }

@@ -123,7 +123,8 @@ test("the bell speaks the device's language", async ({ page }) => {
   await page.getByRole("button", { name: "Continuer" }).click();
   await page.getByRole("button", { name: /Créer un fichier/ }).click();
   await page.getByRole("button", { name: "Ouvrir ma matrice" }).click();
-  await expect(page.getByRole("heading", { name: "Example ideas" })).toBeVisible();
+  // The example matrix seeds in the device's language too.
+  await expect(page.getByRole("heading", { name: "Idées d'exemple" })).toBeVisible();
 
   const unread = WHATS_NEW.length - 1;
   const cloche = page.getByRole("button", { name: `Nouveautés, ${unread} non lues` });

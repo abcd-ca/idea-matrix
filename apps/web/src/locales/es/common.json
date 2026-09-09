@@ -79,7 +79,8 @@
     "driveError": "Google Drive devolvió un error ({{status}}).",
     "driveErrorDetail": "Google Drive devolvió un error ({{status}}): {{detail}}",
     "driveTrashed": "El archivo está en la papelera de Google Drive. Restáuralo allí, o abre otro archivo.",
-    "noLocalFileApi": "Este navegador no puede guardar los cambios en un archivo del disco. Abre esta página en Chrome o Edge."
+    "noLocalFileApi": "Este navegador no puede guardar los cambios en un archivo del disco. Abre esta página en Chrome o Edge.",
+    "savedElsewhere": "Otra copia de la aplicación guardó este archivo primero."
   },
   "picker": {
     "fileType": "Archivo de Idea Matrix",
@@ -141,5 +142,6 @@
     "fingerprint": "Huella",
     "mismatch": "El archivo de huella es del commit {{fileCommit}} pero esta página es del commit {{pageCommit}}. Recarga la página; si sigue así, estás viendo dos despliegues mezclados.",
     "explain": "La huella es un hash de cada archivo que sirve este sitio. <checks>GitHub muestra la misma huella para ese commit</checks>, así que el código que puedes leer allí es el código que corre aquí. <how>Cómo comprobarlo tú mismo</how>."
-  }
+  },
+  "defaultFileName": "ideas"
 }
