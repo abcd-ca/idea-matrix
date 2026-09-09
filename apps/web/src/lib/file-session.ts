@@ -13,6 +13,7 @@ import * as drive from "./storage/google-drive";
 import { pickExistingFile, pickNewFile } from "./storage/local-file";
 import { ConflictError, DriveTarget, LocalTarget, forgetTarget, loadTarget, type SaveTarget } from "./storage/target";
 import { CACHE_KEY, useAppStore } from "./store";
+import { explainDocumentError } from "./errors";
 import { i18n } from "./i18n";
 import { SHOW_SCORES_KEY, readPreferences } from "./preferences";
 import { usePreferences } from "./preferences-store";
@@ -44,9 +45,8 @@ type CreateResult = "created" | "cancelled" | "error";
 const text = (key: string, values?: Record<string, unknown>) => i18n.t(key, { ns: "common", ...values });
 
 function explain(e: unknown): string {
-  // Core's messages are English; the translations key off the error code and
-  // fall back to core's own sentence, which is how en-CA always reads.
-  if (e instanceof DocumentError) return i18n.t(`documentError.${e.code}`, { ns: "core", defaultValue: e.message });
+  if (e instanceof DocumentError) return explainDocumentError(e);
+  if (e instanceof ConflictError) return text("errors.savedElsewhere");
   if (
     e instanceof drive.DriveAuthError ||
     e instanceof drive.DriveRequestError ||

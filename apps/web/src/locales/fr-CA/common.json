@@ -85,7 +85,8 @@
     "driveError": "Google Drive a renvoyé une erreur ({{status}}).",
     "driveErrorDetail": "Google Drive a renvoyé une erreur ({{status}}) : {{detail}}",
     "driveTrashed": "Le fichier est dans la corbeille de Google Drive. Restaurez-le là-bas, ou ouvrez un autre fichier.",
-    "noLocalFileApi": "Ce navigateur ne peut pas réenregistrer les modifications dans un fichier sur le disque. Ouvrez cette page dans Chrome ou Edge."
+    "noLocalFileApi": "Ce navigateur ne peut pas réenregistrer les modifications dans un fichier sur le disque. Ouvrez cette page dans Chrome ou Edge.",
+    "savedElsewhere": "Une autre copie de l'application a enregistré ce fichier en premier."
   },
   "picker": {
     "fileType": "Fichier Idea Matrix",
@@ -147,5 +148,6 @@
     "fingerprint": "Empreinte",
     "mismatch": "Le fichier d'empreinte vient du commit {{fileCommit}} mais cette page vient du commit {{pageCommit}}. Rechargez la page; si cela persiste, vous voyez deux déploiements mélangés.",
     "explain": "L'empreinte est un hachage de chaque fichier que ce site sert. <checks>GitHub affiche la même empreinte pour ce commit</checks>, donc le code que vous pouvez lire là-bas est le code qui tourne ici. <how>Comment le vérifier vous-même</how>."
-  }
+  },
+  "defaultFileName": "idees"
 }

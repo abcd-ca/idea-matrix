@@ -50,6 +50,8 @@ export default defineConfig({
   reporter: process.env.CI ? [["list"], ["html", { open: "never" }]] : "list",
   use: {
     baseURL: `http://127.0.0.1:${PORT}`,
+    // The app picks its language from the browser's; the specs assert the Canadian English.
+    locale: "en-CA",
     trace: "on-first-retry",
   },
   projects: [
