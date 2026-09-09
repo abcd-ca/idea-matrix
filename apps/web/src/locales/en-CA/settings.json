@@ -4,6 +4,13 @@
     "title": "This device",
     "note": "Kept by this browser, not in your matrix file. Other devices keep their own."
   },
+  "install": {
+    "title": "Install as an app",
+    "available": "Put {{app}} in your Dock or on your home screen, with its own window and icon. It opens straight to your matrix and works without a connection.",
+    "installed": "You are using the installed app. It works without a connection, and when a new version is ready it asks before switching.",
+    "unavailable": "Chrome and Edge can install {{app}} as an app with its own window and icon: look for Install in the browser menu. On an iPhone or iPad, use Share, then Add to Home Screen. Once installed, it works without a connection.",
+    "button": "Install…"
+  },
   "startOver": {
     "button": "Start over on this device",
     "note": "Disconnects this device from your ideas file but does not delete it. You can reconnect to the file later. This can be useful when using a shared computer.",

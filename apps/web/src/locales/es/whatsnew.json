@@ -3,6 +3,10 @@
   "unread": "Novedades, {{count}} sin leer",
   "title": "Novedades",
   "entries": {
+    "2026-09-09-install-app": {
+      "title": "Instalar como aplicación",
+      "text": "Chrome, Edge y Safari pueden instalar la aplicación con su propia ventana y su propio icono, y funciona sin conexión; el botón está en Ajustes."
+    },
     "2026-09-09-start-over": {
       "title": "Empezar de nuevo en este dispositivo",
       "text": "Desde Ajustes puedes desconectar este dispositivo de tu archivo de ideas sin eliminarlo, útil en un ordenador compartido."

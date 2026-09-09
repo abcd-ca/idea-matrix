@@ -2,7 +2,7 @@
 
 Score your project ideas, and keep the file yourself.
 
-Use it at [ideamatrix.io](https://ideamatrix.io). Nothing to install, nothing to sign up for.
+Use it at [ideamatrix.io](https://ideamatrix.io). Nothing to install, nothing to sign up for. If you would rather have it as an app with its own window and icon, Chrome and Edge can install it (the button is in Settings; on an iPhone or iPad it is Share, then Add to Home Screen), and once loaded it works without a connection.
 
 Idea Matrix is a small web app for people with more ideas than time. Each idea gets a value of 1 to 5 for Reach, Impact, Profitability, Vision and Ease (Profitability may also be 0, for something deliberately non-commercial), and their average becomes a **Potential** from 0 to 100. A separate **Confidence** score records how much real evidence sits behind those numbers, and **Score** is Potential × Confidence ÷ 5. Score only rises when you have talked to real people, so the newest, shiniest idea cannot jump the queue.
 

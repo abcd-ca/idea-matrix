@@ -10,7 +10,7 @@
     "groupLabel": "Where to keep your ideas",
     "local": "This computer",
     "localTag": "Chrome or Edge",
-    "localText": "A file you can see, back up, or keep in your iCloud, Dropbox or Drive folder.",
+    "localText": "A file you can see, back up, or keep in your iCloud, Dropbox or Drive folder. Works without a connection.",
     "drive": "Google Drive",
     "driveTag": "Any browser",
     "comingLater": "coming later",

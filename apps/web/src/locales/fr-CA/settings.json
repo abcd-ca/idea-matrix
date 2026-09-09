@@ -4,6 +4,13 @@
     "title": "Cet appareil",
     "note": "Conservé par ce navigateur, pas dans votre fichier de matrice. Chaque appareil garde le sien."
   },
+  "install": {
+    "title": "Installer comme application",
+    "available": "Placez {{app}} dans votre Dock ou sur votre écran d’accueil, avec sa propre fenêtre et sa propre icône. L’application ouvre directement votre matrice et fonctionne sans connexion.",
+    "installed": "Vous utilisez l’application installée. Elle fonctionne sans connexion et, quand une nouvelle version est prête, elle demande avant de changer.",
+    "unavailable": "Chrome et Edge peuvent installer {{app}} comme application, avec sa propre fenêtre et sa propre icône : cherchez Installer dans le menu du navigateur. Sur un iPhone ou un iPad, touchez Partager, puis Sur l’écran d’accueil. Une fois installée, l’application fonctionne sans connexion.",
+    "button": "Installer…"
+  },
   "startOver": {
     "button": "Recommencer sur cet appareil",
     "note": "Détache cet appareil de votre fichier d'idées sans le supprimer. Vous pourrez vous reconnecter au fichier plus tard. C'est utile sur un ordinateur partagé.",

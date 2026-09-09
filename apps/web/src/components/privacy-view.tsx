@@ -41,6 +41,7 @@ export function PrivacyView() {
       <Section title={t("browser.title")}>
         <p>{t("browser.p1")}</p>
         <p>{t("browser.p2")}</p>
+        <p>{t("browser.p3")}</p>
       </Section>
 
       <Section title={t("telemetry.title")}>

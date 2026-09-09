@@ -23,7 +23,8 @@
   "browser": {
     "title": "Lo que recuerda el navegador",
     "p1": "Una copia en caché de tu matriz y un puntero a tu archivo viven en el almacenamiento privado de este navegador, para que la aplicación se abra al instante y funcione sin conexión. Nunca salen del navegador. Borrar los datos del sitio los elimina; tu archivo queda intacto.",
-    "p2": "En una visita posterior, el navegador pide un clic antes de que la aplicación pueda volver a escribir en tu archivo. Ese aviso es del navegador, no de la aplicación, y es algo bueno."
+    "p2": "En una visita posterior, el navegador pide un clic antes de que la aplicación pueda volver a escribir en tu archivo. Ese aviso es del navegador, no de la aplicación, y es algo bueno.",
+    "p3": "Un pequeño service worker, que forma parte de la aplicación, guarda las páginas, scripts, estilos e iconos de la aplicación en la caché del navegador, para que se abra y funcione sin conexión y pueda instalarse como aplicación. Solo responde a las peticiones de archivos de este sitio; todo lo demás, Google Drive incluido, va directamente a la red. Una versión nueva se descarga en segundo plano y la aplicación pregunta antes de cambiar a ella."
   },
   "telemetry": {
     "title": "Sin telemetría",

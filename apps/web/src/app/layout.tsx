@@ -3,9 +3,11 @@ import type { ReactNode } from "react";
 import { IBM_Plex_Sans, Nunito_Sans } from "next/font/google";
 import "./globals.css";
 import "driver.js/dist/driver.css";
+import { AppUpdate } from "@/components/app-update";
 import { FileSession } from "@/components/file-session";
 import { TooltipProvider } from "@/components/ui/tooltip";
 import { DevicePreferences } from "@/components/device-preferences";
+import { APP_DESCRIPTION, APP_NAME } from "@/lib/config";
 import { DEFAULT_LANGUAGE, PREFERENCES_SCRIPT } from "@/lib/preferences";
 
 const plexSans = IBM_Plex_Sans({
@@ -22,9 +24,8 @@ const nunitoSans = Nunito_Sans({
   weight: ["600", "700"],
 });
 
-const TITLE = "Idea Matrix";
-const DESCRIPTION =
-  "Score your project ideas, and keep the file yourself. No accounts, no server, nothing leaves your machine.";
+const TITLE = APP_NAME;
+const DESCRIPTION = APP_DESCRIPTION;
 
 export const metadata: Metadata = {
   title: TITLE,
@@ -49,11 +50,19 @@ export const metadata: Metadata = {
     title: TITLE,
     description: DESCRIPTION,
   },
+  // Installed from Safari on iOS the app gets its own window too; the
+  // manifest (app/manifest.ts) covers every other browser.
+  appleWebApp: { capable: true, title: TITLE, statusBarStyle: "default" },
 };
 
 export const viewport: Viewport = {
   width: "device-width",
   initialScale: 1,
+  // The title bar of the installed app follows the page background (globals.css).
+  themeColor: [
+    { media: "(prefers-color-scheme: light)", color: "#ffffff" },
+    { media: "(prefers-color-scheme: dark)", color: "#0a0a0a" },
+  ],
 };
 
 export default function RootLayout({ children }: { children: ReactNode }) {
@@ -84,6 +93,7 @@ export default function RootLayout({ children }: { children: ReactNode }) {
         <TooltipProvider>
           <DevicePreferences />
           <FileSession />
+          <AppUpdate />
           {children}
         </TooltipProvider>
       </body>

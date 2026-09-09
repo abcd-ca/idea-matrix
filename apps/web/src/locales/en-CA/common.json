@@ -141,5 +141,10 @@
     "fingerprint": "Fingerprint",
     "mismatch": "The fingerprint file is from commit {{fileCommit}} but this page is from commit {{pageCommit}}. Reload the page; if this stays, you are seeing two deploys mixed together.",
     "explain": "The fingerprint is a hash of every file this site serves. <checks>GitHub shows the same fingerprint for that commit</checks>, so the code you can read there is the code running here. <how>How to check it yourself</how>."
+  },
+  "update": {
+    "ready": "A new version of {{app}} is ready.",
+    "reload": "Reload",
+    "later": "Later"
   }
 }

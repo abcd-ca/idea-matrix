@@ -141,5 +141,10 @@
     "fingerprint": "Empreinte",
     "mismatch": "Le fichier d'empreinte vient du commit {{fileCommit}} mais cette page vient du commit {{pageCommit}}. Rechargez la page; si cela persiste, vous voyez deux déploiements mélangés.",
     "explain": "L'empreinte est un hachage de chaque fichier que ce site sert. <checks>GitHub affiche la même empreinte pour ce commit</checks>, donc le code que vous pouvez lire là-bas est le code qui tourne ici. <how>Comment le vérifier vous-même</how>."
+  },
+  "update": {
+    "ready": "Une nouvelle version de {{app}} est prête.",
+    "reload": "Recharger",
+    "later": "Plus tard"
   }
 }

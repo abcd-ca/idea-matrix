@@ -6,7 +6,7 @@
     "predev": "node ../../scripts/icons.mjs",
     "dev": "next dev",
     "prebuild": "node ../../scripts/icons.mjs",
-    "build": "next build && node scripts/fingerprint.mjs",
+    "build": "next build && node scripts/service-worker.mjs && node scripts/fingerprint.mjs",
     "start": "npx serve out",
     "lint": "eslint",
     "typecheck": "tsc --noEmit",

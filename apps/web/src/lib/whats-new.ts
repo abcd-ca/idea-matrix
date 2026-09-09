@@ -36,6 +36,7 @@ export const WHATS_NEW_LIMIT = 5;
 
 /** Newest first. */
 export const WHATS_NEW: readonly WhatsNewEntry[] = [
+  { id: "2026-09-09-install-app", date: "2026-09-09" },
   { id: "2026-09-09-start-over", date: "2026-09-09" },
   { id: "2026-09-09-whats-new", date: "2026-09-09" },
   { id: "2026-09-09-languages", date: "2026-09-09" },

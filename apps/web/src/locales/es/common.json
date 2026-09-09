@@ -141,5 +141,10 @@
     "fingerprint": "Huella",
     "mismatch": "El archivo de huella es del commit {{fileCommit}} pero esta página es del commit {{pageCommit}}. Recarga la página; si sigue así, estás viendo dos despliegues mezclados.",
     "explain": "La huella es un hash de cada archivo que sirve este sitio. <checks>GitHub muestra la misma huella para ese commit</checks>, así que el código que puedes leer allí es el código que corre aquí. <how>Cómo comprobarlo tú mismo</how>."
+  },
+  "update": {
+    "ready": "Hay una versión nueva de {{app}} lista.",
+    "reload": "Recargar",
+    "later": "Más tarde"
   }
 }

@@ -8,6 +8,7 @@ import { BuildInfo } from "@/components/build-info";
 import { ConnectAiPanel } from "@/components/connect-ai";
 import { ExportMenu } from "@/components/export-menu";
 import { GitHubMark } from "@/components/github-mark";
+import { InstallApp } from "@/components/install-app";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
@@ -59,6 +60,10 @@ export function SettingsView() {
         </div>
         <p className="text-xs text-muted-foreground">{t("device.note")}</p>
         <StartOver />
+      </Section>
+
+      <Section title={t("install.title")}>
+        <InstallApp />
       </Section>
 
       <Section title={t("where.title")}>
