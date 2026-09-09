@@ -46,7 +46,7 @@ npm run build       # static export to apps/web/out
 
 ## Contributing
 
-Pull requests are welcome. Every pull request runs typecheck, lint, tests and a build. A few rules that will not change:
+Pull requests are welcome; `CONTRIBUTING.md` has the setup and the house style. Every pull request runs typecheck, lint, the Prettier check, tests and a build. A few rules that will not change:
 
 - Never build JSON by hand; always stringify a parsed document.
 - Validate every input at the boundary with the schemas in `packages/core`.
