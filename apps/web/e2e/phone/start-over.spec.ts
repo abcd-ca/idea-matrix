@@ -2,7 +2,8 @@ import { sampleDocument } from "@idea-matrix/core";
 import { appLocalStorageKeys, indexedDbState } from "../device-storage";
 import { FILE_NAME, expect, expectInsideViewport, readMatrixFile, setUpWithExample, test } from "./helpers";
 
-const NOTE = "Clears what the app keeps on this device. Your matrix file is not touched.";
+const NOTE =
+  "Disconnects this device from your ideas file but does not delete it. You can reconnect to the file later. This can be useful when using a shared computer.";
 
 test("phone start over: the dialog fits the screen, Cancel keeps everything, confirm leaves a clean slate and the file", async ({
   page,

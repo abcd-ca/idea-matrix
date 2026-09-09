@@ -6,7 +6,7 @@
   },
   "startOver": {
     "button": "Start over on this device",
-    "note": "Clears what the app keeps on this device. Your matrix file is not touched.",
+    "note": "Disconnects this device from your ideas file but does not delete it. You can reconnect to the file later. This can be useful when using a shared computer.",
     "title": "Start over on this device?",
     "body": "Your matrix file stays exactly where it is, on this computer or in your Google Drive, with everything in it. This only clears what the app remembers here: which file was open, the Google sign-in, the cached copy, the language choice and the tour. The next visit starts at the welcome screen, and you can open the same file again from there."
   },

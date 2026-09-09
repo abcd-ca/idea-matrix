@@ -6,7 +6,7 @@
   },
   "startOver": {
     "button": "Empezar de nuevo en este dispositivo",
-    "note": "Borra lo que la aplicación guarda en este dispositivo. Tu archivo de matriz no se toca.",
+    "note": "Desconecta este dispositivo de tu archivo de ideas, pero no lo elimina. Puedes volver a conectarte al archivo más tarde. Es útil cuando usas un ordenador compartido.",
     "title": "¿Empezar de nuevo en este dispositivo?",
     "body": "Tu archivo de matriz se queda exactamente donde está, en este ordenador o en tu Google Drive, con todo lo que contiene. Esto solo borra lo que la aplicación recuerda aquí: qué archivo estaba abierto, la sesión de Google, la copia en caché, el idioma elegido y el recorrido guiado. La próxima visita empieza en la pantalla de bienvenida, y desde ahí puedes abrir el mismo archivo otra vez."
   },
