@@ -15,7 +15,7 @@ A local-first web app for scoring project ideas. Read `README.md` for what it is
 - `npm run dev` from the repo root starts the app (open it in Chrome or Edge).
 - `npm run check` runs typecheck, lint, the Prettier check, tests and the static build, the same as CI. Run it before saying a change is done. `npm run format` rewrites files with Prettier; there is nothing to configure beyond `.prettierrc.json`.
 - Two TypeScripts on purpose: each workspace typechecks with TypeScript 7, the native compiler, while the root pins TypeScript 5 for typescript-eslint and tsup, which need the old compiler API until 7.1 ships a new one. Leave both in place until then.
-- End-to-end tests: `npm run test:e2e` runs the Playwright suite in `apps/web/e2e` (Chromium only, in CI after the build) against the static export, so run `npm run build` first when `apps/web/out` is missing or stale. The tests stand in for the file dialogs by replacing `window.showSaveFilePicker` and `window.showOpenFilePicker` with functions that return a handle from the browser's origin private file system, a real `FileSystemFileHandle`, so the app's file code runs unchanged and a test reads the file back through a second handle. `@playwright/test` is pinned to 1.62 because the Chromium that ships with 1.63 crashes when such a handle comes back out of IndexedDB after a reload; try a later release when one exists.
+- End-to-end tests: `npm run test:e2e` runs the Playwright suite in `apps/web/e2e` (Chromium only, in CI after the build; two projects, the desktop specs under `e2e/` and the phone-layout specs under `e2e/phone/` on a phone viewport with touch emulation) against the static export, so run `npm run build` first when `apps/web/out` is missing or stale. The tests stand in for the file dialogs by replacing `window.showSaveFilePicker` and `window.showOpenFilePicker` with functions that return a handle from the browser's origin private file system, a real `FileSystemFileHandle`, so the app's file code runs unchanged and a test reads the file back through a second handle. `@playwright/test` is pinned to 1.62 because the Chromium that ships with 1.63 crashes when such a handle comes back out of IndexedDB after a reload; try a later release when one exists.
 - `npm run bump -- patch|minor|major` sets the version in every package and in the extension manifest, and starts the next `CHANGELOG.md` section from the commits since the previous release; trim it to what a user would care about. Commit that on a branch; when it reaches main, the Release workflow tags it and publishes the GitHub Release with that section as the notes, plus the Claude Desktop bundle and the build fingerprint. Nobody pushes tags by hand.
 
 ## Rules that do not change
@@ -35,6 +35,14 @@ A local-first web app for scoring project ideas. Read `README.md` for what it is
 Text in the UI, docs and commit messages uses Canadian English spelling, first person singular where a person speaks, and few em-dashes. Plain and direct, not preachy: "explore which ones deserve your time" rather than "be honest with yourself".
 
 The web app is localized, so English is not the only copy. Every string the app shows lives in `apps/web/src/locales/<language>/<namespace>.json`; `en-CA` is the source of truth, `en-US` holds only the spellings that differ, and `fr-CA` and `es` are full translations (made by an AI, corrected by people as pull requests come in). Every copy edit updates `en-CA` and the three others, and any sentence that appears in more than one place comes from one key (see `overview` in `common.json`, used by the setup wizard and the tour) or one core constant (`CONFIDENCE_GATE_SUMMARY`). Core's own English (scales, stages, formulas, bands, gate sentences) is not duplicated: the `core` namespace is built from core's constants for `en-CA` and translated in the other languages' `core.json`. The MCP server and CLI stay English. `CONTRIBUTING.md` says how to edit or add a language.
+
+## What's new
+
+The bell in the header lists the features added since the device last looked; the feed is `apps/web/src/lib/whats-new.ts` and its copy is the `whatsnew` namespace in every locale.
+
+- Every pull request that adds a user-visible feature adds an entry at the top of `WHATS_NEW` (id, date, version if known) with a title of a few words and one sentence in every locale. Bug fixes never do.
+- An id is stable forever: devices store the id of the newest entry they have seen (`whatsNewSeen` in the preferences record), so renaming one makes everything look unread again.
+- The bell shows the `WHATS_NEW_LIMIT` (five) newest entries and never scrolls, so older entries can be pruned from the array, and their locale keys with them, when a new one lands.
 
 ## Git
 
