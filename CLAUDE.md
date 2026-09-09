@@ -15,7 +15,7 @@ A local-first web app for scoring project ideas. Read `README.md` for what it is
 - `npm run dev` from the repo root starts the app (open it in Chrome or Edge).
 - `npm run check` runs typecheck, lint, the Prettier check, tests and the static build, the same as CI. Run it before saying a change is done. `npm run format` rewrites files with Prettier; there is nothing to configure beyond `.prettierrc.json`.
 - Two TypeScripts on purpose: each workspace typechecks with TypeScript 7, the native compiler, while the root pins TypeScript 5 for typescript-eslint and tsup, which need the old compiler API until 7.1 ships a new one. Leave both in place until then.
-- End-to-end tests: `npm run test:e2e` runs the Playwright suite in `apps/web/e2e` (Chromium only, in CI after the build) against the static export, so run `npm run build` first when `apps/web/out` is missing or stale. The tests stand in for the file dialogs by replacing `window.showSaveFilePicker` and `window.showOpenFilePicker` with functions that return a handle from the browser's origin private file system, a real `FileSystemFileHandle`, so the app's file code runs unchanged and a test reads the file back through a second handle. `@playwright/test` is pinned to 1.62 because the Chromium that ships with 1.63 crashes when such a handle comes back out of IndexedDB after a reload; try a later release when one exists.
+- End-to-end tests: `npm run test:e2e` runs the Playwright suite in `apps/web/e2e` (Chromium only, in CI after the build; two projects, the desktop specs under `e2e/` and the phone-layout specs under `e2e/phone/` on a phone viewport with touch emulation) against the static export, so run `npm run build` first when `apps/web/out` is missing or stale. The tests stand in for the file dialogs by replacing `window.showSaveFilePicker` and `window.showOpenFilePicker` with functions that return a handle from the browser's origin private file system, a real `FileSystemFileHandle`, so the app's file code runs unchanged and a test reads the file back through a second handle. `@playwright/test` is pinned to 1.62 because the Chromium that ships with 1.63 crashes when such a handle comes back out of IndexedDB after a reload; try a later release when one exists.
 - `npm run bump -- patch|minor|major` sets the version in every package and in the extension manifest, and starts the next `CHANGELOG.md` section from the commits since the previous release; trim it to what a user would care about. Commit that on a branch; when it reaches main, the Release workflow tags it and publishes the GitHub Release with that section as the notes, plus the Claude Desktop bundle and the build fingerprint. Nobody pushes tags by hand.
 
 ## Rules that do not change
@@ -38,4 +38,13 @@ The web app is localized, so English is not the only copy. Every string the app 
 
 ## Git
 
-Main takes pull requests only, with a green CI check; GitHub enforces that now the repo is public. Work on branches and open pull requests. Do not commit or push unless asked. When asked to commit and the working tree holds unrelated changes, make one commit per concern rather than one commit for everything.
+Main takes pull requests only, with a green CI check; GitHub enforces that now the repo is public. Do not commit or push unless asked. When asked to commit and the working tree holds unrelated changes, make one commit per concern rather than one commit for everything.
+
+Every feature or fix gets its own branch and its own worktree, never a checkout of the main clone. Features are `feature/<short-name>`, fixes are `fix/<short-name>`. The worktrees live beside the clone, one directory per branch, named after it:
+
+```
+git worktree add ../worktrees/feature/<short-name> -b feature/<short-name> main
+cd ../worktrees/feature/<short-name> && npm ci
+```
+
+Work, run `npm run check`, commit and push from that directory; the main clone stays on `main`. When the pull request has merged, `git worktree remove ../worktrees/feature/<short-name>` and delete the local branch; the remote branch deletes itself on merge.
