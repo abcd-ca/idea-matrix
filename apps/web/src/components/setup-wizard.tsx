@@ -46,7 +46,7 @@ export function SetupWizard() {
   const supported = useSyncExternalStore(
     () => () => undefined,
     () => supportsLocalFile(),
-    () => null
+    () => null,
   );
 
   const finish = () => {
@@ -248,7 +248,7 @@ export function SetupWizard() {
                       setError(null);
                       const result = await createDriveFile(
                         driveName,
-                        driveFolder === "new" ? { kind: "new", name: driveFolderName } : { kind: "pick" }
+                        driveFolder === "new" ? { kind: "new", name: driveFolderName } : { kind: "pick" },
                       );
                       setBusy(false);
                       if (result === "created") setStep("start");
@@ -389,7 +389,7 @@ function Progress({ step }: { step: Step }) {
             className={cn(
               "rounded-md border px-2 py-0.5",
               current && "border-primary bg-primary text-primary-foreground",
-              done && "bg-muted text-muted-foreground"
+              done && "bg-muted text-muted-foreground",
             )}
             aria-current={current ? "step" : undefined}
           >
@@ -441,7 +441,7 @@ function ChoiceCard({
       className={cn(
         "flex flex-col gap-2 rounded-md border p-4 text-left transition-colors focus-visible:ring-3 focus-visible:ring-ring/50 focus-visible:outline-none",
         selected ? "border-primary bg-primary/5 ring-1 ring-primary" : "hover:bg-muted/50",
-        disabled && "cursor-not-allowed opacity-50 hover:bg-transparent"
+        disabled && "cursor-not-allowed opacity-50 hover:bg-transparent",
       )}
     >
       <span className="font-heading text-lg font-bold">{title}</span>
