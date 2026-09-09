@@ -30,7 +30,10 @@ export const metadata: Metadata = {
   applicationName: TITLE,
   // Link previews in chat apps and social sites. Without these tags each app
   // improvises from the title, description and icon, and some show nothing.
-  // og.png is generated from the icon SVG by scripts/icons.mjs at build time.
+  // The image comes from opengraph-image.png and twitter-image.png beside
+  // this file, generated from the icon SVG by scripts/icons.mjs at build
+  // time; Next adds a content hash to their URLs, so a changed image gets a
+  // new URL and the caches in those apps do not serve the old one.
   metadataBase: new URL("https://ideamatrix.io"),
   openGraph: {
     type: "website",
@@ -38,13 +41,11 @@ export const metadata: Metadata = {
     title: TITLE,
     description: DESCRIPTION,
     url: "/",
-    images: [{ url: "/og.png", width: 1200, height: 630, alt: "Idea Matrix: score your project ideas." }],
   },
   twitter: {
     card: "summary_large_image",
     title: TITLE,
     description: DESCRIPTION,
-    images: ["/og.png"],
   },
 };
 

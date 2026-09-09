@@ -21,7 +21,7 @@ import {
 } from "@idea-matrix/core";
 import { z } from "zod";
 import { FileStore, StoreError } from "./store";
-import { reviewPrompt, walkthroughPrompt } from "./walkthrough";
+import { SHOW_IDS_RULE, reviewPrompt, walkthroughPrompt } from "./walkthrough";
 
 export const SERVER_NAME = "idea-matrix";
 export const SERVER_VERSION = "0.1.0";
@@ -99,14 +99,22 @@ function resolveIdea(doc: MatrixDocument, ref: string): Idea | undefined {
  * so the same validation and the same Confidence gate apply as in the app.
  */
 export function createServer(store: FileStore): McpServer {
-  const server = new McpServer({ name: SERVER_NAME, version: SERVER_VERSION });
+  const server = new McpServer(
+    { name: SERVER_NAME, version: SERVER_VERSION },
+    {
+      instructions:
+        "The idea-matrix tools read and update the person's Idea Matrix file. Every tool reads the file fresh and applies the same rules as the app: Confidence cannot rise without evidence, and ideas are parked with a reason, never deleted. " +
+        SHOW_IDS_RULE,
+    },
+  );
 
   server.registerTool(
     "list_ideas",
     {
       title: "List ideas",
       description:
-        "List the ideas in the matrix with their scores, Confidence, Potential and Score, sorted by Score and numbered from 1 in that order. Parked ideas are left out unless includeParked is true. Use get_idea for the full text of one idea.",
+        "List the ideas in the matrix with their scores, Confidence, Potential and Score, sorted by Score and numbered from 1 in that order. Parked ideas are left out unless includeParked is true. Use get_idea for the full text of one idea. " +
+        SHOW_IDS_RULE,
       inputSchema: {
         includeParked: z.boolean().optional().describe("Include parked ideas (default false)."),
         stage: z.enum(STAGES).optional().describe("Only ideas at this stage."),

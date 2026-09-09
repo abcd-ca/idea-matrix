@@ -16,7 +16,7 @@ Usage:
 The file can also be given with the IDEA_MATRIX_FILE environment variable.
 
 Claude Code:
-  claude mcp add idea-matrix -- npx -y @idea-matrix/mcp mcp --file ~/Documents/ideas.ideamatrix.json
+  claude mcp add idea-matrix -- npx -y @idea-matrix/mcp mcp --file ~/Ideas/ideas.ideamatrix.json
 `;
 
 interface Args {
@@ -73,8 +73,15 @@ async function main(): Promise<number> {
 
   switch (args.command) {
     case "mcp": {
-      // Fail early with a readable message if the file is missing or broken.
-      await store.read();
+      // Check the file once so the problem shows in the host's log, but start
+      // anyway: a server that dies at startup looks like "unable to connect"
+      // in Claude Desktop, while a running one returns the same message from
+      // every tool, where the assistant can read it out and say what to do.
+      try {
+        await store.read();
+      } catch (e) {
+        process.stderr.write(`${e instanceof Error ? e.message : String(e)}\n`);
+      }
       const server = createServer(store);
       await server.connect(new StdioServerTransport());
       // Keep running until the client closes stdin.
