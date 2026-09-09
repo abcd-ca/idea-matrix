@@ -27,7 +27,17 @@ import { DEFAULT_LANGUAGE, LANGUAGES } from "./preferences";
  * HTML; the preferences store switches to the device's language right after
  * hydration (see preferences-store.ts).
  */
-export const NAMESPACES = ["common", "setup", "matrix", "idea", "settings", "tour", "privacy", "core"] as const;
+export const NAMESPACES = [
+  "common",
+  "setup",
+  "matrix",
+  "idea",
+  "settings",
+  "tour",
+  "privacy",
+  "whatsnew",
+  "core",
+] as const;
 export type Namespace = (typeof NAMESPACES)[number];
 
 /**

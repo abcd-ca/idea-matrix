@@ -30,6 +30,19 @@ describe("parsePreferences", () => {
     expect(parsePreferences(JSON.stringify({ language: "es", density: "compact" }))).toEqual({ language: "es" });
   });
 
+  it("keeps the What's new marker, whatever id it names", () => {
+    expect(parsePreferences(JSON.stringify({ whatsNewSeen: "2026-09-09-languages" }))).toEqual({
+      whatsNewSeen: "2026-09-09-languages",
+    });
+    // An id from a newer copy of the app must survive this one rewriting the record.
+    expect(parsePreferences(JSON.stringify({ language: "es", whatsNewSeen: "2031-01-01-unknown" }))).toEqual({
+      language: "es",
+      whatsNewSeen: "2031-01-01-unknown",
+    });
+    expect(parsePreferences(JSON.stringify({ whatsNewSeen: 7 }))).toEqual({});
+    expect(parsePreferences(JSON.stringify({ whatsNewSeen: "" }))).toEqual({});
+  });
+
   it("rejects values outside the supported sets", () => {
     expect(parsePreferences(JSON.stringify({ language: "de" }))).toEqual({});
     expect(parsePreferences(JSON.stringify({ theme: "sepia" }))).toEqual({});
@@ -108,6 +121,7 @@ describe("the inline script", () => {
 
   it("ignores values it does not know", () => {
     expect(run(JSON.stringify({ language: "de", theme: "sepia" }))).toEqual({ lang: "en-CA", classes: [] });
+    expect(run(JSON.stringify({ whatsNewSeen: "2026-09-09-languages" }))).toEqual({ lang: "en-CA", classes: [] });
     expect(run(JSON.stringify({ language: "es", theme: "system" }))).toEqual({ lang: "es", classes: [] });
   });
 
