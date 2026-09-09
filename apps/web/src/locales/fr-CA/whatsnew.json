@@ -4,6 +4,10 @@
   "unread_other": "Nouveautés, {{count}} non lues",
   "title": "Nouveautés",
   "entries": {
+    "2026-09-09-start-over": {
+      "title": "Recommencer sur cet appareil",
+      "text": "Les Réglages peuvent détacher cet appareil de votre fichier d'idées sans le supprimer, pratique sur un ordinateur partagé."
+    },
     "2026-09-09-whats-new": {
       "title": "Nouveautés",
       "text": "Cette cloche liste les fonctions ajoutées depuis votre dernière visite."

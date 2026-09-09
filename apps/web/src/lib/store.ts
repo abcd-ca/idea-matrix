@@ -53,6 +53,9 @@ const idbStorage: StateStorage = {
   },
 };
 
+/** The idb-keyval key the persisted slice of the store lives under. */
+export const CACHE_KEY = "ideamatrix.cache";
+
 export const useAppStore = create<AppState>()(
   persist(
     (setState, getState) => ({
@@ -85,7 +88,7 @@ export const useAppStore = create<AppState>()(
       setTourPending: (tourPending) => setState({ tourPending }),
     }),
     {
-      name: "ideamatrix.cache",
+      name: CACHE_KEY,
       storage: createJSONStorage(() => idbStorage),
       // Only the document and its name are cached. Status is rebuilt on boot.
       partialize: (state) => ({

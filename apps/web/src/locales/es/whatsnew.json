@@ -3,6 +3,10 @@
   "unread": "Novedades, {{count}} sin leer",
   "title": "Novedades",
   "entries": {
+    "2026-09-09-start-over": {
+      "title": "Empezar de nuevo en este dispositivo",
+      "text": "Desde Ajustes puedes desconectar este dispositivo de tu archivo de ideas sin eliminarlo, útil en un ordenador compartido."
+    },
     "2026-09-09-whats-new": {
       "title": "Novedades",
       "text": "Esta campana muestra las funciones añadidas desde la última vez que miraste."

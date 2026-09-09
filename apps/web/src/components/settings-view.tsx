@@ -25,6 +25,7 @@ import { driveConfigured } from "@/lib/storage/google-drive";
 import { supportsLocalFile } from "@/lib/storage/local-file";
 import { useAppStore } from "@/lib/store";
 import { LanguageSelect } from "@/components/device-preferences";
+import { StartOver } from "@/components/start-over-dialog";
 import { Trans, useTranslation } from "react-i18next";
 import { useNameField } from "@/lib/use-name-field";
 
@@ -57,6 +58,7 @@ export function SettingsView() {
           <LanguageSelect id="language" className="w-fit" />
         </div>
         <p className="text-xs text-muted-foreground">{t("device.note")}</p>
+        <StartOver />
       </Section>
 
       <Section title={t("where.title")}>

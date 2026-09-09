@@ -5,6 +5,7 @@ import { i18n } from "./i18n";
 import {
   DEFAULT_LANGUAGE,
   DEFAULT_THEME,
+  clearPreferences,
   detectLanguage,
   isDark,
   readPreferences,
@@ -33,6 +34,8 @@ export interface PreferencesState {
   setLanguage: (language: Language) => void;
   setTheme: (theme: Theme) => void;
   markWhatsNewSeen: (id: string) => void;
+  /** Forget the stored record and go back to the device defaults: the browser's language, the system theme. */
+  reset: () => void;
 }
 
 /** Put the preferences into effect: the app's language, <html lang>, and the dark class. */
@@ -69,5 +72,9 @@ export const usePreferences = create<PreferencesState>()((set, get) => ({
   markWhatsNewSeen: (id) => {
     writePreferences({ whatsNewSeen: id });
     set({ whatsNewSeen: id });
+  },
+  reset: () => {
+    clearPreferences();
+    get().hydrate();
   },
 }));
