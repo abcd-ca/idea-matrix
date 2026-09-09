@@ -13,7 +13,7 @@
   "author": "Andrew Blair (https://abcd.ca)",
   "type": "module",
   "bin": {
-    "idea-matrix": "./dist/cli.js"
+    "idea-matrix": "dist/cli.js"
   },
   "files": [
     "dist/cli.js",
