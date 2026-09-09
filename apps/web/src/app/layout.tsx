@@ -23,7 +23,7 @@ const nunitoSans = Nunito_Sans({
 export const metadata: Metadata = {
   title: "Idea Matrix",
   description:
-    "Score your project ideas honestly, and keep the file yourself. No accounts, no server, nothing leaves your machine.",
+    "Score your project ideas, and keep the file yourself. No accounts, no server, nothing leaves your machine.",
   applicationName: "Idea Matrix",
 };
 

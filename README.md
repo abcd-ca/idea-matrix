@@ -1,6 +1,6 @@
 # Idea Matrix
 
-Score your project ideas honestly, and keep the file yourself.
+Score your project ideas, and keep the file yourself.
 
 Use it at [ideamatrix.io](https://ideamatrix.io). Nothing to install, nothing to sign up for.
 
