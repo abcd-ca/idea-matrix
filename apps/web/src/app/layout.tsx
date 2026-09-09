@@ -57,6 +57,10 @@ export const metadata: Metadata = {
 export const viewport: Viewport = {
   width: "device-width",
   initialScale: 1,
+  // Let the page reach the screen's edges in the installed app on an iPhone;
+  // globals.css pads the body by the safe-area insets so nothing sits under
+  // the status bar or the home indicator.
+  viewportFit: "cover",
   // The title bar of the installed app follows the page background (globals.css).
   themeColor: [
     { media: "(prefers-color-scheme: light)", color: "#ffffff" },

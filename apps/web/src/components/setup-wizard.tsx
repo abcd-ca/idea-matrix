@@ -63,7 +63,7 @@ export function SetupWizard() {
   const whereText = t(`where.${where === "drive" ? "drive" : "local"}`, { ns: "common" });
 
   return (
-    <div className="flex min-h-svh items-center justify-center bg-muted/30 p-3 sm:p-4">
+    <div className="flex min-h-screen-safe items-center justify-center bg-muted/30 p-3 sm:p-4">
       <div className="flex w-full max-w-3xl flex-col gap-5 rounded-lg border bg-background p-5 shadow-sm sm:gap-6 sm:p-6 md:p-10">
         {step !== "welcome" ? <Progress step={step} /> : null}
 
