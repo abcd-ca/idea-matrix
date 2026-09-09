@@ -38,7 +38,12 @@ type CreateResult = "created" | "cancelled" | "error";
 
 function explain(e: unknown): string {
   if (e instanceof DocumentError) return e.message;
-  if (e instanceof drive.DriveAuthError || e instanceof drive.DriveRequestError) return e.message;
+  if (
+    e instanceof drive.DriveAuthError ||
+    e instanceof drive.DriveRequestError ||
+    e instanceof drive.DriveFileExistsError
+  )
+    return e.message;
   if (e instanceof DOMException && e.name === "NotAllowedError") {
     return "The browser did not allow access to the file. Try again, or open a different file.";
   }
@@ -282,6 +287,8 @@ export async function closeFile(): Promise<void> {
   if (saveTimer) clearTimeout(saveTimer);
   saveTimer = null;
   await flushSave();
+  // Closing a Drive file is the one way to drop the Google token before it expires.
+  if (target?.kind === "drive") drive.signOut();
   target = null;
   knownRevision = null;
   await forgetTarget();

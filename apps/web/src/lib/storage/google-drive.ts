@@ -10,10 +10,12 @@ import { GOOGLE_API_KEY, GOOGLE_APP_ID, GOOGLE_CLIENT_ID } from "../config";
  *   scripts are injected on demand, so a local-file user never loads them.
  * - The scope is drive.file: the app can only see files it created or the
  *   user picked. It cannot list or read the rest of their Drive.
- * - The access token lives in this tab: in memory, and in the tab's session
- *   storage so a reload does not ask for a click. It goes when the tab
- *   closes or when Google expires it, about an hour after sign-in. No
- *   refresh token, no server of ours. After that, one click gets a new one.
+ * - The access token lives in this browser: in memory, and in local storage
+ *   so a reload or a new tab does not ask for a click. (It used to be session
+ *   storage, which is per tab, and on a phone every link opened a new tab
+ *   that landed on the sign-in gate.) It goes when Google expires it, about
+ *   an hour after sign-in, or when the user closes the file. No refresh
+ *   token, no server of ours. After that, one click gets a new one.
  */
 
 const SCOPE = "https://www.googleapis.com/auth/drive.file";
@@ -31,6 +33,16 @@ export class DriveAuthError extends Error {
   constructor(message = "Google needs you to sign in again before the app can reach your file.") {
     super(message);
     this.name = "DriveAuthError";
+  }
+}
+
+/** Thrown instead of making a second file with the same name in the same folder. */
+export class DriveFileExistsError extends Error {
+  constructor(name: string) {
+    super(
+      `There is already a file called ${name} in that folder. Open that one instead, or choose a different name or folder.`,
+    );
+    this.name = "DriveFileExistsError";
   }
 }
 
@@ -102,31 +114,31 @@ let token: Token | null = null;
 let restored = false;
 let pending: { resolve: (ok: boolean) => void } | null = null;
 
-/** The token from before a reload, if this tab has one that has not expired. */
+/** The token from an earlier load, if this browser has one that has not expired. */
 function restoreToken(): void {
   if (restored) return;
   restored = true;
   try {
-    const raw = sessionStorage.getItem(TOKEN_KEY);
+    const raw = localStorage.getItem(TOKEN_KEY);
     if (!raw) return;
     const parsed = JSON.parse(raw) as Partial<Token>;
     if (typeof parsed.value === "string" && typeof parsed.expiresAt === "number" && parsed.expiresAt > Date.now()) {
       token = { value: parsed.value, expiresAt: parsed.expiresAt };
     } else {
-      sessionStorage.removeItem(TOKEN_KEY);
+      localStorage.removeItem(TOKEN_KEY);
     }
   } catch {
-    // Session storage unavailable: the token lives in memory only.
+    // Local storage unavailable: the token lives in memory only.
   }
 }
 
 function setToken(next: Token | null): void {
   token = next;
   try {
-    if (next) sessionStorage.setItem(TOKEN_KEY, JSON.stringify(next));
-    else sessionStorage.removeItem(TOKEN_KEY);
+    if (next) localStorage.setItem(TOKEN_KEY, JSON.stringify(next));
+    else localStorage.removeItem(TOKEN_KEY);
   } catch {
-    // Session storage unavailable: nothing to persist.
+    // Local storage unavailable: nothing to persist.
   }
 }
 
@@ -228,7 +240,28 @@ export async function download(id: string): Promise<string> {
   return response.text();
 }
 
+/** A Drive query string literal: single quotes and backslashes escaped. */
+function quote(value: string): string {
+  return `'${value.replace(/\\/g, "\\\\").replace(/'/g, "\\'")}'`;
+}
+
+/**
+ * Is there already a file with this name in the folder? Only files the app
+ * made or the user picked are visible under drive.file, which is exactly the
+ * set a second create would collide with.
+ */
+export async function findFile(name: string, parentId: string | null): Promise<DriveFileInfo | null> {
+  const terms = [`name = ${quote(name)}`, "trashed = false", `mimeType = ${quote(MIME)}`];
+  if (parentId) terms.push(`${quote(parentId)} in parents`);
+  const params = new URLSearchParams({ q: terms.join(" and "), fields: `files(${FIELDS})`, pageSize: "1" });
+  const response = await call(`${FILES}?${params}`);
+  const body = (await response.json()) as { files?: DriveFileInfo[] };
+  return body.files?.[0] ?? null;
+}
+
+/** Make the file. Refuses when one with the same name is already in the folder: Drive itself allows duplicates. */
 export async function createFile(name: string, parentId: string | null, text: string): Promise<DriveFileInfo> {
+  if (await findFile(name, parentId)) throw new DriveFileExistsError(name);
   const boundary = `ideamatrix-${Date.now().toString(36)}`;
   const metadata: { name: string; mimeType: string; parents?: string[] } = { name, mimeType: MIME };
   if (parentId) metadata.parents = [parentId];
