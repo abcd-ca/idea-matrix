@@ -23,10 +23,12 @@ import {
 } from "@/lib/file-session";
 import { driveConfigured } from "@/lib/storage/google-drive";
 import { supportsLocalFile } from "@/lib/storage/local-file";
-import { describeWhere } from "@/lib/storage/target";
 import { useAppStore } from "@/lib/store";
+import { LanguageSelect } from "@/components/device-preferences";
+import { Trans, useTranslation } from "react-i18next";
 
 export function SettingsView() {
+  const { t } = useTranslation("settings");
   const router = useRouter();
   const doc = useAppStore((s) => s.doc);
   const fileName = useAppStore((s) => s.fileName);
@@ -37,13 +39,32 @@ export function SettingsView() {
 
   if (!doc) return null;
 
+  // The buttons' title attributes never show on a touch screen, so the reasons are spelled out in the paragraph too.
+  const whereNotes = [t("where.explain")];
+  if (target === "drive" && !supportsLocalFile()) whereNotes.push(t("where.needsChromeLong"));
+  whereNotes.push(t("where.dropboxLater"));
+  if (target === "drive") whereNotes.push(t("where.signOutExplain"));
+
   return (
     <div className="flex max-w-2xl flex-col gap-8">
-      <h1 className="font-heading text-2xl font-semibold sm:text-3xl">Settings</h1>
+      <h1 className="font-heading text-2xl font-semibold sm:text-3xl">{t("title")}</h1>
 
-      <Section title="Where your ideas live">
+      <Section title={t("device.title")}>
+        <div className="flex max-w-sm flex-col gap-1.5">
+          <Label htmlFor="language">{t("language", { ns: "common" })}</Label>
+          <LanguageSelect id="language" className="w-fit" />
+        </div>
+        <p className="text-xs text-muted-foreground">{t("device.note")}</p>
+      </Section>
+
+      <Section title={t("where.title")}>
         <p>
-          Your matrix is <strong>{fileName ?? "a file"}</strong> {describeWhere(target)}.
+          <Trans
+            t={t}
+            i18nKey="where.yourMatrixIs"
+            values={{ where: t(`where.${target ?? "local"}`, { ns: "common" }) }}
+            components={{ file: <strong>{fileName ?? t("where.aFile")}</strong> }}
+          />
         </p>
         <div className="flex flex-wrap gap-2">
           <Button
@@ -57,7 +78,7 @@ export function SettingsView() {
               if (result === "error") setError(useAppStore.getState().error);
             }}
           >
-            Open a different file…
+            {t("actions.openDifferentFile", { ns: "common" })}
           </Button>
           <Button
             variant="outline"
@@ -69,13 +90,13 @@ export function SettingsView() {
               router.replace("/setup/");
             }}
           >
-            Create a new file…
+            {t("where.createNew")}
           </Button>
           {target === "drive" ? (
             <Button
               variant="outline"
               disabled={busy || !supportsLocalFile()}
-              title={supportsLocalFile() ? undefined : "Needs Chrome or Edge"}
+              title={supportsLocalFile() ? undefined : t("where.needsChrome")}
               onClick={async () => {
                 setBusy(true);
                 setError(null);
@@ -84,13 +105,13 @@ export function SettingsView() {
                 if (result === "error") setError(useAppStore.getState().error);
               }}
             >
-              Move to this computer…
+              {t("where.moveToLocal")}
             </Button>
           ) : (
             <Button
               variant="outline"
               disabled={busy || !driveConfigured()}
-              title={driveConfigured() ? undefined : "Coming in a later version"}
+              title={driveConfigured() ? undefined : t("where.comingLater")}
               onClick={async () => {
                 setBusy(true);
                 setError(null);
@@ -99,30 +120,19 @@ export function SettingsView() {
                 if (result === "error") setError(useAppStore.getState().error);
               }}
             >
-              Move to Google Drive…
+              {t("where.moveToDrive")}
             </Button>
           )}
-          <Button variant="outline" disabled title="Coming in a later version">
-            Move to Dropbox…
+          <Button variant="outline" disabled title={t("where.comingLater")}>
+            {t("where.moveToDropbox")}
           </Button>
           {target === "drive" ? (
             <Button variant="outline" disabled={busy} onClick={() => signOutOfDrive()}>
-              Sign out of Google
+              {t("where.signOut")}
             </Button>
           ) : null}
         </div>
-        <p className="text-xs text-muted-foreground">
-          Opening a different file switches to it; the current file stays where it is with everything saved. Moving
-          copies your matrix to the new place and switches to the copy; the old file is left untouched.
-          {/* The buttons' title attributes never show on a touch screen, so the reasons are spelled out here too. */}
-          {target === "drive" && !supportsLocalFile()
-            ? " Moving to this computer needs Chrome or Edge on a computer."
-            : ""}
-          {" Dropbox is coming in a later version."}
-          {target === "drive"
-            ? " Signing out drops the key Google gave the app; the next read or save asks for one click."
-            : ""}
-        </p>
+        <p className="text-xs text-muted-foreground">{whereNotes.join(" ")}</p>
         {error ? (
           <p role="alert" className="text-sm text-destructive">
             {error}
@@ -130,9 +140,9 @@ export function SettingsView() {
         ) : null}
       </Section>
 
-      <Section title="Matrix name">
+      <Section title={t("name.title")}>
         <div className="flex max-w-sm flex-col gap-1.5">
-          <Label htmlFor="matrix-name">Shown at the top of the matrix</Label>
+          <Label htmlFor="matrix-name">{t("name.label")}</Label>
           <Input
             id="matrix-name"
             value={doc.name}
@@ -142,37 +152,33 @@ export function SettingsView() {
         </div>
       </Section>
 
-      <Section title="Export">
+      <Section title={t("export.title")}>
         <div className="flex flex-wrap items-start gap-2">
           <ExportMenu />
         </div>
-        <p className="text-xs text-muted-foreground">
-          Downloads a copy in the chosen format. JSON is the matrix file itself, complete with the evidence log;
-          Markdown is for reading; CSV is one row per idea for a spreadsheet.
-        </p>
+        <p className="text-xs text-muted-foreground">{t("export.explain")}</p>
       </Section>
 
-      <Section title="AI assistant">
+      <Section title={t("ai.title")}>
         <ConnectAiPanel />
       </Section>
 
-      <Section title="Privacy and trust">
+      <Section title={t("privacy.title")}>
         <p>
-          Nothing leaves your machine except to the storage you chose. You can check that yourself: open your browser’s
-          developer tools, watch the Network tab while you edit, and see that the only traffic is the page itself.{" "}
+          {t("privacy.text")}{" "}
           <Link href="/privacy/" className="underline underline-offset-4">
-            Read the full page
+            {t("privacy.readMore")}
           </Link>
         </p>
       </Section>
 
-      <Section title="This build">
+      <Section title={t("build.title")}>
         <BuildInfo />
       </Section>
 
-      <Section title="About">
+      <Section title={t("about.title")}>
         <p className="text-xs text-muted-foreground">
-          {APP_NAME} {APP_VERSION} · open source · no telemetry · maintained by{" "}
+          {t("about.line", { app: APP_NAME, version: APP_VERSION })}{" "}
           <a href={MAINTAINER_URL} className="underline underline-offset-4" target="_blank" rel="noreferrer">
             {MAINTAINER_NAME}
           </a>
@@ -185,7 +191,7 @@ export function SettingsView() {
                 target="_blank"
                 rel="noreferrer"
               >
-                <GitHubMark className="size-3.5" /> source on GitHub
+                <GitHubMark className="size-3.5" /> {t("about.source")}
               </a>
             </>
           ) : null}
@@ -193,7 +199,7 @@ export function SettingsView() {
             <>
               {" · "}
               <a href={ISSUES_URL} className="underline underline-offset-4" target="_blank" rel="noreferrer">
-                report a problem
+                {t("about.report")}
               </a>
             </>
           ) : null}

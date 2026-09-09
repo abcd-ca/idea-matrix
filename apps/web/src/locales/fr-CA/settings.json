@@ -1,0 +1,48 @@
+{
+  "title": "Réglages",
+  "device": {
+    "title": "Cet appareil",
+    "note": "Conservé par ce navigateur, pas dans votre fichier de matrice. Chaque appareil garde le sien."
+  },
+  "where": {
+    "title": "Où vivent vos idées",
+    "yourMatrixIs": "Votre matrice est <file/> {{where}}.",
+    "aFile": "un fichier",
+    "createNew": "Créer un nouveau fichier…",
+    "needsChrome": "Demande Chrome ou Edge",
+    "moveToLocal": "Déplacer vers cet ordinateur…",
+    "comingLater": "À venir dans une version ultérieure",
+    "moveToDrive": "Déplacer vers Google Drive…",
+    "moveToDropbox": "Déplacer vers Dropbox…",
+    "signOut": "Se déconnecter de Google",
+    "explain": "Ouvrir un autre fichier passe à celui-là; le fichier actuel reste où il est, avec tout enregistré. Déplacer copie votre matrice au nouvel endroit et passe à la copie; l'ancien fichier est laissé intact.",
+    "needsChromeLong": "Déplacer vers cet ordinateur demande Chrome ou Edge sur un ordinateur.",
+    "dropboxLater": "Dropbox arrive dans une version ultérieure.",
+    "signOutExplain": "Se déconnecter abandonne la clé que Google a donnée à l'application; la prochaine lecture ou le prochain enregistrement demandera un clic."
+  },
+  "name": {
+    "title": "Nom de la matrice",
+    "label": "Affiché en haut de la matrice"
+  },
+  "export": {
+    "title": "Exporter",
+    "explain": "Télécharge une copie dans le format choisi. JSON est le fichier de matrice lui-même, avec le journal des preuves; Markdown est pour lire; CSV est une ligne par idée pour un tableur."
+  },
+  "ai": {
+    "title": "Assistant IA"
+  },
+  "privacy": {
+    "title": "Confidentialité et confiance",
+    "text": "Rien ne quitte votre machine, sauf vers l'espace de stockage que vous avez choisi. Vous pouvez le vérifier vous-même : ouvrez les outils de développement de votre navigateur, surveillez l'onglet Réseau pendant que vous modifiez, et constatez que le seul trafic est la page elle-même.",
+    "readMore": "Lire la page complète"
+  },
+  "build": {
+    "title": "Cette version"
+  },
+  "about": {
+    "title": "À propos",
+    "line": "{{app}} {{version}} · code source ouvert · aucune télémétrie · maintenu par",
+    "source": "code source sur GitHub",
+    "report": "signaler un problème"
+  }
+}

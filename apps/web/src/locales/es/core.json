@@ -1,0 +1,118 @@
+{
+  "criterion": {
+    "reach": {
+      "label": "Alcance",
+      "short": "Alcance",
+      "question": "¿A cuántas personas podría servir esto?",
+      "levels": {
+        "1": "yo y unos pocos amigos",
+        "2": "un club o una empresa",
+        "3": "un nicho regional",
+        "4": "un nicho nacional o mundial",
+        "5": "mercado masivo"
+      }
+    },
+    "impact": {
+      "label": "Impacto",
+      "short": "Impacto",
+      "question": "¿Cuánta diferencia supone para un usuario?",
+      "levels": {
+        "1": "apenas se nota",
+        "2": "una pequeña comodidad",
+        "3": "una mejora real",
+        "4": "algo que echarían de menos si desapareciera",
+        "5": "cambia algo importante para ellos"
+      }
+    },
+    "profitability": {
+      "label": "Rentabilidad",
+      "short": "Rentab.",
+      "question": "¿Qué queda después de los costes, una vez en marcha?",
+      "levels": {
+        "0": "deliberadamente no comercial",
+        "1": "los ingresos apenas cubren los costes",
+        "2": "sobra un poco",
+        "3": "un margen modesto y estable",
+        "4": "claramente rentable",
+        "5": "muy rentable"
+      }
+    },
+    "vision": {
+      "label": "Visión",
+      "short": "Visión",
+      "question": "¿Qué tan bien encaja con la vida laboral que quieres?",
+      "levels": {
+        "1": "no es como quiero pasar mi tiempo",
+        "2": "tolerable",
+        "3": "encaja con parte de lo que quiero",
+        "4": "encaja con cómo quiero trabajar",
+        "5": "exactamente el trabajo que quiero hacer"
+      }
+    },
+    "ease": {
+      "label": "Facilidad",
+      "short": "Facilidad",
+      "question": "¿Qué tan fácil es lanzarlo y mantenerlo en marcha, con las herramientas de hoy?",
+      "levels": {
+        "1": "meses de trabajo duro",
+        "2": "un par de meses",
+        "3": "unas pocas semanas",
+        "4": "un par de fines de semana",
+        "5": "un fin de semana"
+      }
+    }
+  },
+  "confidence": {
+    "label": "Confianza",
+    "question": "¿Cuánta evidencia hay detrás de esas puntuaciones?",
+    "levels": {
+      "1": "intuición",
+      "2": "investigación de escritorio, o alguien planteó el problema sin que se le preguntara",
+      "3": "unas pocas conversaciones reales con personas que tienen el problema",
+      "4": "varias conversaciones que apuntan todas en la misma dirección",
+      "5": "un compromiso: dinero, una presentación o un piloto"
+    },
+    "rules": {
+      "0": "Habla de su vida, no de tu idea.",
+      "1": "Pregunta qué hicieron, no qué harían.",
+      "2": "Solo un compromiso cuenta como prueba."
+    }
+  },
+  "gateSummary": "Una Confianza por encima de 2 necesita una entrada de evidencia que registre lo que alguien hace actualmente frente al problema. Una Confianza de 5 necesita un compromiso: dinero, una presentación o un piloto.",
+  "gate": {
+    "2": "Una Confianza por encima de 2 necesita una entrada de evidencia que registre lo que alguien hace actualmente frente al problema.",
+    "4": "Una Confianza de 5 necesita una entrada de evidencia con un compromiso: dinero, una presentación o un piloto."
+  },
+  "stage": {
+    "Backlog": "Anotada, todavía sin examinar.",
+    "Exploring": "Pensándola y haciendo investigación de escritorio.",
+    "Talking to customers": "Teniendo conversaciones reales sobre el problema.",
+    "Validated": "Las conversaciones confirmaron el problema y alguien se comprometió.",
+    "Building": "Construyéndola de verdad.",
+    "Parked": "Apartada, con el motivo registrado. Nunca borrada."
+  },
+  "stageName": {
+    "Backlog": "Pendiente",
+    "Exploring": "Explorando",
+    "Talking to customers": "Hablando con clientes",
+    "Validated": "Validada",
+    "Building": "En construcción",
+    "Parked": "Apartada"
+  },
+  "formula": {
+    "potential": "El Potencial es el promedio de las cinco puntuaciones, escalado de 0 a 100. Queda en blanco hasta que las cinco estén rellenas.",
+    "score": "La Puntuación es Potencial × Confianza ÷ 5. Solo sube con evidencia, así que una idea que suena estupenda no puede superar a una que de verdad has probado."
+  },
+  "band": {
+    "grey": { "label": "todavía no", "advice": "todavía no merece tu tiempo" },
+    "amber": { "label": "merece un vistazo", "advice": "merece un vistazo" },
+    "lightGreen": { "label": "habla con clientes", "advice": "merece una conversación con un cliente" },
+    "darkGreen": { "label": "plan serio", "advice": "merece un plan serio" }
+  },
+  "documentError": {
+    "too-large": "Este archivo es más grande de lo que puede ser una matriz.",
+    "not-json": "Este archivo no es JSON válido.",
+    "not-a-matrix": "Este archivo no es un archivo de Idea Matrix.",
+    "newer-version": "Este archivo lo guardó una versión más reciente de Idea Matrix. Recarga la página para obtener la última versión, y luego ábrelo de nuevo."
+  }
+}

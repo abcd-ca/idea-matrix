@@ -1,4 +1,5 @@
 import { GOOGLE_API_KEY, GOOGLE_APP_ID, GOOGLE_CLIENT_ID } from "../config";
+import { i18n } from "../i18n";
 
 /**
  * The Google Drive save target's plumbing: sign-in through Google Identity
@@ -28,9 +29,11 @@ const MIME = "application/json";
 /** Consider a token stale a minute before Google does, so a save never lands on an expiring one. */
 const EXPIRY_MARGIN_MS = 60_000;
 
+const text = (key: string, values?: Record<string, unknown>) => i18n.t(key, { ns: "common", ...values });
+
 /** Thrown when a request needs the user to sign in again (from a click). */
 export class DriveAuthError extends Error {
-  constructor(message = "Google needs you to sign in again before the app can reach your file.") {
+  constructor(message = text("errors.driveAuth")) {
     super(message);
     this.name = "DriveAuthError";
   }
@@ -39,9 +42,7 @@ export class DriveAuthError extends Error {
 /** Thrown instead of making a second file with the same name in the same folder. */
 export class DriveFileExistsError extends Error {
   constructor(name: string) {
-    super(
-      `There is already a file called ${name} in that folder. Open that one instead, or choose a different name or folder.`,
-    );
+    super(text("errors.driveFileExists", { name }));
     this.name = "DriveFileExistsError";
   }
 }
@@ -82,7 +83,7 @@ function loadScript(src: string): Promise<void> {
       el.onload = () => resolve();
       el.onerror = () => {
         scriptLoads.delete(src);
-        reject(new Error("Could not load Google's sign-in script. Check your connection and try again."));
+        reject(new Error(text("errors.driveScript")));
       };
       document.head.appendChild(el);
     });
@@ -220,8 +221,10 @@ async function call(url: string, init: RequestInit = {}): Promise<Response> {
     }
     const message =
       response.status === 404
-        ? "The file can no longer be found in Google Drive. It may have been deleted or the app's access to it removed."
-        : `Google Drive returned an error (${response.status})${detail ? `: ${detail}` : "."}`;
+        ? text("errors.driveGone")
+        : detail
+          ? text("errors.driveErrorDetail", { status: response.status, detail })
+          : text("errors.driveError", { status: response.status });
     throw new DriveRequestError(message, response.status);
   }
   return response;
@@ -230,8 +233,7 @@ async function call(url: string, init: RequestInit = {}): Promise<Response> {
 export async function getInfo(id: string): Promise<DriveFileInfo> {
   const response = await call(`${FILES}/${encodeURIComponent(id)}?fields=${FIELDS}`);
   const info = (await response.json()) as DriveFileInfo;
-  if (info.trashed)
-    throw new DriveRequestError("The file is in Google Drive's bin. Restore it there, or open a different file.", 404);
+  if (info.trashed) throw new DriveRequestError(text("errors.driveTrashed"), 404);
   return info;
 }
 
@@ -341,7 +343,7 @@ export function pickFile(): Promise<Picked | null> {
         .setIncludeFolders(true)
         .setMimeTypes(MIME)
         .setMode(google.picker.DocsViewMode.LIST),
-    "Open your Idea Matrix file",
+    text("picker.openTitle"),
   );
 }
 
@@ -354,6 +356,6 @@ export function pickFolder(): Promise<Picked | null> {
         .setSelectFolderEnabled(true)
         .setMimeTypes("application/vnd.google-apps.folder")
         .setMode(google.picker.DocsViewMode.LIST),
-    "Choose a folder for your Idea Matrix file",
+    text("picker.folderTitle"),
   );
 }

@@ -14,6 +14,10 @@ There are no accounts and no server behind it. Your matrix is one JSON file that
 
 Saving a file in place needs the File System Access API, which today means Chrome or Edge. The app detects the feature, not the browser, so support switches on by itself when others ship it.
 
+## Languages
+
+The app speaks Canadian English, French (Canada), American English and Spanish; pick one under **Settings → This device**, or on the first screen of setup, and the choice stays with that browser rather than with your file. The French and Spanish translations were made by an AI and have not yet been checked by a native speaker, so corrections are welcome as pull requests: the text lives in `apps/web/src/locales`, and `CONTRIBUTING.md` explains the layout.
+
 ## AI assistants
 
 `packages/mcp` is a small program that lets an AI assistant such as Claude, Claude Code, ChatGPT or Perplexity read and update your matrix through the Model Context Protocol, on your machine, against the same file and the same rules as the app. Any assistant that can run a local MCP server works: it ships as a one-click Claude Desktop extension and as an `npx` command for everything else, and it doubles as a command-line tool. The **Connect to AI agent** button in the app shows the steps; `packages/mcp/README.md` has the full instructions. The assistant walks you through scoring; you assign the numbers, and Confidence still cannot rise without a recorded conversation.

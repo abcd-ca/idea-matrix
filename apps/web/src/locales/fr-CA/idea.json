@@ -1,0 +1,52 @@
+{
+  "backToMatrix": "Retour à la matrice",
+  "backToParked": "Retour aux idées mises de côté",
+  "notFound": "Cette idée n'est pas dans cette matrice.",
+  "nameLabel": "Nom de l'idée",
+  "stage": "Étape",
+  "parkedBecause": "Mise de côté parce que",
+  "chooseAnother": "Choisissez une autre étape ci-dessus pour la ramener.",
+  "description": "Description",
+  "assumption": "Hypothèse la plus risquée",
+  "assumptionHint": "Ce qui doit déjà être vrai dans ce que les autres font ou paient. Une phrase que vous pouvez vérifier.",
+  "assumptionPlaceholder": "p. ex. Les gens de ma rue se prêtent déjà des outils quelques fois par année.",
+  "needsAllFive": "il faut les cinq notes",
+  "nextConfidence": "À une Confiance de {{confidence}}, le score serait {{score}}.",
+  "needsMoreEvidence": "Il faut d'abord plus de preuves dans le journal.",
+  "park": "Mettre cette idée de côté…",
+  "segmented": {
+    "notScored": "Pas encore évalué",
+    "meaning": "{{value}} = {{meaning}}"
+  },
+  "evidence": {
+    "title": "Journal des preuves",
+    "count": "· {{count}}",
+    "add": "Ajouter",
+    "none": "Aucune conversation notée pour l'instant. La Confiance reste à 1 ou 2 tant qu'il n'y en a pas.",
+    "when": "· {{date}}",
+    "remove": "Retirer",
+    "keep": "Garder",
+    "removeEntry": "Retirer l'entrée",
+    "noBehaviour": "Aucun comportement actuel noté, alors cette entrée ne compte pas pour la Confiance.",
+    "commitment": "Engagement :",
+    "dialogTitle": "Ajouter une conversation",
+    "date": "Date",
+    "who": "Qui",
+    "whoPlaceholder": "p. ex. Présidente du conseil de copropriété",
+    "what": "Que font-ils actuellement face à ce problème?",
+    "whatPlaceholder": "Passé et présent seulement. Ce qu'ils ont dit qu'ils feraient ne compte pas.",
+    "commit": "À quoi se sont-ils engagés, s'il y a lieu?",
+    "commitPlaceholder": "De l'argent, une présentation, un projet pilote, leur temps. Laissez vide s'il n'y a rien.",
+    "addConversation": "Ajouter la conversation"
+  },
+  "parkDialog": {
+    "title": "Mettre « {{name}} » de côté",
+    "description": "Mettre de côté garde l'idée, ses notes et ses preuves comme historique, et la retire de la matrice. Une phrase sur le pourquoi est requise, pour vous en souvenir plus tard.",
+    "placeholder": "p. ex. Deux conversations ont montré que les gens sont satisfaits de ce qu'ils utilisent aujourd'hui.",
+    "deleteConfirm": "Supprimer pour de bon?",
+    "yesDelete": "Oui, supprimer",
+    "no": "Non",
+    "deleteInstead": "Ajoutée par erreur? Supprimez-la plutôt",
+    "park": "Mettre de côté"
+  }
+}

@@ -1,0 +1,34 @@
+{
+  "columns": {
+    "idea": "Idée",
+    "stage": "Étape"
+  },
+  "scoreIt": "à évaluer",
+  "parkedTitle": "Idées mises de côté",
+  "newIdea": "Nouvelle idée",
+  "stageFilter": "Étape",
+  "all": "Toutes",
+  "parkedIntro": "Les idées mises de côté gardent leurs notes comme historique. Ouvrez-en une pour voir pourquoi elle a été mise de côté, ou pour la ramener.",
+  "hint": "Cliquez sur une idée pour l'ouvrir et l'évaluer. Survolez un en-tête de colonne pour voir son échelle.",
+  "showScores": "Afficher les cinq notes",
+  "cardMeta": "Potentiel {{potential}} · Confiance {{confidence}}",
+  "empty": {
+    "parked": "Rien n'est mis de côté. Quand vous mettez une idée de côté, elle arrive ici avec sa raison.",
+    "filtered": "Aucune idée à cette étape.",
+    "none": "Pas encore d'idées. Ajoutez la première et évaluez-la."
+  },
+  "newDialog": {
+    "title": "Nouvelle idée",
+    "description": "Un nom court suffit. Vous pourrez la décrire et l'évaluer ensuite.",
+    "placeholder": "p. ex. Tableau météo au départ des sentiers",
+    "nameLabel": "Nom de l'idée",
+    "add": "Ajouter l'idée"
+  },
+  "help": {
+    "range": "{{min}} à {{max}}",
+    "andUp": "{{min}} et plus",
+    "bandLine": "<b>{{range}}</b> : {{advice}}",
+    "levelLine": "<b>{{level}}</b> {{meaning}}",
+    "stageLine": "<b>{{stage}}</b> : {{description}}"
+  }
+}

@@ -1,0 +1,53 @@
+{
+  "progress": "{{current}} sur {{total}}",
+  "next": "Suivant",
+  "back": "Retour",
+  "done": "Terminé",
+  "line": {
+    "card": "<b>{{title}}.</b> {{text}}",
+    "stage": "<b>{{stage}}</b> : {{description}}",
+    "criterion": "<b>{{label}}</b> : {{question}}",
+    "level": "<b>{{level}}</b> {{meaning}}"
+  },
+  "bands": {
+    "grey": "<b>39 et moins</b> : {{advice}}",
+    "amber": "<b>40 à 59</b> : {{advice}}",
+    "lightGreen": "<b>60 à 79</b> : {{advice}}",
+    "darkGreen": "<b>80 et plus</b> : {{advice}}"
+  },
+  "stages": {
+    "title": "Chaque idée a une étape",
+    "click": "Cliquez sur une étape pour n'afficher que les idées qui y sont.",
+    "tap": "Touchez une étape pour n'afficher que les idées qui y sont.",
+    "parked": "Les idées mises de côté gardent leurs notes et vivent sous Mises de côté dans le menu."
+  },
+  "potential": {
+    "title": "Potentiel : cinq notes, en moyenne",
+    "each": "Chacune est une valeur de 1 à 5. La Rentabilité peut aussi être 0, pour quelque chose de délibérément non commercial.",
+    "hidden": "Les cinq notes restent hors de ce tableau par défaut. Cochez <b>{{showScores}}</b> dessous pour les voir, et <b>survolez n'importe quel en-tête de colonne</b> pour voir ce que ses chiffres veulent dire.",
+    "colour": "La couleur indique dans quelle bande un chiffre tombe :"
+  },
+  "confidence": {
+    "title": "Confiance : combien de preuves derrière ces notes?",
+    "starts": "Chaque nouvelle idée commence à 1. La recherche documentaire peut la mener à 2; seules des conversations notées la mènent plus loin. Trois règles pour ces conversations :",
+    "receipts": "Le journal des preuves de chaque idée garde les reçus. {{gate}}"
+  },
+  "score": {
+    "title": "Le Score est ce qui classe vos idées",
+    "cap": "Le Score ne peut jamais dépasser le Potentiel. Toutes les preuves du monde prouvent seulement que l'idée est aussi bonne que vous le pensiez.",
+    "sameColours": "Mêmes couleurs que le Potentiel :"
+  },
+  "open": {
+    "title": "Cliquez sur une idée pour l'évaluer",
+    "text": "Ce tableau sert à comparer. L'évaluation se fait dans une idée, où chaque chiffre montre son sens quand vous le choisissez, et où vit le journal des preuves.",
+    "replay": "Vous pouvez rejouer cette visite n'importe quand depuis Aide, sous Faites-moi visiter."
+  },
+  "phone": {
+    "cardTitle": "Chaque carte est une idée",
+    "cardText": "Le chiffre dans le coin est son <b>Score</b>, ce qui classe vos idées. Sous le nom : son étape, son <b>Potentiel</b> et sa <b>Confiance</b>.",
+    "eachColour": "Chacune est une valeur de 1 à 5. La Rentabilité peut aussi être 0, pour quelque chose de délibérément non commercial. La couleur indique dans quelle bande un chiffre tombe :",
+    "receipts": "{{score}} Le journal des preuves de chaque idée garde les reçus. {{gate}}",
+    "openTitle": "Touchez une idée pour l'évaluer",
+    "openText": "Cette liste sert à comparer. L'évaluation se fait dans une idée, où chaque chiffre montre son sens quand vous le choisissez, et où vit le journal des preuves."
+  }
+}

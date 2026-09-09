@@ -1,0 +1,145 @@
+{
+  "language": "Language",
+  "nav": {
+    "main": "Main",
+    "matrix": "Matrix",
+    "parked": "Parked",
+    "parkedWithCount": "Parked ({{count}})",
+    "settings": "Settings"
+  },
+  "help": {
+    "label": "Help",
+    "tour": "Show me around",
+    "privacy": "Privacy and trust",
+    "source": "Source on GitHub"
+  },
+  "terms": {
+    "potential": "Potential",
+    "score": "Score"
+  },
+  "where": {
+    "local": "on this computer",
+    "drive": "in Google Drive"
+  },
+  "actions": {
+    "back": "Back",
+    "cancel": "Cancel",
+    "close": "Close",
+    "continue": "Continue",
+    "copy": "Copy",
+    "copied": "Copied",
+    "openDifferentFile": "Open a different file…",
+    "resume": "Resume",
+    "signInWithGoogle": "Sign in with Google",
+    "startOver": "Start over"
+  },
+  "gate": {
+    "opening": "Opening your matrix…",
+    "toSetup": "Taking you to setup…",
+    "resumeWith": "Resume with {{fileName}}",
+    "yourMatrix": "your matrix",
+    "resumeDrive": "Google needs one click before the app may read and save that file again. It signs you in on Google's own page and hands the app a key that stays in this browser.",
+    "resumeLocal": "Your browser needs one click before the app may read and save that file again. Nothing has left your machine in the meantime.",
+    "couldNotOpen": "The file could not be opened",
+    "somethingWrong": "Something went wrong."
+  },
+  "status": {
+    "couldNotSave": "Could not save",
+    "saving": "Saving…",
+    "unsaved": "Unsaved changes",
+    "saved": "Saved {{when}}",
+    "needsPermission": "Needs permission",
+    "upToDate": "Up to date",
+    "noFile": "No file",
+    "compact": "{{fileName}} · {{text}}",
+    "storedWhere": "Data is stored {{where}}",
+    "justNow": "just now",
+    "secondsAgo": "{{count}}s ago",
+    "minutesAgo": "{{count}} min ago",
+    "savedTo": "Saved to {{fileName}} {{where}}",
+    "yourFile": "your file",
+    "autosave": "Every change is saved to your file automatically. There is no Save button."
+  },
+  "errors": {
+    "noMatrixOpen": "No matrix is open.",
+    "notApplied": "That change could not be applied.",
+    "notAllowed": "The browser did not allow access to the file. Try again, or open a different file.",
+    "notFound": "The file can no longer be found. It may have been moved or deleted. Put it back and reload the page, or open a different file.",
+    "fileProblem": "Something went wrong with the file.",
+    "driveNotSignedIn": "Google did not sign you in. Try again, or open a different file.",
+    "localNotGranted": "The browser did not grant access. You can open a different file instead.",
+    "couldNotWrite": "Could not write the file.",
+    "signedOut": "Signed out of Google. Sign in again when you want the app to reach your file.",
+    "driveSaveNeedsSignIn": "Google needs you to sign in again before the app can keep saving. Your changes are kept until then.",
+    "driveCheckNeedsSignIn": "Google needs you to sign in again before the app can check your file for changes.",
+    "driveAuth": "Google needs you to sign in again before the app can reach your file.",
+    "driveFileExists": "There is already a file called {{name}} in that folder. Open that one instead, or choose a different name or folder.",
+    "driveScript": "Could not load Google's sign-in script. Check your connection and try again.",
+    "driveGone": "The file can no longer be found in Google Drive. It may have been deleted or the app's access to it removed.",
+    "driveError": "Google Drive returned an error ({{status}}).",
+    "driveErrorDetail": "Google Drive returned an error ({{status}}): {{detail}}",
+    "driveTrashed": "The file is in Google Drive's bin. Restore it there, or open a different file.",
+    "noLocalFileApi": "This browser cannot save changes back to a file on disk. Open this page in Chrome or Edge."
+  },
+  "picker": {
+    "fileType": "Idea Matrix file",
+    "openTitle": "Open your Idea Matrix file",
+    "folderTitle": "Choose a folder for your Idea Matrix file"
+  },
+  "overview": {
+    "title": "Score your project ideas",
+    "intro": "Idea Matrix is a place to keep your project ideas, at whatever stage they are, and to explore which ones deserve your time.",
+    "cards": {
+      "scoring": {
+        "title": "How an idea is scored",
+        "text": "Each idea gets a value of 1 to 5 for Reach, Impact, Profitability, Vision and Ease. Together they give its Potential: how good it could be."
+      },
+      "confidence": {
+        "title": "Confidence keeps you honest",
+        "text": "A separate score for how much evidence sits behind those numbers, from gut feel to a customer commitment. Score is Potential × Confidence ÷ 5, so nothing ranks high until real people have backed it up."
+      },
+      "private": {
+        "title": "Private by design",
+        "text": "Your ideas stay yours on purpose. There are no accounts and no server: your matrix is one file in your own storage, and nothing leaves your computer. You do not have to take the app’s word for it. Watch the browser’s Network tab, or read the open-source code."
+      }
+    },
+    "ai": "Use it here in the browser, or connect it to your AI assistant and work through your ideas in conversation.",
+    "momTest": "talk about people’s lives, not your idea; ask what they did, not what they would do; only a commitment counts as proof.",
+    "momTestFrom": "The rules for what counts as evidence come from <a>The Mom Test</a>: {{momTest}}"
+  },
+  "connectAi": {
+    "title": "AI assistant",
+    "pitch": "Score and discuss your ideas from Claude or another assistant, through a small MCP server that runs on this computer.",
+    "learnMore": "Learn more",
+    "button": "Connect to AI agent",
+    "dialogTitle": "Connect to an AI agent",
+    "description": "The Idea Matrix MCP server runs on this computer and works on <file/>, the same file as the app, under the same rules: Confidence cannot rise without evidence, and nothing is deleted. Only the idea text you ask about goes to the assistant, on your own account.",
+    "claudeDesktop": "Claude Desktop",
+    "desktopSteps": "Download <code>idea-matrix.mcpb</code> from the <a>releases page</a>, double-click it, and pick <file/> when Claude asks for your matrix file.",
+    "claudeCode": "Claude Code",
+    "codeSteps": "Run this once in a terminal, with the real path to your file:",
+    "otherClients": "Other MCP clients",
+    "otherSteps": "Point the client at this command (stdio transport):",
+    "then": "Then say “show me my idea matrix”, or choose the <code>idea_matrix</code> prompt. The app notices changes the assistant saves within a few seconds.",
+    "fullInstructions": "Full instructions",
+    "copyCommand": "Copy command"
+  },
+  "export": {
+    "button": "Export",
+    "json": "JSON",
+    "jsonHint": "A copy of the matrix file itself. Always round-trips.",
+    "markdown": "Markdown",
+    "markdownHint": "One section per idea, for reading and keeping.",
+    "csv": "CSV",
+    "csvHint": "One row per idea, for a spreadsheet."
+  },
+  "build": {
+    "line": "{{app}} {{version}}, built from commit <a>{{commit}}</a> of the public repo.",
+    "withLocalChanges": " (with local changes)",
+    "reading": "Reading the fingerprint…",
+    "missing": "No fingerprint here: this is a development build, not a deployed one.",
+    "fingerprint": "Fingerprint",
+    "mismatch": "The fingerprint file is from commit {{fileCommit}} but this page is from commit {{pageCommit}}. Reload the page; if this stays, you are seeing two deploys mixed together.",
+    "explain": "The fingerprint is a hash of every file this site serves. <checks>GitHub shows the same fingerprint for that commit</checks>, so the code you can read there is the code running here. <how>How to check it yourself</how>."
+  }
+}

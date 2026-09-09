@@ -6,6 +6,7 @@ import { Button } from "@/components/ui/button";
 import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle } from "@/components/ui/dialog";
 import { MCP_DOCS_URL, RELEASES_URL } from "@/lib/config";
 import { useAppStore } from "@/lib/store";
+import { Trans, useTranslation } from "react-i18next";
 
 const PACKAGE = "@idea-matrix/mcp";
 
@@ -16,19 +17,19 @@ const PACKAGE = "@idea-matrix/mcp";
  * their own computer.
  */
 export function ConnectAiPanel({ compact = false }: { compact?: boolean }) {
+  const { t } = useTranslation("common");
   const [open, setOpen] = useState(false);
   return (
     <div className={compact ? "flex flex-col gap-2 rounded-md border p-3 text-xs" : "flex flex-col gap-3"}>
-      {compact ? <p className="font-medium">AI assistant</p> : null}
+      {compact ? <p className="font-medium">{t("connectAi.title")}</p> : null}
       <p className="text-muted-foreground">
-        Score and discuss your ideas from Claude or another assistant, through a small MCP server that runs on this
-        computer.{" "}
+        {t("connectAi.pitch")}{" "}
         <a href={MCP_DOCS_URL} target="_blank" rel="noreferrer" className="underline underline-offset-4">
-          Learn more
+          {t("connectAi.learnMore")}
         </a>
       </p>
       <Button variant="outline" size={compact ? "sm" : "default"} onClick={() => setOpen(true)}>
-        <PlugIcon data-icon="inline-start" /> Connect to AI agent
+        <PlugIcon data-icon="inline-start" /> {t("connectAi.button")}
       </Button>
       <ConnectAiDialog open={open} onOpenChange={setOpen} />
     </div>
@@ -36,45 +37,51 @@ export function ConnectAiPanel({ compact = false }: { compact?: boolean }) {
 }
 
 function ConnectAiDialog({ open, onOpenChange }: { open: boolean; onOpenChange: (open: boolean) => void }) {
+  const { t } = useTranslation("common");
   const fileName = useAppStore((s) => s.fileName) ?? "ideas.ideamatrix.json";
   const path = `/path/to/${fileName}`;
   const claudeCode = `claude mcp add idea-matrix -- npx -y ${PACKAGE} mcp --file ${path}`;
   const generic = `npx -y ${PACKAGE} mcp --file ${path}`;
+  // The file name is user text, so it goes in as a component, never interpolated into the sentence.
+  const file = <strong>{fileName}</strong>;
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>
       <DialogContent className="sm:max-w-xl">
         <DialogHeader>
-          <DialogTitle>Connect to an AI agent</DialogTitle>
+          <DialogTitle>{t("connectAi.dialogTitle")}</DialogTitle>
           <DialogDescription>
-            The Idea Matrix MCP server runs on this computer and works on <strong>{fileName}</strong>, the same file as
-            the app, under the same rules: Confidence cannot rise without evidence, and nothing is deleted. Only the
-            idea text you ask about goes to the assistant, on your own account.
+            <Trans t={t} i18nKey="connectAi.description" components={{ file }} />
           </DialogDescription>
         </DialogHeader>
 
         <div className="flex min-w-0 flex-col gap-5 text-sm">
-          <Step n={1} title="Claude Desktop">
+          <Step n={1} title={t("connectAi.claudeDesktop")}>
             <p>
-              Download <code>idea-matrix.mcpb</code> from the{" "}
-              <a href={RELEASES_URL} target="_blank" rel="noreferrer" className="underline underline-offset-4">
-                releases page
-              </a>
-              , double-click it, and pick <strong>{fileName}</strong> when Claude asks for your matrix file.
+              <Trans
+                t={t}
+                i18nKey="connectAi.desktopSteps"
+                components={{
+                  code: <code />,
+                  a: (
+                    <a href={RELEASES_URL} target="_blank" rel="noreferrer" className="underline underline-offset-4" />
+                  ),
+                  file,
+                }}
+              />
             </p>
           </Step>
-          <Step n={2} title="Claude Code">
-            <p>Run this once in a terminal, with the real path to your file:</p>
+          <Step n={2} title={t("connectAi.claudeCode")}>
+            <p>{t("connectAi.codeSteps")}</p>
             <Command text={claudeCode} />
           </Step>
-          <Step n={3} title="Other MCP clients">
-            <p>Point the client at this command (stdio transport):</p>
+          <Step n={3} title={t("connectAi.otherClients")}>
+            <p>{t("connectAi.otherSteps")}</p>
             <Command text={generic} />
           </Step>
           <p className="text-xs text-muted-foreground">
-            Then say “show me my idea matrix”, or choose the <code>idea_matrix</code> prompt. The app notices changes
-            the assistant saves within a few seconds.{" "}
+            <Trans t={t} i18nKey="connectAi.then" components={{ code: <code /> }} />{" "}
             <a href={MCP_DOCS_URL} target="_blank" rel="noreferrer" className="underline underline-offset-4">
-              Full instructions
+              {t("connectAi.fullInstructions")}
             </a>
           </p>
         </div>
@@ -98,6 +105,7 @@ function Step({ n, title, children }: { n: number; title: string; children: Reac
 }
 
 function Command({ text }: { text: string }) {
+  const { t } = useTranslation("common");
   const [copied, setCopied] = useState(false);
   const copy = async () => {
     try {
@@ -113,9 +121,9 @@ function Command({ text }: { text: string }) {
       <pre className="min-w-0 flex-1 rounded-md border bg-muted/40 px-3 py-2 text-xs leading-relaxed break-all whitespace-pre-wrap">
         <code>{text}</code>
       </pre>
-      <Button type="button" size="sm" variant="outline" onClick={copy} aria-label="Copy command">
+      <Button type="button" size="sm" variant="outline" onClick={copy} aria-label={t("connectAi.copyCommand")}>
         {copied ? <CheckIcon data-icon="inline-start" /> : <CopyIcon data-icon="inline-start" />}
-        {copied ? "Copied" : "Copy"}
+        {copied ? t("actions.copied") : t("actions.copy")}
       </Button>
     </div>
   );

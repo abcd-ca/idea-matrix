@@ -1,0 +1,52 @@
+{
+  "backToMatrix": "Back to matrix",
+  "backToParked": "Back to parked",
+  "notFound": "That idea is not in this matrix.",
+  "nameLabel": "Idea name",
+  "stage": "Stage",
+  "parkedBecause": "Parked because",
+  "chooseAnother": "Choose another stage above to bring it back.",
+  "description": "Description",
+  "assumption": "Riskiest assumption",
+  "assumptionHint": "What must already be true about what other people do or pay for. One sentence you can check.",
+  "assumptionPlaceholder": "e.g. People on my street already lend tools to each other a few times a year.",
+  "needsAllFive": "needs all five scores",
+  "nextConfidence": "At Confidence {{confidence}} this would score {{score}}.",
+  "needsMoreEvidence": "That needs more in the evidence log first.",
+  "park": "Park this idea…",
+  "segmented": {
+    "notScored": "Not scored yet",
+    "meaning": "{{value}} = {{meaning}}"
+  },
+  "evidence": {
+    "title": "Evidence log",
+    "count": "· {{count}}",
+    "add": "Add",
+    "none": "No conversations recorded yet. Confidence stays at 1 or 2 until one is.",
+    "when": "· {{date}}",
+    "remove": "Remove",
+    "keep": "Keep",
+    "removeEntry": "Remove entry",
+    "noBehaviour": "No current behaviour recorded, so this entry does not count toward Confidence.",
+    "commitment": "Commitment:",
+    "dialogTitle": "Add a conversation",
+    "date": "Date",
+    "who": "Who",
+    "whoPlaceholder": "e.g. Strata council chair",
+    "what": "What do they currently do about this problem?",
+    "whatPlaceholder": "Past and present only. What they said they would do does not count.",
+    "commit": "What did they commit to, if anything?",
+    "commitPlaceholder": "Money, an introduction, a pilot, their time. Leave empty if nothing.",
+    "addConversation": "Add conversation"
+  },
+  "parkDialog": {
+    "title": "Park “{{name}}”",
+    "description": "Parking keeps the idea, its scores and its evidence as history, and takes it out of the matrix. A sentence on why is required, so you remember later.",
+    "placeholder": "e.g. Two conversations showed people are happy with what they use today.",
+    "deleteConfirm": "Delete for good?",
+    "yesDelete": "Yes, delete",
+    "no": "No",
+    "deleteInstead": "Added by mistake? Delete it instead",
+    "park": "Park idea"
+  }
+}

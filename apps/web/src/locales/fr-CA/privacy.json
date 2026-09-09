@@ -1,0 +1,45 @@
+{
+  "back": "← Retour à l'application",
+  "title": "Confidentialité et confiance",
+  "intro": "Cette page n'est pas une politique. C'est une liste de choses que vous pouvez vérifier vous-même.",
+  "where": {
+    "title": "Où sont vos idées",
+    "p1": "Dans un seul fichier que vous avez choisi : sur votre propre ordinateur, ou dans votre propre Google Drive. {{app}} n'a ni comptes ni base de données. Le site que vous avez chargé est un dossier de fichiers statiques; il n'y a aucun code côté serveur.",
+    "p2": "Sur votre ordinateur, vous pouvez voir le fichier dans le Finder ou l'Explorateur. Vous pouvez le copier, le sauvegarder, le mettre dans un dossier que votre client iCloud, Dropbox, OneDrive ou Google Drive synchronise, ou l'ouvrir dans un éditeur de texte. C'est du JSON ordinaire. Dans Google Drive, c'est le même fichier, dans le dossier que vous avez choisi, et vous pouvez le télécharger de là."
+  },
+  "network": {
+    "title": "Vérifiez le réseau vous-même",
+    "step1": "Ouvrez les outils de développement de votre navigateur (F12, ou Cmd-Option-I sur un Mac) et choisissez l'onglet Réseau.",
+    "step2": "Utilisez l'application : évaluez une idée, ajoutez une conversation, mettez quelque chose de côté.",
+    "step3": "Surveillez la liste. Une fois la page chargée, rien d'autre n'est demandé. La seule exception est un petit fichier nommé build.json, récupéré depuis ce même site quand vous ouvrez les Réglages ou cette page, pour que l'application puisse afficher son empreinte. Il n'y a aucun appel à un serveur, parce qu'il n'y a rien à appeler.",
+    "drive": "Si vous gardez votre matrice dans Google Drive, vous verrez aussi des requêtes vers googleapis.com : une pour lire ou écrire votre fichier, et une toutes les demi-minutes pour demander s'il a changé ailleurs. Elles vont à Google, sur votre compte, avec le contenu du fichier. Rien ne va ailleurs."
+  },
+  "drive": {
+    "title": "Si vous choisissez Google Drive",
+    "p1": "Deux scripts de Google se chargent, depuis accounts.google.com et apis.google.com, et seulement après que vous avez choisi Drive : un pour la connexion, un pour le sélecteur de fichiers. Google vous connecte sur sa propre page et remet à l'application une clé qui lui permet de lire et d'écrire des fichiers dans votre Drive pendant environ une heure. Cette clé reste dans ce navigateur, dans son stockage local, pour qu'un rechargement ou un nouvel onglet ne vous demande pas de vous reconnecter. Elle disparaît quand l'heure est écoulée ou quand vous vous déconnectez dans les Réglages, et l'application n'a aucun serveur à qui l'envoyer; après, un clic en obtient une nouvelle.",
+    "p2": "La permission que l'application demande est la plus étroite que Google offre : seulement les fichiers que l'application a créés, ou que vous avez choisis dans le sélecteur. Elle ne peut pas lister votre Drive, et elle ne peut rien y lire d'autre. Vous pouvez retirer la permission à tout moment dans votre compte Google, sous Sécurité, Applications tierces.",
+    "p3": "Google peut voir le fichier, parce que c'est du JSON ordinaire dans son espace de stockage, comme tout document que vous y gardez. Si cela vous préoccupe, gardez plutôt le fichier sur cet ordinateur."
+  },
+  "browser": {
+    "title": "Ce que le navigateur retient",
+    "p1": "Une copie en cache de votre matrice et un pointeur vers votre fichier vivent dans le stockage privé de ce navigateur, pour que l'application s'ouvre instantanément et fonctionne hors ligne. Ils ne quittent jamais le navigateur. Effacer les données du site les retire; votre fichier n'est pas touché.",
+    "p2": "À une visite suivante, le navigateur demande un clic avant que l'application puisse écrire dans votre fichier de nouveau. Cette demande vient du navigateur, pas de l'application, et c'est une bonne chose."
+  },
+  "telemetry": {
+    "title": "Aucune télémétrie",
+    "p1": "Pas d'analytique, pas de rapports de plantage, pas de signaux d'utilisation, et aucun script tiers à part les deux de Google, qui ne se chargent que si vous choisissez Drive. Il n'y a rien dans le code qui pourrait envoyer vos idées, ou quoi que ce soit sur votre façon d'utiliser l'application, où que ce soit."
+  },
+  "ai": {
+    "title": "Assistants IA",
+    "p1": "{{app}} vient avec un petit programme que vous pouvez installer pour que Claude Desktop, Claude Code ou un modèle local puisse lire et mettre à jour votre matrice par le Model Context Protocol. Il tourne sur votre ordinateur, sur le même fichier que l'application. Quand vous l'utilisez, le texte de l'idée dont vous parlez va à l'assistant que vous avez connecté, sur votre compte, et nulle part ailleurs. Il n'y a aucun serveur de l'application entre les deux."
+  },
+  "source": {
+    "title": "Lisez le code source",
+    "licence": "{{app}} est un logiciel libre sous licence MIT.",
+    "code": "Le code est sur <a><icon/> {{repo}}</a>.",
+    "maintained": "Il est maintenu par {{maintainer}} (<a>{{site}}</a>). Chaque demande d'intégration passe les mêmes vérifications, et la règle que rien ne quitte votre machine est écrite dans les lignes directrices pour les contributions."
+  },
+  "build": {
+    "title": "La version que vous utilisez"
+  }
+}

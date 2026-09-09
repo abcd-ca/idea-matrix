@@ -5,6 +5,7 @@ import type { TargetKind } from "./storage/target";
 import { del, get, set } from "idb-keyval";
 import { create } from "zustand";
 import { createJSONStorage, persist, type StateStorage } from "zustand/middleware";
+import { i18n } from "./i18n";
 
 /**
  * Where the document is right now, from the user's point of view.
@@ -69,13 +70,13 @@ export const useAppStore = create<AppState>()(
       setDoc: (doc, options) => setState({ doc, dirty: doc !== null && (options?.dirty ?? false), error: null }),
       mutate: (change) => {
         const current = getState().doc;
-        if (!current) return "No matrix is open.";
+        if (!current) return i18n.t("errors.noMatrixOpen", { ns: "common" });
         try {
           const next = change(current);
           setState({ doc: next, dirty: true, error: null });
           return null;
         } catch (e) {
-          return e instanceof Error ? e.message : "That change could not be applied.";
+          return e instanceof Error ? e.message : i18n.t("errors.notApplied", { ns: "common" });
         }
       },
       setFile: (fileName, target) => setState({ fileName, target }),

@@ -1,0 +1,53 @@
+{
+  "progress": "{{current}} of {{total}}",
+  "next": "Next",
+  "back": "Back",
+  "done": "Done",
+  "line": {
+    "card": "<b>{{title}}.</b> {{text}}",
+    "stage": "<b>{{stage}}</b>: {{description}}",
+    "criterion": "<b>{{label}}</b>: {{question}}",
+    "level": "<b>{{level}}</b> {{meaning}}"
+  },
+  "bands": {
+    "grey": "<b>39 and under</b>: {{advice}}",
+    "amber": "<b>40 to 59</b>: {{advice}}",
+    "lightGreen": "<b>60 to 79</b>: {{advice}}",
+    "darkGreen": "<b>80 and up</b>: {{advice}}"
+  },
+  "stages": {
+    "title": "Every idea has a stage",
+    "click": "Click a stage to show only the ideas at that stage.",
+    "tap": "Tap a stage to show only the ideas at that stage.",
+    "parked": "Parked ideas keep their scores and live under Parked in the menu."
+  },
+  "potential": {
+    "title": "Potential: five scores, averaged",
+    "each": "Each is a value of 1 to 5. Profitability can also be 0, for something deliberately non-commercial.",
+    "hidden": "The five scores stay out of this table by default. Tick <b>{{showScores}}</b> below it to see them, and <b>hover any column heading</b> to see what its numbers mean.",
+    "colour": "The colour says which band a number falls in:"
+  },
+  "confidence": {
+    "title": "Confidence: how much evidence is behind those scores?",
+    "starts": "Every new idea starts at 1. Desk research can take it to 2; only recorded conversations take it further. Three rules for those conversations:",
+    "receipts": "The evidence log on each idea keeps the receipts. {{gate}}"
+  },
+  "score": {
+    "title": "Score is what ranks your ideas",
+    "cap": "Score can never exceed Potential. The most evidence in the world only proves the idea is as good as you thought.",
+    "sameColours": "Same colours as Potential:"
+  },
+  "open": {
+    "title": "Click an idea to score it",
+    "text": "This table is for comparing. Scoring happens inside an idea, where each number shows its meaning as you pick, and where the evidence log lives.",
+    "replay": "You can replay this tour any time from Help, under Show me around."
+  },
+  "phone": {
+    "cardTitle": "Each card is one idea",
+    "cardText": "The number in the corner is its <b>Score</b>, which is what ranks your ideas. Below the name: its stage, its <b>Potential</b> and its <b>Confidence</b>.",
+    "eachColour": "Each is a value of 1 to 5. Profitability can also be 0, for something deliberately non-commercial. The colour says which band a number falls in:",
+    "receipts": "{{score}} The evidence log on each idea keeps the receipts. {{gate}}",
+    "openTitle": "Tap an idea to score it",
+    "openText": "This list is for comparing. Scoring happens inside an idea, where each number shows its meaning as you pick, and where the evidence log lives."
+  }
+}
