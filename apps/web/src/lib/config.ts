@@ -12,3 +12,16 @@ export const MAINTAINER_URL = "https://abcd.ca";
 export const RELEASES_URL = "https://github.com/abcd-ca/idea-matrix/releases";
 export const MCP_DOCS_URL = "https://github.com/abcd-ca/idea-matrix/tree/main/packages/mcp";
 export const MOM_TEST_URL = "https://www.momtestbook.com/";
+
+/**
+ * Google Drive. These identify the app to Google and are public by design:
+ * they appear in the page source of any site that uses Google sign-in, and
+ * the origin allowlist on Google's side is what stops anyone else using them.
+ * Baked into the build as constants, not read from the environment, so the
+ * export stays reproducible. Google Cloud project "Idea Matrix" (ideamatrix-io).
+ */
+export const GOOGLE_CLIENT_ID = "1062875410600-oigstnlk7q5komfl2atodnu6n10nnupk.apps.googleusercontent.com";
+/** The Picker API key, restricted to the Picker API and to this site's referrers. A Picker key is meant to live in the page. */
+export const GOOGLE_API_KEY = "AIzaSyAAjTgYf3j-qaGgn6pVvMPx987D_TLNgIk";
+/** The Google Cloud project number, which the Picker needs so drive.file grants access to picked files. */
+export const GOOGLE_APP_ID = "1062875410600";

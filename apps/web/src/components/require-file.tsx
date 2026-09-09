@@ -3,7 +3,7 @@
 import { useRouter } from "next/navigation";
 import { useEffect, useState, type ReactNode } from "react";
 import { Button } from "@/components/ui/button";
-import { openExistingFile, resume } from "@/lib/file-session";
+import { openDriveFile, openExistingFile, resume } from "@/lib/file-session";
 import { useAppStore } from "@/lib/store";
 
 /**
@@ -17,6 +17,7 @@ export function RequireFile({ children }: { children: ReactNode }) {
   const status = useAppStore((s) => s.status);
   const doc = useAppStore((s) => s.doc);
   const fileName = useAppStore((s) => s.fileName);
+  const target = useAppStore((s) => s.target);
   const error = useAppStore((s) => s.error);
   const [busy, setBusy] = useState(false);
 
@@ -38,8 +39,9 @@ export function RequireFile({ children }: { children: ReactNode }) {
         <div className="flex max-w-md flex-col gap-4">
           <h1 className="font-heading text-2xl font-semibold">Resume with {fileName ?? "your matrix"}</h1>
           <p className="text-muted-foreground">
-            Your browser needs one click before the app may read and save that file again. Nothing has left your
-            machine in the meantime.
+            {target === "drive"
+              ? "Google needs one click before the app may read and save that file again. It signs you in on Google's own page and hands the app a key that stays in this browser."
+              : "Your browser needs one click before the app may read and save that file again. Nothing has left your machine in the meantime."}
           </p>
           {error ? <p className="text-sm text-destructive">{error}</p> : null}
           <div className="flex gap-2">
@@ -51,14 +53,14 @@ export function RequireFile({ children }: { children: ReactNode }) {
                 setBusy(false);
               }}
             >
-              Resume
+              {target === "drive" ? "Sign in with Google" : "Resume"}
             </Button>
             <Button
               variant="outline"
               disabled={busy}
               onClick={async () => {
                 setBusy(true);
-                await openExistingFile();
+                await (target === "drive" ? openDriveFile() : openExistingFile());
                 setBusy(false);
               }}
             >
@@ -77,7 +79,9 @@ export function RequireFile({ children }: { children: ReactNode }) {
           <h1 className="font-heading text-2xl font-semibold">The file could not be opened</h1>
           <p className="text-sm text-destructive">{error ?? "Something went wrong."}</p>
           <div className="flex gap-2">
-            <Button onClick={() => void openExistingFile()}>Open a different file…</Button>
+            <Button onClick={() => void (target === "drive" ? openDriveFile() : openExistingFile())}>
+              Open a different file…
+            </Button>
             <Button variant="outline" onClick={() => router.push("/setup/")}>
               Start over
             </Button>
