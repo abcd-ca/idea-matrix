@@ -52,8 +52,8 @@ export default function PrivacyPage() {
           Drive: one for signing in, one for the file picker. Google signs you in on its own page and hands the app a
           key that lets it read and write files in your Drive for about an hour. That key stays in this browser, in its
           local storage, so a reload or a new tab does not ask you to sign in again. It is gone when the hour is up or
-          when you close the file in Settings, and there is no server of the app’s to send it to; after that, one click
-          gets a new one.
+          when you sign out in Settings, and there is no server of the app’s to send it to; after that, one click gets a
+          new one.
         </p>
         <p>
           The permission the app asks for is the narrowest Google offers: only files the app created, or that you picked

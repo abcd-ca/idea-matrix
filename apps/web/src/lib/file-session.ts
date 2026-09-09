@@ -287,8 +287,6 @@ export async function closeFile(): Promise<void> {
   if (saveTimer) clearTimeout(saveTimer);
   saveTimer = null;
   await flushSave();
-  // Closing a Drive file is the one way to drop the Google token before it expires.
-  if (target?.kind === "drive") drive.signOut();
   target = null;
   knownRevision = null;
   await forgetTarget();
@@ -296,6 +294,19 @@ export async function closeFile(): Promise<void> {
   store.setDoc(null);
   store.setFile(null, null);
   store.setStatus("no-file");
+}
+
+/**
+ * Drop the Google token before it expires. The file stays open and the
+ * Resume screen asks for the one click before the next read or save.
+ */
+export function signOutOfDrive(): void {
+  drive.signOut();
+  if (target?.kind === "drive") {
+    useAppStore
+      .getState()
+      .setStatus("needs-permission", "Signed out of Google. Sign in again when you want the app to reach your file.");
+  }
 }
 
 function scheduleSave(): void {

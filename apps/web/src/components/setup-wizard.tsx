@@ -304,6 +304,12 @@ export function SetupWizard() {
               </div>
             )}
 
+            {error ? (
+              <p role="alert" className="text-sm text-destructive">
+                {error}
+              </p>
+            ) : null}
+
             <footer className="flex items-center justify-start">
               <Button variant="ghost" onClick={() => setStep("where")} disabled={busy}>
                 Back
