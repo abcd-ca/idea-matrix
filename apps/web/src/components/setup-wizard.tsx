@@ -238,6 +238,10 @@ export function SetupWizard() {
                         maxLength={100}
                         onChange={(e) => setDriveName(e.target.value)}
                         aria-label="File name, without the extension"
+                        // A file name, not a sentence: no capital, no autocorrect on a phone keyboard.
+                        autoCapitalize="none"
+                        autoCorrect="off"
+                        spellCheck={false}
                       />
                       <span className="shrink-0 text-muted-foreground">.ideamatrix.json</span>
                     </span>
