@@ -1,6 +1,6 @@
 # Idea Matrix (app repo)
 
-A local-first web app for scoring project ideas. Read `README.md` for what it is and `ROADMAP.md` for why it is built this way and what comes next. Private context, including anything about my own ideas, lives in `CLAUDE.local.md`, which is gitignored; never move any of it into tracked files.
+A local-first web app for scoring project ideas. Read `README.md` for what it is. `ROADMAP.md`, the reasons behind the design and what comes next, and `CLAUDE.local.md`, anything about my own ideas and accounts, are both private: gitignored, present only in my working copy, and never to be moved into tracked files or quoted in commit messages.
 
 ## Layout
 
@@ -31,7 +31,7 @@ A local-first web app for scoring project ideas. Read `README.md` for what it is
 
 Text in the UI, docs and commit messages uses Canadian English spelling, first person singular where a person speaks, and few em-dashes. Plain and direct, not preachy: "explore which ones deserve your time" rather than "be honest with yourself".
 
-Once the app is localized (the next roadmap step), English is no longer the only copy: every copy edit also updates the locale files, and any sentence that appears in more than one place comes from one shared constant (see `CONFIDENCE_GATE_SUMMARY` in core and `apps/web/src/lib/overview.ts`).
+Once the app is localized (a later roadmap step), English is no longer the only copy: every copy edit also updates the locale files, and any sentence that appears in more than one place comes from one shared constant (see `CONFIDENCE_GATE_SUMMARY` in core and `apps/web/src/lib/overview.ts`).
 
 ## Git
 

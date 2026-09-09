@@ -42,7 +42,7 @@ npm run build       # static export to apps/web/out
 - `packages/core` holds the file format (zod schemas), the formulas, the Confidence gate, CSV and Markdown export, CSV import, and the fictional example matrix. No React and no browser APIs, so the MCP server and CLI share it.
 - `apps/web` is the Next.js app, exported as a static site.
 - `packages/mcp` is the MCP server, Claude Desktop bundle and CLI, built on the core package.
-- `ROADMAP.md` records the decisions behind the design and what comes next.
+- The decisions behind the design and what comes next live in a roadmap I keep outside the repo.
 
 ## Contributing
 

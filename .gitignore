@@ -1,5 +1,6 @@
 # private, never commit
 CLAUDE.local.md
+ROADMAP.md
 *.ideamatrix.json
 !packages/core/src/sample/*.ideamatrix.json
 
