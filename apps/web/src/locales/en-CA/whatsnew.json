@@ -3,6 +3,10 @@
   "unread": "What's new, {{count}} unread",
   "title": "What's new",
   "entries": {
+    "2026-09-09-start-over": {
+      "title": "Start over on this device",
+      "text": "Settings can disconnect this device from your ideas file without deleting it, handy on a shared computer."
+    },
     "2026-09-09-whats-new": {
       "title": "What's new",
       "text": "This bell lists the features added since you last looked."
