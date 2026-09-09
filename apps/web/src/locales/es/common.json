@@ -58,7 +58,8 @@
     "minutesAgo": "hace {{count}} min",
     "savedTo": "Guardado en {{fileName}} {{where}}",
     "yourFile": "tu archivo",
-    "autosave": "Cada cambio se guarda automáticamente en tu archivo. No hay botón de guardar."
+    "autosave": "Cada cambio se guarda automáticamente en tu archivo. No hay botón de guardar.",
+    "alsoOpen": "También abierto en otro sitio; último cambio {{when}}"
   },
   "errors": {
     "noMatrixOpen": "No hay ninguna matriz abierta.",

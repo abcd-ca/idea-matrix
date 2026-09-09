@@ -3,6 +3,10 @@
   "unread": "What's new, {{count}} unread",
   "title": "What's new",
   "entries": {
+    "2026-09-09-two-devices": {
+      "title": "One file, two devices",
+      "text": "Open the same file on your computer and your phone: a change made on one shows up on the other within seconds, and edits to different parts of an idea are kept from both."
+    },
     "2026-09-09-start-over": {
       "title": "Start over on this device",
       "text": "Settings can disconnect this device from your ideas file without deleting it, handy on a shared computer."
@@ -18,10 +22,6 @@
     "2026-09-09-phone-layout": {
       "title": "Made for phones",
       "text": "On a phone the matrix becomes a list of cards, with a tour of its own."
-    },
-    "2026-09-08-google-drive": {
-      "title": "Google Drive",
-      "text": "Keep your matrix in Google Drive and reach it from any browser, including on a phone."
     }
   }
 }

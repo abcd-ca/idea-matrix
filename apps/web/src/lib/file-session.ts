@@ -11,6 +11,7 @@ import {
 } from "@idea-matrix/core";
 import * as drive from "./storage/google-drive";
 import { pickExistingFile, pickNewFile } from "./storage/local-file";
+import { openPeerChannel, type PeerChannel } from "./storage/same-device";
 import { ConflictError, DriveTarget, LocalTarget, forgetTarget, loadTarget, type SaveTarget } from "./storage/target";
 import { CACHE_KEY, useAppStore } from "./store";
 import { i18n } from "./i18n";
@@ -23,12 +24,28 @@ import { del } from "idb-keyval";
  * Everything that touches the save target: the file on disk or the file in
  * Google Drive. The target itself is kept here, outside the store, because
  * it wraps live browser objects.
+ *
+ * One file may be open in several places at once: another tab on this
+ * device, the same account on a phone, the MCP server. Three things keep
+ * that safe. Every write is checked against the revision this tab last saw,
+ * and a conflict is merged rather than overwritten. The watcher polls the
+ * revision while the tab is visible, at once when it comes back into view or
+ * into focus, and keeps going while the tab has unsaved edits, merging what
+ * arrived into them. And the other tabs on this device are told of each save
+ * over a BroadcastChannel, so they need not wait for their next poll. Every
+ * merge is three-way, against `baseDoc`, the document this tab last read
+ * from or wrote to the file, so a change made on one side of a field is kept
+ * whatever the other side did to the rest of the idea.
  */
 
 let target: SaveTarget | null = null;
 let knownRevision: string | null = null;
+/** What the file held when this tab last read or wrote it: the base for a three-way merge. */
+let baseDoc: MatrixDocument | null = null;
+let peers: PeerChannel | null = null;
 let saveTimer: ReturnType<typeof setTimeout> | null = null;
 let saving = false;
+let checking: Promise<void> | null = null;
 let started = false;
 
 export const SAVE_DELAY_MS = 1000;
@@ -62,12 +79,25 @@ async function loadFrom(t: SaveTarget): Promise<MatrixDocument> {
   const snapshot = await t.read();
   const doc = parseDocument(snapshot.text);
   knownRevision = snapshot.revision;
+  baseDoc = doc;
   return doc;
+}
+
+/** Point the session at a target, or at none, and listen for the other tabs on this device that have it open. */
+function setTarget(t: SaveTarget | null): void {
+  target = t;
+  peers?.close();
+  peers = t ? openPeerChannel(t.key, onPeerSaved) : null;
+}
+
+/** Another tab on this device saved the file: look now rather than on the next tick. */
+function onPeerSaved(revision: string): void {
+  if (revision !== knownRevision) void checkForExternalChange();
 }
 
 async function adopt(t: SaveTarget, doc: MatrixDocument): Promise<void> {
   const store = useAppStore.getState();
-  target = t;
+  setTarget(t);
   await t.remember();
   store.setFile(t.name, t.kind);
   store.setDoc(doc);
@@ -87,7 +117,7 @@ export async function startSession(): Promise<void> {
     store.setStatus("no-file");
     return;
   }
-  target = remembered;
+  setTarget(remembered);
   store.setFile(remembered.name, remembered.kind);
   if (!(await remembered.ready())) {
     store.setStatus("needs-permission");
@@ -111,9 +141,10 @@ function settleWhatsNewMarker(rememberedFile: boolean): void {
 }
 
 /**
- * Read the target into the store, unless the cached copy carries unsaved
- * changes that are newer than the file, in which case the cache wins and is
- * saved back.
+ * Read the target into the store. When the cached copy carries unsaved
+ * changes (the tab closed inside the save delay, say) they are merged into
+ * what the file holds now and saved back. There is no base after a reload,
+ * so where the two differ the side touched last wins each field.
  */
 async function readIntoStore(): Promise<void> {
   const store = useAppStore.getState();
@@ -121,9 +152,9 @@ async function readIntoStore(): Promise<void> {
   try {
     const fileDoc = await loadFrom(target);
     const cached = store.doc;
-    if (store.dirty && cached && cached.updatedAt > fileDoc.updatedAt) {
+    if (store.dirty && cached) {
+      store.setDoc(mergeDocuments(cached, fileDoc), { dirty: true });
       store.setStatus("ready");
-      scheduleSave();
       return;
     }
     store.setDoc(fileDoc);
@@ -172,8 +203,9 @@ export async function createNewFile(): Promise<CreateResult> {
     const picked = await pickNewFile(`ideas${FILE_EXTENSION}`);
     if (!picked) return "cancelled";
     const t = new LocalTarget(picked);
-    target = t;
+    setTarget(t);
     knownRevision = null;
+    baseDoc = null;
     await t.remember();
     useAppStore.getState().setFile(t.name, t.kind);
     useAppStore.getState().setStatus("ready");
@@ -228,14 +260,12 @@ export async function createDriveFile(name: string, folder: DriveFolderChoice): 
     const folderId = await chooseDriveFolder(folder);
     if (!folderId) return "cancelled";
     const fileName = ensureExtension(name);
-    const info = await drive.createFile(
-      fileName,
-      folderId,
-      serializeDocument(emptyDocument(i18n.t("start.defaultName", { ns: "setup" }))),
-    );
+    const empty = emptyDocument(i18n.t("start.defaultName", { ns: "setup" }));
+    const info = await drive.createFile(fileName, folderId, serializeDocument(empty));
     const t = new DriveTarget(info.id, info.name);
-    target = t;
+    setTarget(t);
     knownRevision = info.version;
+    baseDoc = empty;
     await t.remember();
     useAppStore.getState().setFile(t.name, t.kind);
     useAppStore.getState().setStatus("ready");
@@ -268,6 +298,7 @@ export async function moveToDrive(folder: DriveFolderChoice): Promise<CreateResu
     const info = await drive.createFile(ensureExtension(target.name), folderId, serializeDocument(store.doc));
     const t = new DriveTarget(info.id, info.name);
     knownRevision = info.version;
+    baseDoc = store.doc;
     await adopt(t, store.doc);
     return "created";
   } catch (e) {
@@ -285,6 +316,7 @@ export async function moveToLocal(): Promise<CreateResult> {
     if (!picked) return "cancelled";
     const t = new LocalTarget(picked);
     knownRevision = await t.write(serializeDocument(store.doc), null);
+    baseDoc = store.doc;
     await adopt(t, store.doc);
     return "created";
   } catch (e) {
@@ -308,8 +340,9 @@ export async function closeFile(): Promise<void> {
   if (saveTimer) clearTimeout(saveTimer);
   saveTimer = null;
   await flushSave();
-  target = null;
+  setTarget(null);
   knownRevision = null;
+  baseDoc = null;
   await forgetTarget();
   const store = useAppStore.getState();
   store.setDoc(null);
@@ -380,22 +413,31 @@ export async function flushSave(): Promise<void> {
 }
 
 async function saveNow(): Promise<void> {
+  // A watcher check in flight may be about to merge a remote change in; let it finish first.
+  if (checking) await checking;
   const store = useAppStore.getState();
-  if (!target || !store.doc || saving) return;
+  // A timer can fire after a flush already wrote the document; nothing to do then.
+  if (!target || !store.doc || !store.dirty || saving) return;
   saving = true;
   store.setStatus("saving");
+  const doc = store.doc;
   try {
-    const text = serializeDocument(store.doc);
+    const text = serializeDocument(doc);
     knownRevision = await target.write(text, knownRevision);
-    store.markSaved(Date.now());
+    baseDoc = doc;
+    peers?.announce(knownRevision);
+    // An edit made while the write was in flight is not in the file yet: it
+    // stays dirty and the tail of this function saves again.
+    if (useAppStore.getState().doc === doc) store.markSaved(Date.now());
   } catch (e) {
     if (e instanceof ConflictError) {
-      // Someone else saved first. Bring their copy in, keep our newer edits,
-      // and let the normal save loop write the merged document.
+      // Someone else saved first. Bring their copy in, merge our edits into
+      // it against what we last saw, and let the save loop write the result.
       try {
-        const remote = await target.read();
-        knownRevision = remote.revision;
-        const merged = mergeDocuments(useAppStore.getState().doc ?? store.doc, parseDocument(remote.text));
+        const before = baseDoc;
+        const remote = await loadFrom(target);
+        store.noteExternalChange(Date.now());
+        const merged = mergeDocuments(useAppStore.getState().doc ?? doc, remote, before);
         store.setDoc(merged, { dirty: true });
         store.setStatus("ready");
       } catch (inner) {
@@ -415,28 +457,53 @@ async function saveNow(): Promise<void> {
   if (state.dirty && !saveTimer && state.status !== "needs-permission" && state.status !== "error") scheduleSave();
 }
 
-/** Reload if the file changed underneath us (another tab, another computer, the MCP server). */
-async function checkForExternalChange(): Promise<void> {
+/**
+ * Did the file change underneath us (another tab, another device, the MCP
+ * server)? If so, bring the change in. A tab with nothing unsaved simply
+ * takes the file as it is. A tab with unsaved edits merges the file into
+ * them, three-way against what it last saw, and the save loop then writes
+ * the merged document; nothing waits for the tab's own save any more.
+ */
+function checkForExternalChange(): Promise<void> {
+  if (checking) return checking;
   const store = useAppStore.getState();
-  if (!target || saving || store.dirty || store.status === "needs-permission") return;
-  try {
-    const revision = await target.revision();
-    if (knownRevision !== null && revision === knownRevision) return;
-    const doc = await loadFrom(target);
-    if (!store.doc || doc.updatedAt !== store.doc.updatedAt) {
-      store.setDoc(doc);
-      store.setStatus("ready");
+  // Nothing to compare with until the first write has set a revision.
+  if (!target || saving || knownRevision === null || store.status === "needs-permission") return Promise.resolve();
+  checking = (async () => {
+    try {
+      const revision = await target.revision();
+      if (revision === knownRevision) return;
+      const before = baseDoc;
+      const remote = await loadFrom(target);
+      const state = useAppStore.getState();
+      if (state.dirty && state.doc) {
+        state.noteExternalChange(Date.now());
+        state.setDoc(mergeDocuments(state.doc, remote, before), { dirty: true });
+      } else if (!state.doc || remote.updatedAt !== state.doc.updatedAt) {
+        state.noteExternalChange(Date.now());
+        state.setDoc(remote);
+        state.setStatus("ready");
+      }
+    } catch (e) {
+      if (e instanceof drive.DriveAuthError) {
+        store.setStatus("needs-permission", text("errors.driveCheckNeedsSignIn"));
+        return;
+      }
+      store.setStatus("error", explain(e));
+    } finally {
+      checking = null;
     }
-  } catch (e) {
-    if (e instanceof drive.DriveAuthError) {
-      store.setStatus("needs-permission", text("errors.driveCheckNeedsSignIn"));
-      return;
-    }
-    store.setStatus("error", explain(e));
-  }
+  })();
+  return checking;
 }
 
-/** Wire the autosave and the watcher. Returns a cleanup function. */
+/**
+ * Wire the autosave and the watcher. The watcher ticks while the tab is
+ * visible, at the target's own interval, and looks at once when the tab
+ * comes back into view or into focus, so picking up the phone shows the
+ * latest within a second. A hidden tab polls nothing; the same-device
+ * channel still reaches it. Returns a cleanup function.
+ */
 export function attachPersistence(): () => void {
   const unsubscribe = useAppStore.subscribe((state, previous) => {
     if (state.dirty && state.doc && state.doc !== previous.doc && target && state.status !== "needs-permission") {
@@ -451,7 +518,7 @@ export function attachPersistence(): () => void {
     void checkForExternalChange();
   };
   const interval = setInterval(check, TICK_MS);
-  const onVisible = () => {
+  const checkNow = () => {
     if (document.visibilityState === "visible") {
       lastCheck = 0;
       check();
@@ -462,12 +529,14 @@ export function attachPersistence(): () => void {
       event.preventDefault();
     }
   };
-  document.addEventListener("visibilitychange", onVisible);
+  document.addEventListener("visibilitychange", checkNow);
+  window.addEventListener("focus", checkNow);
   window.addEventListener("beforeunload", onBeforeUnload);
   return () => {
     unsubscribe();
     clearInterval(interval);
-    document.removeEventListener("visibilitychange", onVisible);
+    document.removeEventListener("visibilitychange", checkNow);
+    window.removeEventListener("focus", checkNow);
     window.removeEventListener("beforeunload", onBeforeUnload);
   };
 }

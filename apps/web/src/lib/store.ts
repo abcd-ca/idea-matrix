@@ -27,6 +27,12 @@ export interface AppState {
   error: string | null;
   dirty: boolean;
   lastSavedAt: number | null;
+  /**
+   * When the watcher last brought in a change this tab did not write: another
+   * tab, another device, or the MCP server saved the file. Null until that
+   * happens, and forgotten when a different file is opened.
+   */
+  externalChangeAt: number | null;
   tourPending: boolean;
 
   setHydrated: () => void;
@@ -40,6 +46,7 @@ export interface AppState {
   setFile: (fileName: string | null, target: TargetKind | null) => void;
   setStatus: (status: FileStatus, error?: string | null) => void;
   markSaved: (at: number) => void;
+  noteExternalChange: (at: number) => void;
   setTourPending: (pending: boolean) => void;
 }
 
@@ -67,6 +74,7 @@ export const useAppStore = create<AppState>()(
       error: null,
       dirty: false,
       lastSavedAt: null,
+      externalChangeAt: null,
       tourPending: false,
 
       setHydrated: () => setState({ hydrated: true }),
@@ -82,9 +90,10 @@ export const useAppStore = create<AppState>()(
           return e instanceof Error ? e.message : i18n.t("errors.notApplied", { ns: "common" });
         }
       },
-      setFile: (fileName, target) => setState({ fileName, target }),
+      setFile: (fileName, target) => setState({ fileName, target, externalChangeAt: null }),
       setStatus: (status, error = null) => setState({ status, error }),
       markSaved: (at) => setState({ status: "saved", dirty: false, lastSavedAt: at, error: null }),
+      noteExternalChange: (at) => setState({ externalChangeAt: at }),
       setTourPending: (tourPending) => setState({ tourPending }),
     }),
     {
