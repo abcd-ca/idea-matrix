@@ -1,10 +1,11 @@
 "use client";
 
-import type { MatrixDocument } from "@idea-matrix/core";
+import { DocumentError, type MatrixDocument } from "@idea-matrix/core";
 import type { TargetKind } from "./storage/target";
 import { del, get, set } from "idb-keyval";
 import { create } from "zustand";
 import { createJSONStorage, persist, type StateStorage } from "zustand/middleware";
+import { explainDocumentError } from "./errors";
 import { i18n } from "./i18n";
 
 /**
@@ -87,7 +88,8 @@ export const useAppStore = create<AppState>()(
           setState({ doc: next, dirty: true, error: null });
           return null;
         } catch (e) {
-          return e instanceof Error ? e.message : i18n.t("errors.notApplied", { ns: "common" });
+          if (e instanceof DocumentError) return explainDocumentError(e);
+          return i18n.t("errors.notApplied", { ns: "common" });
         }
       },
       setFile: (fileName, target) => setState({ fileName, target, externalChangeAt: null }),

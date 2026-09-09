@@ -1,7 +1,7 @@
 import { PrivacyView } from "@/components/privacy-view";
-import { APP_NAME } from "@/lib/config";
+import { pageMetadata } from "@/lib/site";
 
-export const metadata = { title: `Privacy and trust · ${APP_NAME}` };
+export const metadata = pageMetadata("/privacy/");
 
 export default function PrivacyPage() {
   return <PrivacyView />;

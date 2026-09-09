@@ -84,7 +84,7 @@
   --sidebar-ring: oklch(0.708 0 0);
 }
 
-/* The `dark` class is set on <html> from the device preferences (lib/preferences.ts). */
+/* The `dark` class is set on <html> from the device preferences (lib/preferences.ts): the theme choice, or the system's when following it. */
 .dark {
   color-scheme: dark;
   --background: oklch(0.145 0 0);
@@ -157,4 +157,54 @@ body .driver-popover-description {
   min-height: 0;
   overflow-y: auto;
   overscroll-behavior: contain;
+}
+/*
+ * driver.js ships a white popover with fixed greys. In the dark palette it
+ * takes the app's own popover tokens, arrow and buttons included.
+ */
+.dark .driver-popover {
+  background-color: var(--popover);
+  color: var(--popover-foreground);
+}
+.dark .driver-popover-arrow {
+  border-color: var(--popover);
+}
+.dark .driver-popover-arrow-side-left {
+  border-top-color: transparent;
+  border-bottom-color: transparent;
+  border-right-color: transparent;
+}
+.dark .driver-popover-arrow-side-right {
+  border-top-color: transparent;
+  border-bottom-color: transparent;
+  border-left-color: transparent;
+}
+.dark .driver-popover-arrow-side-top {
+  border-bottom-color: transparent;
+  border-left-color: transparent;
+  border-right-color: transparent;
+}
+.dark .driver-popover-arrow-side-bottom {
+  border-top-color: transparent;
+  border-left-color: transparent;
+  border-right-color: transparent;
+}
+.dark .driver-popover-close-btn {
+  color: var(--muted-foreground);
+}
+.dark .driver-popover-close-btn:hover,
+.dark .driver-popover-close-btn:focus {
+  color: var(--popover-foreground);
+}
+.dark .driver-popover-progress-text {
+  color: var(--muted-foreground);
+}
+.dark .driver-popover-footer-btn {
+  color: var(--popover-foreground);
+  background-color: var(--popover);
+  border-color: var(--input);
+}
+.dark .driver-popover-footer-btn:hover,
+.dark .driver-popover-footer-btn:focus {
+  background-color: var(--accent);
 }
