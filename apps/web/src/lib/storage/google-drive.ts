@@ -10,9 +10,10 @@ import { GOOGLE_API_KEY, GOOGLE_APP_ID, GOOGLE_CLIENT_ID } from "../config";
  *   scripts are injected on demand, so a local-file user never loads them.
  * - The scope is drive.file: the app can only see files it created or the
  *   user picked. It cannot list or read the rest of their Drive.
- * - The access token lives in this module's memory and nowhere else. No
- *   refresh token, no storage, no server of ours. On a return visit the user
- *   clicks once and Google hands out a fresh token.
+ * - The access token lives in this tab: in memory, and in the tab's session
+ *   storage so a reload does not ask for a click. It goes when the tab
+ *   closes or when Google expires it, about an hour after sign-in. No
+ *   refresh token, no server of ours. After that, one click gets a new one.
  */
 
 const SCOPE = "https://www.googleapis.com/auth/drive.file";
@@ -91,11 +92,48 @@ function loadPicker(): Promise<void> {
 
 // ---- token ---------------------------------------------------------------
 
+const TOKEN_KEY = "ideamatrix.googleToken";
+
+interface Token {
+  value: string;
+  expiresAt: number;
+}
+
 let tokenClient: google.accounts.oauth2.TokenClient | null = null;
-let token: { value: string; expiresAt: number } | null = null;
+let token: Token | null = null;
+let restored = false;
 let pending: { resolve: (ok: boolean) => void } | null = null;
 
+/** The token from before a reload, if this tab has one that has not expired. */
+function restoreToken(): void {
+  if (restored) return;
+  restored = true;
+  try {
+    const raw = sessionStorage.getItem(TOKEN_KEY);
+    if (!raw) return;
+    const parsed = JSON.parse(raw) as Partial<Token>;
+    if (typeof parsed.value === "string" && typeof parsed.expiresAt === "number" && parsed.expiresAt > Date.now()) {
+      token = { value: parsed.value, expiresAt: parsed.expiresAt };
+    } else {
+      sessionStorage.removeItem(TOKEN_KEY);
+    }
+  } catch {
+    // Session storage unavailable: the token lives in memory only.
+  }
+}
+
+function setToken(next: Token | null): void {
+  token = next;
+  try {
+    if (next) sessionStorage.setItem(TOKEN_KEY, JSON.stringify(next));
+    else sessionStorage.removeItem(TOKEN_KEY);
+  } catch {
+    // Session storage unavailable: nothing to persist.
+  }
+}
+
 export function hasToken(): boolean {
+  restoreToken();
   return token !== null && token.expiresAt - EXPIRY_MARGIN_MS > Date.now();
 }
 
@@ -108,7 +146,7 @@ async function ensureTokenClient(): Promise<google.accounts.oauth2.TokenClient> 
     callback: (response) => {
       if (response.access_token) {
         const seconds = Number(response.expires_in ?? 3600);
-        token = { value: response.access_token, expiresAt: Date.now() + seconds * 1000 };
+        setToken({ value: response.access_token, expiresAt: Date.now() + seconds * 1000 });
         pending?.resolve(true);
       } else {
         pending?.resolve(false);
@@ -141,7 +179,7 @@ export async function requestToken(interactive: boolean): Promise<boolean> {
 /** Forget the token and tell Google to invalidate it. */
 export function signOut(): void {
   const current = token;
-  token = null;
+  setToken(null);
   if (current && typeof google !== "undefined") {
     try {
       google.accounts.oauth2.revoke(current.value);
@@ -159,7 +197,7 @@ async function call(url: string, init: RequestInit = {}, retry = true): Promise<
   headers.set("Authorization", `Bearer ${token!.value}`);
   const response = await fetch(url, { ...init, headers });
   if (response.status === 401) {
-    token = null;
+    setToken(null);
     if (retry && (await requestToken(false))) return call(url, init, false);
     throw new DriveAuthError();
   }
