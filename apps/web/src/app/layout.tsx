@@ -20,11 +20,32 @@ const nunitoSans = Nunito_Sans({
   weight: ["600", "700"],
 });
 
+const TITLE = "Idea Matrix";
+const DESCRIPTION =
+  "Score your project ideas, and keep the file yourself. No accounts, no server, nothing leaves your machine.";
+
 export const metadata: Metadata = {
-  title: "Idea Matrix",
-  description:
-    "Score your project ideas, and keep the file yourself. No accounts, no server, nothing leaves your machine.",
-  applicationName: "Idea Matrix",
+  title: TITLE,
+  description: DESCRIPTION,
+  applicationName: TITLE,
+  // Link previews in chat apps and social sites. Without these tags each app
+  // improvises from the title, description and icon, and some show nothing.
+  // og.png is generated from the icon SVG by scripts/icons.mjs at build time.
+  metadataBase: new URL("https://ideamatrix.io"),
+  openGraph: {
+    type: "website",
+    siteName: TITLE,
+    title: TITLE,
+    description: DESCRIPTION,
+    url: "/",
+    images: [{ url: "/og.png", width: 1200, height: 630, alt: "Idea Matrix: score your project ideas." }],
+  },
+  twitter: {
+    card: "summary_large_image",
+    title: TITLE,
+    description: DESCRIPTION,
+    images: ["/og.png"],
+  },
 };
 
 export const viewport: Viewport = {
