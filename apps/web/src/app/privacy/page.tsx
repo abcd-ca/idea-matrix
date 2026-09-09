@@ -19,12 +19,13 @@ export default function PrivacyPage() {
 
       <Section title="Where your ideas are">
         <p>
-          In one file that you chose, on your own computer. {APP_NAME} has no accounts and no database. The site you
-          loaded is a folder of static files; there is no server-side code at all.
+          In one file that you chose: on your own computer, or in your own Google Drive. {APP_NAME} has no accounts
+          and no database. The site you loaded is a folder of static files; there is no server-side code at all.
         </p>
         <p>
-          You can see the file in Finder or Explorer. You can copy it, back it up, put it in a folder your iCloud,
-          Dropbox, OneDrive or Google Drive client syncs, or open it in a text editor. It is plain JSON.
+          On your computer, you can see the file in Finder or Explorer. You can copy it, back it up, put it in a
+          folder your iCloud, Dropbox, OneDrive or Google Drive client syncs, or open it in a text editor. It is plain
+          JSON. In Google Drive it is the same file, in the folder you picked, and you can download it from there.
         </p>
       </Section>
 
@@ -38,6 +39,30 @@ export default function PrivacyPage() {
             its fingerprint. There are no calls to any server, because there is nothing to call.
           </li>
         </ol>
+        <p>
+          If you keep your matrix in Google Drive, you will also see requests to googleapis.com: one to read or write
+          your file, and one every half minute to ask whether it changed elsewhere. Those go to Google, on your
+          account, with the file’s contents. Nothing goes anywhere else.
+        </p>
+      </Section>
+
+      <Section title="If you choose Google Drive">
+        <p>
+          Two of Google’s own scripts load, from accounts.google.com and apis.google.com, and only after you choose
+          Drive: one for signing in, one for the file picker. Google signs you in on its own page and hands the app a
+          key that lets it read and write files in your Drive for about an hour. That key stays in this browser tab’s
+          memory. It is not stored, and there is no server of the app’s to send it to; when it expires, one click gets
+          a new one.
+        </p>
+        <p>
+          The permission the app asks for is the narrowest Google offers: only files the app created, or that you
+          picked in the file picker. It cannot list your Drive, and it cannot read anything else in it. You can take
+          the permission away at any time in your Google Account under Security, Third-party apps.
+        </p>
+        <p>
+          Google can see the file, because it is plain JSON in their storage, the same as any document you keep there.
+          If that is a concern, keep the file on this computer instead.
+        </p>
       </Section>
 
       <Section title="What the browser remembers">
@@ -54,8 +79,9 @@ export default function PrivacyPage() {
 
       <Section title="No telemetry">
         <p>
-          No analytics, no crash reporting, no usage pings, no third-party scripts. There is nothing in the code that
-          could send your ideas, or anything about how you use the app, anywhere.
+          No analytics, no crash reporting, no usage pings, and no third-party scripts beyond Google’s two, which load
+          only if you choose Drive. There is nothing in the code that could send your ideas, or anything about how you
+          use the app, anywhere.
         </p>
       </Section>
 

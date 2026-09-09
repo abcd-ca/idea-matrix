@@ -7,13 +7,16 @@ import { useState, useSyncExternalStore, type ReactNode } from "react";
 import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert";
 import { Button } from "@/components/ui/button";
 import { LogoMark } from "@/components/logo-mark";
-import { createNewFile, openExistingFile, writeDocumentNow } from "@/lib/file-session";
+import { createDriveFile, createNewFile, openDriveFile, openExistingFile, writeDocumentNow } from "@/lib/file-session";
 import { MOM_TEST_URL } from "@/lib/config";
 import { MOM_TEST_SUMMARY, OVERVIEW_AI, OVERVIEW_CARDS, OVERVIEW_INTRO, OVERVIEW_TITLE } from "@/lib/overview";
+import { driveConfigured } from "@/lib/storage/google-drive";
 import { supportsLocalFile } from "@/lib/storage/local-file";
+import { describeWhere, type TargetKind } from "@/lib/storage/target";
 import { useAppStore } from "@/lib/store";
 
-type Where = "local" | "drive" | "dropbox";
+// Dropbox is a card on the screen but not a target yet.
+type Where = TargetKind | "dropbox";
 type Step = "welcome" | "where" | "file" | "start";
 
 /**
@@ -28,6 +31,9 @@ export function SetupWizard() {
   const [step, setStep] = useState<Step>("welcome");
   const [where, setWhere] = useState<Where | null>(null);
   const [seed, setSeed] = useState<"example" | "empty">("example");
+  const [driveName, setDriveName] = useState("ideas");
+  const [driveFolder, setDriveFolder] = useState<"new" | "pick">("new");
+  const [driveFolderName, setDriveFolderName] = useState("Idea Matrix");
   const [busy, setBusy] = useState(false);
   const [error, setError] = useState<string | null>(null);
   // null while rendering on the server, a real answer once in the browser.
@@ -93,7 +99,7 @@ export function SetupWizard() {
                 <AlertTitle>“This computer” needs Chrome or Edge</AlertTitle>
                 <AlertDescription>
                   Your browser can’t save changes back to a file on disk, so this option is off. Open this page in Chrome
-                  or Edge to use it. Google Drive and Dropbox are coming in a later version and will work in any browser.
+                  or Edge to use it, or keep your ideas in Google Drive, which works in any browser.
                 </AlertDescription>
               </Alert>
             ) : null}
@@ -108,8 +114,14 @@ export function SetupWizard() {
               >
                 A file you can see, back up, or keep in your iCloud, Dropbox or Drive folder.
               </ChoiceCard>
-              <ChoiceCard selected={false} disabled onSelect={() => undefined} title="Google Drive" tag="coming later">
-                Any browser, including your phone. The app will only see files it creates or you open.
+              <ChoiceCard
+                selected={where === "drive"}
+                disabled={!driveConfigured()}
+                onSelect={() => setWhere("drive")}
+                title="Google Drive"
+                tag={driveConfigured() ? "Any browser" : "coming later"}
+              >
+                Any browser, including your phone. The app only sees the one file it creates or you open.
               </ChoiceCard>
               <ChoiceCard selected={false} disabled onSelect={() => undefined} title="Dropbox" tag="coming later">
                 A visible Apps/Idea Matrix folder in your Dropbox.
@@ -135,7 +147,7 @@ export function SetupWizard() {
             <header className="flex flex-col gap-2">
               <h1 className="font-heading text-3xl font-semibold">Open a matrix you already have, or create a new one?</h1>
               <p className="text-muted-foreground">
-                Keeping your ideas on <strong>this computer</strong>.{" "}
+                Keeping your ideas <strong>{describeWhere(where === "dropbox" ? null : where)}</strong>.{" "}
                 <button type="button" className="underline underline-offset-4" onClick={() => setStep("where")}>
                   Change
                 </button>
@@ -148,50 +160,143 @@ export function SetupWizard() {
               </p>
             ) : null}
 
-            <div className="grid gap-4 sm:grid-cols-2">
-              <div className="flex flex-col gap-3 rounded-md border p-5">
-                <h2 className="font-heading text-xl font-bold">Open an existing matrix</h2>
-                <p className="flex-1 text-sm text-muted-foreground">
-                  You already have a matrix file, maybe from another computer or a backup. The picker shows JSON files,
-                  and the app checks that the one you choose really is a matrix before loading it.
-                </p>
-                <Button
-                  variant="outline"
-                  disabled={busy}
-                  onClick={async () => {
-                    setBusy(true);
-                    setError(null);
-                    const result = await openExistingFile();
-                    setBusy(false);
-                    if (result === "opened") router.replace("/");
-                    else if (result === "error") setError(useAppStore.getState().error);
-                  }}
-                >
-                  Open a file…
-                </Button>
-                <p className="text-xs text-muted-foreground">This is the last step: your matrix opens as it is.</p>
+            {where === "drive" ? (
+              <div className="grid gap-4 sm:grid-cols-2">
+                <div className="flex flex-col gap-3 rounded-md border p-5">
+                  <h2 className="font-heading text-xl font-bold">Open an existing matrix</h2>
+                  <p className="flex-1 text-sm text-muted-foreground">
+                    You already have a matrix file in your Drive, maybe from another computer. Google asks you to sign
+                    in, then a picker shows your JSON files. Picking one is what gives the app access to it, and to
+                    nothing else in your Drive.
+                  </p>
+                  <Button
+                    variant="outline"
+                    disabled={busy}
+                    onClick={async () => {
+                      setBusy(true);
+                      setError(null);
+                      const result = await openDriveFile();
+                      setBusy(false);
+                      if (result === "opened") router.replace("/");
+                      else if (result === "error") setError(useAppStore.getState().error);
+                    }}
+                  >
+                    Open from Drive…
+                  </Button>
+                  <p className="text-xs text-muted-foreground">This is the last step: your matrix opens as it is.</p>
+                </div>
+                <div className="flex flex-col gap-3 rounded-md border p-5">
+                  <h2 className="font-heading text-xl font-bold">Create a new matrix</h2>
+                  <p className="text-sm text-muted-foreground">Google asks you to sign in, then the file is created:</p>
+                  <div className="flex flex-col gap-2 text-sm" role="radiogroup" aria-label="Which folder">
+                    <label className="flex items-start gap-2">
+                      <input
+                        type="radio"
+                        name="drive-folder"
+                        className="mt-1"
+                        checked={driveFolder === "new"}
+                        onChange={() => setDriveFolder("new")}
+                      />
+                      <span className="flex flex-1 flex-col gap-1">
+                        <span>In a new folder at the top of My Drive, called</span>
+                        <input
+                          className="w-full min-w-0 rounded-md border bg-background px-2 py-1"
+                          value={driveFolderName}
+                          maxLength={100}
+                          disabled={driveFolder !== "new"}
+                          onChange={(e) => setDriveFolderName(e.target.value)}
+                          aria-label="New folder name"
+                        />
+                      </span>
+                    </label>
+                    <label className="flex items-center gap-2">
+                      <input
+                        type="radio"
+                        name="drive-folder"
+                        checked={driveFolder === "pick"}
+                        onChange={() => setDriveFolder("pick")}
+                      />
+                      <span>In a folder I choose (a picker opens)</span>
+                    </label>
+                  </div>
+                  <label className="flex flex-1 flex-col gap-1.5 text-sm">
+                    <span className="text-muted-foreground">File name</span>
+                    <span className="flex items-center gap-1">
+                      <input
+                        className="w-full min-w-0 rounded-md border bg-background px-2 py-1"
+                        value={driveName}
+                        maxLength={100}
+                        onChange={(e) => setDriveName(e.target.value)}
+                        aria-label="File name, without the extension"
+                      />
+                      <span className="shrink-0 text-muted-foreground">.ideamatrix.json</span>
+                    </span>
+                  </label>
+                  <Button
+                    disabled={busy || driveName.trim() === "" || (driveFolder === "new" && driveFolderName.trim() === "")}
+                    onClick={async () => {
+                      setBusy(true);
+                      setError(null);
+                      const result = await createDriveFile(
+                        driveName,
+                        driveFolder === "new" ? { kind: "new", name: driveFolderName } : { kind: "pick" },
+                      );
+                      setBusy(false);
+                      if (result === "created") setStep("start");
+                      else if (result === "error") setError(useAppStore.getState().error);
+                    }}
+                  >
+                    Create in Drive…
+                  </Button>
+                  <p className="text-xs text-muted-foreground">One more step: what goes in the new file.</p>
+                </div>
               </div>
-              <div className="flex flex-col gap-3 rounded-md border p-5">
-                <h2 className="font-heading text-xl font-bold">Create a new matrix</h2>
-                <p className="flex-1 text-sm text-muted-foreground">
-                  A save dialog opens so you pick the folder and name. The suggested name is ideas.ideamatrix.json.
-                </p>
-                <Button
-                  disabled={busy}
-                  onClick={async () => {
-                    setBusy(true);
-                    setError(null);
-                    const result = await createNewFile();
-                    setBusy(false);
-                    if (result === "created") setStep("start");
-                    else if (result === "error") setError(useAppStore.getState().error);
-                  }}
-                >
-                  Create a file…
-                </Button>
-                <p className="text-xs text-muted-foreground">One more step: what goes in the new file.</p>
+            ) : (
+              <div className="grid gap-4 sm:grid-cols-2">
+                <div className="flex flex-col gap-3 rounded-md border p-5">
+                  <h2 className="font-heading text-xl font-bold">Open an existing matrix</h2>
+                  <p className="flex-1 text-sm text-muted-foreground">
+                    You already have a matrix file, maybe from another computer or a backup. The picker shows JSON files,
+                    and the app checks that the one you choose really is a matrix before loading it.
+                  </p>
+                  <Button
+                    variant="outline"
+                    disabled={busy}
+                    onClick={async () => {
+                      setBusy(true);
+                      setError(null);
+                      const result = await openExistingFile();
+                      setBusy(false);
+                      if (result === "opened") router.replace("/");
+                      else if (result === "error") setError(useAppStore.getState().error);
+                    }}
+                  >
+                    Open a file…
+                  </Button>
+                  <p className="text-xs text-muted-foreground">This is the last step: your matrix opens as it is.</p>
+                </div>
+                <div className="flex flex-col gap-3 rounded-md border p-5">
+                  <h2 className="font-heading text-xl font-bold">Create a new matrix</h2>
+                  <p className="flex-1 text-sm text-muted-foreground">
+                    A save dialog opens so you pick the folder and name. The suggested name is ideas.ideamatrix.json.
+                  </p>
+                  <Button
+                    disabled={busy}
+                    onClick={async () => {
+                      setBusy(true);
+                      setError(null);
+                      const result = await createNewFile();
+                      setBusy(false);
+                      if (result === "created") setStep("start");
+                      else if (result === "error") setError(useAppStore.getState().error);
+                    }}
+                  >
+                    Create a file…
+                  </Button>
+                  <p className="text-xs text-muted-foreground">One more step: what goes in the new file.</p>
+                </div>
               </div>
-            </div>
+            )}
 
             <footer className="flex items-center justify-start">
               <Button variant="ghost" onClick={() => setStep("where")} disabled={busy}>
@@ -206,7 +311,8 @@ export function SetupWizard() {
             <header className="flex flex-col gap-2">
               <h1 className="font-heading text-3xl font-semibold">What should go in it?</h1>
               <p className="text-muted-foreground">
-                <strong>{useAppStore.getState().fileName ?? "Your file"}</strong> is saved. It is empty until you choose what goes in it.
+                <strong>{useAppStore.getState().fileName ?? "Your file"}</strong> is saved {describeWhere(where === "dropbox" ? null : where)}. It is
+                empty until you choose what goes in it.
               </p>
             </header>
 

@@ -1,6 +1,7 @@
 "use client";
 
 import type { MatrixDocument } from "@idea-matrix/core";
+import type { TargetKind } from "./storage/target";
 import { del, get, set } from "idb-keyval";
 import { create } from "zustand";
 import { createJSONStorage, persist, type StateStorage } from "zustand/middleware";
@@ -26,6 +27,8 @@ export interface AppState {
   hydrated: boolean;
   doc: MatrixDocument | null;
   fileName: string | null;
+  /** Where the file lives, so screens can say so before the session has booted. */
+  target: TargetKind | null;
   status: FileStatus;
   error: string | null;
   dirty: boolean;
@@ -40,7 +43,7 @@ export interface AppState {
    * instead of throwing so forms can show it inline.
    */
   mutate: (change: (doc: MatrixDocument) => MatrixDocument) => string | null;
-  setFile: (fileName: string | null) => void;
+  setFile: (fileName: string | null, target: TargetKind | null) => void;
   setStatus: (status: FileStatus, error?: string | null) => void;
   markSaved: (at: number) => void;
   setTourPending: (pending: boolean) => void;
@@ -62,6 +65,7 @@ export const useAppStore = create<AppState>()(
       hydrated: false,
       doc: null,
       fileName: null,
+      target: null,
       status: "loading",
       error: null,
       dirty: false,
@@ -82,7 +86,7 @@ export const useAppStore = create<AppState>()(
           return e instanceof Error ? e.message : "That change could not be applied.";
         }
       },
-      setFile: (fileName) => setState({ fileName }),
+      setFile: (fileName, target) => setState({ fileName, target }),
       setStatus: (status, error = null) => setState({ status, error }),
       markSaved: (at) => setState({ status: "saved", dirty: false, lastSavedAt: at, error: null }),
       setTourPending: (tourPending) => setState({ tourPending }),
@@ -94,6 +98,7 @@ export const useAppStore = create<AppState>()(
       partialize: (state) => ({
         doc: state.doc,
         fileName: state.fileName,
+        target: state.target,
         tourPending: state.tourPending,
         dirty: state.dirty,
       }),

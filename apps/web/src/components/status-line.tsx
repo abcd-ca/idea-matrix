@@ -2,6 +2,7 @@
 
 import { useEffect, useState } from "react";
 import { cn } from "cn";
+import { describeWhere } from "@/lib/storage/target";
 import { useAppStore } from "@/lib/store";
 
 function ago(ts: number, now: number): string {
@@ -16,6 +17,7 @@ function ago(ts: number, now: number): string {
 /** The small "where is my file and is it saved" readout. */
 export function StatusLine({ compact = false }: { compact?: boolean }) {
   const fileName = useAppStore((s) => s.fileName);
+  const target = useAppStore((s) => s.target);
   const status = useAppStore((s) => s.status);
   const dirty = useAppStore((s) => s.dirty);
   const lastSavedAt = useAppStore((s) => s.lastSavedAt);
@@ -50,7 +52,7 @@ export function StatusLine({ compact = false }: { compact?: boolean }) {
       <p className="truncate font-medium" title={fileName ?? undefined}>
         {fileName ?? "No file"}
       </p>
-      <p className="text-muted-foreground">Data is stored on this computer</p>
+      <p className="text-muted-foreground">Data is stored {describeWhere(target)}</p>
       <p className={tone} aria-live="polite">
         {text}
       </p>
