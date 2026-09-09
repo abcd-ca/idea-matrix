@@ -5,6 +5,7 @@
   "version": "0.1.0",
   "description": "Score your project ideas honestly, from Claude. Reads and updates your Idea Matrix file on this computer.",
   "long_description": "Idea Matrix keeps your project ideas in one JSON file that you own. This extension lets Claude read that file, walk you through scoring an idea with the Mom Test rules, record the conversations you have had, and update scores, all against the same Confidence gate as the app. Nothing is sent anywhere except to Claude on your own account.",
+  "icon": "icon.png",
   "homepage": "https://ideamatrix.io",
   "documentation": "https://github.com/abcd-ca/idea-matrix/tree/main/packages/mcp",
   "support": "https://github.com/abcd-ca/idea-matrix/issues",
