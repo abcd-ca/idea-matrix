@@ -4,4 +4,7 @@ export * from "./scales";
 export * from "./document";
 export { exportCsv, CSV_COLUMNS } from "./csv";
 export { exportMarkdown, ideaToMarkdown } from "./markdown";
-export { sampleDocument } from "./sample";
+export { CSV_COLUMN_KEYS, EXPORT_LABELS, EXPORT_TEXT } from "./export-text";
+export type { CsvColumnKey, ExportLabels, ExportText } from "./export-text";
+export { SAMPLE_IDEA_KEYS, SAMPLE_TEXT, sampleDocument } from "./sample";
+export type { SampleEvidenceText, SampleIdeaKey, SampleIdeaText, SampleText } from "./sample";

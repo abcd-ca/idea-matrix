@@ -1,0 +1,82 @@
+{
+  "name": "Idées d'exemple",
+  "ideas": {
+    "sauna": {
+      "name": "Réservation de sauna mobile",
+      "description": "Un sauna sur remorque qui s'installe au lac les fins de semaine d'hiver. Les gens réservent un créneau de 45 minutes depuis leur téléphone au lieu d'arriver en espérant qu'il reste de la place.",
+      "riskiestAssumption": "Les gens vont déjà au lac en voiture pour des baignades froides les fins de semaine d'hiver et se plaignent de n'avoir nulle part où se réchauffer.",
+      "evidence": {
+        "e1": {
+          "who": "Organisateur du groupe de baignade froide",
+          "whatTheyDoNow": "Organise une baignade hebdomadaire pour une trentaine de personnes; ils se réchauffent ensuite dans leurs voitures.",
+          "commitment": "Publiera le lien de réservation dans le clavardage du groupe la première fin de semaine."
+        },
+        "e2": {
+          "who": "Deux habitués du lac",
+          "whatTheyDoNow": "Ont fait 40 minutes de route le mois dernier pour un sauna dans la ville voisine et ont payé 25 $ chacun.",
+          "commitment": ""
+        },
+        "e3": {
+          "who": "Gérant du terrain de camping",
+          "whatTheyDoNow": "On lui demande où se réchauffer presque toutes les fins de semaine d'hiver; il n'a pas de réponse.",
+          "commitment": "A offert gratuitement une place de stationnement près de la plage pour le premier mois."
+        }
+      }
+    },
+    "tools": {
+      "name": "Appli de bibliothèque d'outils de quartier",
+      "description": "Les voisins se prêtent perceuses, échelles et laveuses à pression au moyen d'une liste partagée, au lieu que chacun possède un exemplaire de tout.",
+      "riskiestAssumption": "Les gens de ma rue se prêtent déjà des outils au moins quelques fois par année et ont perdu le fil de qui a quoi.",
+      "evidence": {
+        "e1": {
+          "who": "Voisin, trois portes plus loin",
+          "whatTheyDoNow": "Prête sa laveuse à pression à deux familles; il tient le compte de tête et a perdu une échelle pendant un mois.",
+          "commitment": ""
+        },
+        "e2": {
+          "who": "Président du conseil de copropriété",
+          "whatTheyDoNow": "A essayé un tableur pour le cabanon partagé en 2024; personne ne l'a mis à jour après la première semaine.",
+          "commitment": "Me présentera à deux autres conseils de copropriété."
+        }
+      }
+    },
+    "weather": {
+      "name": "Panneau météo au départ des sentiers",
+      "description": "Un petit panneau à encre électronique alimenté à l'énergie solaire, installé aux départs de sentiers populaires, qui affiche les prévisions du jour au sommet, la cote de risque d'avalanche et les fermetures de sentiers.",
+      "riskiestAssumption": "Les randonneurs aux départs de sentiers du coin ne consultent pas les prévisions du sommet avant de quitter le stationnement, et l'association des sentiers reçoit des plaintes à cause de ça.",
+      "evidence": {
+        "e1": {
+          "who": "Quelqu'un rencontré à un meetup",
+          "whatTheyDoNow": "",
+          "commitment": ""
+        }
+      }
+    },
+    "rink": {
+      "name": "Capteur pour patinoire de cour",
+      "description": "Un capteur qui vous dit quand la glace est assez épaisse pour patiner et quand arroser de nouveau, pour arrêter de deviner à 6 h du matin.",
+      "riskiestAssumption": "Les gens qui ont une patinoire dans leur cour sortent actuellement plusieurs fois par nuit pour vérifier la glace à la main."
+    },
+    "sourdough": {
+      "name": "Suivi de levain",
+      "description": "Notez les rafraîchis, les temps de levée et les résultats au four, et recevez un rappel quand le levain est prêt."
+    },
+    "ski": {
+      "name": "Kiosque d'entretien de skis",
+      "description": "Déposez vos skis dans un casier devant l'épicerie le soir, récupérez-les fartés et affûtés le matin."
+    },
+    "podcast": {
+      "name": "Robot de notes d'épisode de balado",
+      "description": "Collez le lien d'un épisode et obtenez les horodatages, les liens et un résumé que vous pouvez vraiment publier."
+    },
+    "snow": {
+      "name": "Horaire de déneigement du voisinage",
+      "description": "Un horaire partagé pour que ce ne soit pas toujours les deux mêmes personnes qui déneigent la ruelle commune."
+    },
+    "dogwalk": {
+      "name": "Jumelage de promeneurs de chiens",
+      "description": "Jumelez les propriétaires de chiens d'une même rue pour partager les promenades.",
+      "parkedReason": "Trois applis existantes le font déjà, et les deux propriétaires à qui j'ai demandé en étaient satisfaits."
+    }
+  }
+}
