@@ -12,7 +12,8 @@ node_modules/
 apps/web/src/app/favicon.ico
 apps/web/src/app/apple-icon.png
 apps/web/public/icons/
-apps/web/public/og.png
+apps/web/src/app/opengraph-image.png
+apps/web/src/app/twitter-image.png
 apps/web/public/social-preview.png
 packages/mcp/icon.png
 
