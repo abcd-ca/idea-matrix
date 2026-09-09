@@ -7,8 +7,9 @@ import { AppUpdate } from "@/components/app-update";
 import { FileSession } from "@/components/file-session";
 import { TooltipProvider } from "@/components/ui/tooltip";
 import { DevicePreferences } from "@/components/device-preferences";
-import { APP_DESCRIPTION, APP_NAME } from "@/lib/config";
 import { DEFAULT_LANGUAGE, PREFERENCES_SCRIPT } from "@/lib/preferences";
+import { APP_NAME } from "@/lib/config";
+import { SITE_URL, TAGLINE, structuredDataJson } from "@/lib/site";
 
 const plexSans = IBM_Plex_Sans({
   variable: "--font-sans",
@@ -24,35 +25,33 @@ const nunitoSans = Nunito_Sans({
   weight: ["600", "700"],
 });
 
-const TITLE = APP_NAME;
-const DESCRIPTION = APP_DESCRIPTION;
-
+// Each page sets its own title and description with pageMetadata (lib/site.ts);
+// the template puts the app name after a page's title.
 export const metadata: Metadata = {
-  title: TITLE,
-  description: DESCRIPTION,
-  applicationName: TITLE,
+  title: { default: APP_NAME, template: `%s · ${APP_NAME}` },
+  applicationName: APP_NAME,
   // Link previews in chat apps and social sites. Without these tags each app
   // improvises from the title, description and icon, and some show nothing.
   // The image comes from opengraph-image.png and twitter-image.png beside
   // this file, generated from the icon SVG by scripts/icons.mjs at build
   // time; Next adds a content hash to their URLs, so a changed image gets a
   // new URL and the caches in those apps do not serve the old one.
-  metadataBase: new URL("https://ideamatrix.io"),
+  metadataBase: new URL(SITE_URL),
   openGraph: {
     type: "website",
-    siteName: TITLE,
-    title: TITLE,
-    description: DESCRIPTION,
+    siteName: APP_NAME,
+    title: APP_NAME,
+    description: TAGLINE,
     url: "/",
   },
   twitter: {
     card: "summary_large_image",
-    title: TITLE,
-    description: DESCRIPTION,
+    title: APP_NAME,
+    description: TAGLINE,
   },
   // Installed from Safari on iOS the app gets its own window too; the
   // manifest (app/manifest.ts) covers every other browser.
-  appleWebApp: { capable: true, title: TITLE, statusBarStyle: "default" },
+  appleWebApp: { capable: true, title: APP_NAME, statusBarStyle: "default" },
 };
 
 export const viewport: Viewport = {
@@ -88,6 +87,13 @@ export default function RootLayout({ children }: { children: ReactNode }) {
           hash.
         */}
         <script dangerouslySetInnerHTML={{ __html: PREFERENCES_SCRIPT }} />
+        {/*
+          Structured data for search engines (lib/site.ts). A data block, not
+          a script that runs, so it needs no place in a content security
+          policy. React writes a script's string child unescaped, which is
+          why this one needs no dangerouslySetInnerHTML.
+        */}
+        <script type="application/ld+json">{structuredDataJson()}</script>
       </head>
       <body className="flex min-h-full flex-col bg-background text-foreground">
         <TooltipProvider>

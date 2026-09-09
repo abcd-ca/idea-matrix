@@ -1,5 +1,6 @@
 import type { MetadataRoute } from "next";
-import { APP_DESCRIPTION, APP_NAME } from "@/lib/config";
+import { APP_NAME } from "@/lib/config";
+import { TAGLINE } from "@/lib/site";
 
 /**
  * The web app manifest, which is what lets a browser install the app with
@@ -16,7 +17,7 @@ export default function manifest(): MetadataRoute.Manifest {
     id: "/",
     name: APP_NAME,
     short_name: APP_NAME,
-    description: APP_DESCRIPTION,
+    description: TAGLINE,
     start_url: "/",
     scope: "/",
     display: "standalone",

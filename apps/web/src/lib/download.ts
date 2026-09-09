@@ -11,11 +11,12 @@ export function downloadText(filename: string, text: string, mime = "text/plain"
   setTimeout(() => URL.revokeObjectURL(url), 1000);
 }
 
-export function safeFileStem(name: string): string {
+/** A file name from the matrix's name: letters and digits in any script stay, punctuation goes. */
+export function safeFileStem(name: string, fallback = "ideas"): string {
   const stem = name
-    .replace(/[^\w\- ]+/g, "")
+    .replace(/[^\p{L}\p{N}_\- ]+/gu, "")
     .trim()
     .replace(/\s+/g, "-")
     .toLowerCase();
-  return stem || "ideas";
+  return stem || fallback;
 }

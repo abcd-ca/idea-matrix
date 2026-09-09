@@ -7,6 +7,14 @@
       "title": "Install as an app",
       "text": "Chrome, Edge and Safari can install the app with its own window and icon, and it works without a connection; the button is in Settings."
     },
+    "2026-09-09-two-devices": {
+      "title": "One file, two devices",
+      "text": "Open the same file on your computer and your phone: a change made on one shows up on the other within seconds, and edits to different parts of an idea are kept from both."
+    },
+    "2026-09-09-dark-mode": {
+      "title": "Dark mode",
+      "text": "Settings has a theme choice: follow the system, or stay light or dark on this device."
+    },
     "2026-09-09-start-over": {
       "title": "Start over on this device",
       "text": "Settings can disconnect this device from your ideas file without deleting it, handy on a shared computer."
@@ -18,14 +26,6 @@
     "2026-09-09-languages": {
       "title": "Four languages",
       "text": "The app now speaks Canadian and American English, French and Spanish; choose yours in Settings."
-    },
-    "2026-09-09-phone-layout": {
-      "title": "Made for phones",
-      "text": "On a phone the matrix becomes a list of cards, with a tour of its own."
-    },
-    "2026-09-08-google-drive": {
-      "title": "Google Drive",
-      "text": "Keep your matrix in Google Drive and reach it from any browser, including on a phone."
     }
   }
 }

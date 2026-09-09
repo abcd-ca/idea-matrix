@@ -62,4 +62,4 @@ idea-matrix init   --file ideas.ideamatrix.json
 
 ## Two programs, one file
 
-The app and this server both write the same file. The app notices a change on disk within a few seconds and reloads, so scores set from Claude appear in the browser tab. Each write is atomic. If both write in the same second, the later one wins; keep one of them idle while the other is busy.
+The app and this server both write the same file. The app notices a change on disk within a few seconds and brings it in, so scores set from Claude appear in the browser tab, even while the tab has an edit of its own in progress. Each write here is atomic, and the app checks the file's modified time before each of its own writes: when this server wrote first, the app merges the two copies field by field rather than writing over them.

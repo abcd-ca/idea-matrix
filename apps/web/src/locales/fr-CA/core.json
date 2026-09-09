@@ -104,15 +104,66 @@
     "score": "Le Score est Potentiel × Confiance ÷ 5. Il ne monte qu'avec des preuves, alors une idée qui sonne bien ne peut pas dépasser une que vous avez réellement testée."
   },
   "band": {
-    "grey": { "label": "pas encore", "advice": "ne vaut pas encore votre temps" },
-    "amber": { "label": "à regarder", "advice": "vaut un coup d'œil" },
-    "lightGreen": { "label": "parlez à des clients", "advice": "vaut une conversation avec un client" },
-    "darkGreen": { "label": "plan sérieux", "advice": "vaut un plan sérieux" }
+    "grey": {
+      "label": "pas encore",
+      "advice": "ne vaut pas encore votre temps"
+    },
+    "amber": {
+      "label": "à regarder",
+      "advice": "vaut un coup d'œil"
+    },
+    "lightGreen": {
+      "label": "parlez à des clients",
+      "advice": "vaut une conversation avec un client"
+    },
+    "darkGreen": {
+      "label": "plan sérieux",
+      "advice": "vaut un plan sérieux"
+    }
   },
   "documentError": {
     "too-large": "Ce fichier est plus gros qu'une matrice ne peut l'être.",
     "not-json": "Ce fichier n'est pas du JSON valide.",
     "not-a-matrix": "Ce fichier n'est pas un fichier Idea Matrix.",
-    "newer-version": "Ce fichier a été enregistré par une version plus récente d'Idea Matrix. Rechargez la page pour obtenir la dernière version, puis ouvrez-le de nouveau."
+    "newer-version": "Ce fichier a été enregistré par une version plus récente d'Idea Matrix. Rechargez la page pour obtenir la dernière version, puis ouvrez-le de nouveau.",
+    "no-such-idea": "Cette idée n'existe pas.",
+    "confidence-needs-evidence": "Le journal des preuves ne permet une Confiance que jusqu'à {{allowed}} pour l'instant.",
+    "park-needs-reason": "Une idée mise de côté a besoin d'une raison.",
+    "unpark-needs-stage": "Pour reprendre une idée, choisissez une étape autre que Mise de côté."
+  },
+  "export": {
+    "column": {
+      "idea": "Idée",
+      "description": "Description",
+      "stage": "Étape",
+      "riskiestAssumption": "Hypothèse la plus risquée",
+      "reach": "Portée",
+      "impact": "Impact",
+      "profitability": "Rentabilité",
+      "vision": "Vision",
+      "ease": "Facilité",
+      "confidence": "Confiance",
+      "potential": "Potentiel",
+      "score": "Score",
+      "parkedReason": "Mise de côté / abandonnée parce que"
+    },
+    "markdown": {
+      "stage": "Étape",
+      "description": "Description",
+      "riskiestAssumption": "Hypothèse la plus risquée",
+      "scores": "Notes",
+      "confidence": "Confiance",
+      "notScored": "non notée",
+      "potential": "Potentiel",
+      "score": "Score",
+      "needsAllFiveScores": "il manque des notes",
+      "parkedBecause": "Mise de côté parce que",
+      "evidence": "Preuves",
+      "whatTheyDoNow": "Ce qu'ils font aujourd'hui",
+      "commitment": "Engagement",
+      "exported": "Exporté le {{date}} depuis Idea Matrix. {{count}} idées.",
+      "formula": "Le Potentiel est la moyenne de cinq notes de 1 à 5, ramenée sur 100. Le Score est Potentiel × Confiance ÷ 5, alors il ne monte qu'avec des preuves.",
+      "parked": "Mises de côté"
+    }
   }
 }

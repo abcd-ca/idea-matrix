@@ -1,5 +1,11 @@
 {
   "language": "Language",
+  "theme": "Theme",
+  "themes": {
+    "system": "Same as the system",
+    "light": "Light",
+    "dark": "Dark"
+  },
   "nav": {
     "main": "Main",
     "matrix": "Matrix",
@@ -58,7 +64,8 @@
     "minutesAgo": "{{count}} min ago",
     "savedTo": "Saved to {{fileName}} {{where}}",
     "yourFile": "your file",
-    "autosave": "Every change is saved to your file automatically. There is no Save button."
+    "autosave": "Every change is saved to your file automatically. There is no Save button.",
+    "alsoOpen": "Also open somewhere else; last change {{when}}"
   },
   "errors": {
     "noMatrixOpen": "No matrix is open.",
@@ -79,7 +86,8 @@
     "driveError": "Google Drive returned an error ({{status}}).",
     "driveErrorDetail": "Google Drive returned an error ({{status}}): {{detail}}",
     "driveTrashed": "The file is in Google Drive's bin. Restore it there, or open a different file.",
-    "noLocalFileApi": "This browser cannot save changes back to a file on disk. Open this page in Chrome or Edge."
+    "noLocalFileApi": "This browser cannot save changes back to a file on disk. Open this page in Chrome or Edge.",
+    "savedElsewhere": "Another copy of the app saved this file first."
   },
   "picker": {
     "fileType": "Idea Matrix file",
@@ -146,5 +154,6 @@
     "ready": "A new version of {{app}} is ready.",
     "reload": "Reload",
     "later": "Later"
-  }
+  },
+  "defaultFileName": "ideas"
 }

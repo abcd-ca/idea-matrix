@@ -38,7 +38,7 @@ const ACTIVE_STAGES = STAGES.filter((s) => s !== "Parked");
 const CENTERED = new Set<string>(["potential", "score", "confidence", ...CRITERIA]);
 
 export function MatrixView({ parked = false }: { parked?: boolean }) {
-  const { t } = useTranslation("matrix");
+  const { t, i18n } = useTranslation("matrix");
   const router = useRouter();
   const doc = useAppStore((s) => s.doc);
   const mutate = useAppStore((s) => s.mutate);
@@ -76,12 +76,14 @@ export function MatrixView({ parked = false }: { parked?: boolean }) {
       });
   }, [doc, parked, stageFilter]);
 
-  const columns = useMemo(
-    () => [
+  const columns = useMemo(() => {
+    // Names sort by the current language's rules, so accented letters land where a reader expects.
+    const collator = new Intl.Collator(i18n.language, { numeric: true });
+    return [
       columnHelper.accessor("name", {
         header: t("columns.idea"),
         cell: (info) => <span className="font-medium">{info.getValue()}</span>,
-        sortingFn: "alphanumeric",
+        sortingFn: (a, b) => collator.compare(a.original.name, b.original.name),
       }),
       columnHelper.accessor("stage", {
         header: t("columns.stage"),
@@ -122,9 +124,8 @@ export function MatrixView({ parked = false }: { parked?: boolean }) {
         sortUndefined: "last",
         cell: (info) => <BandPill value={info.getValue()} showLabel />,
       }),
-    ],
-    [showScores, t],
-  );
+    ];
+  }, [i18n.language, showScores, t]);
 
   const table = useReactTable({
     data: rows,

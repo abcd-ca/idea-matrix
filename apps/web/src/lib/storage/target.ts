@@ -38,7 +38,13 @@ export class NeedsAuthorizationError extends Error {
 export interface SaveTarget {
   readonly kind: TargetKind;
   readonly name: string;
-  /** How often to look for changes made elsewhere, in milliseconds. */
+  /**
+   * Names the file for other tabs on this device (see same-device.ts): the
+   * Drive file id, or the file's name on disk, which is the most a handle
+   * gives. Two open files with one key cost only a spare revision check.
+   */
+  readonly key: string;
+  /** How often to look for changes made elsewhere while the tab is visible, in milliseconds. */
   readonly watchInterval: number;
   /** May the app read and write right now, without a click? */
   ready(): Promise<boolean>;
@@ -70,6 +76,10 @@ export class LocalTarget implements SaveTarget {
 
   get name(): string {
     return this.handle.name;
+  }
+
+  get key(): string {
+    return `local:${this.handle.name}`;
   }
 
   async ready(): Promise<boolean> {
@@ -114,13 +124,21 @@ interface DrivePointer {
 
 export class DriveTarget implements SaveTarget {
   readonly kind = "drive" as const;
-  /** Every check is an API call, so look less often than on disk. */
-  readonly watchInterval = 30_000;
+  /**
+   * Every check is an API call, but a small one: files.get for the version
+   * alone is metadata only, whatever the file's size, and well inside Drive's
+   * quota at this rate. The watcher only runs while the tab is visible.
+   */
+  readonly watchInterval = 10_000;
 
   constructor(
     readonly id: string,
     readonly name: string,
   ) {}
+
+  get key(): string {
+    return `drive:${this.id}`;
+  }
 
   /**
    * Only a token already in hand counts. Google's token client opens a popup

@@ -5,14 +5,21 @@ export { expect };
 
 /**
  * Every test also checks the rule that nothing leaves the machine: the only
- * requests a page may make are to the server that serves it.
+ * requests a page may make are to the server that serves it. A spec that
+ * stands in for Google Drive (see drive-stand-in.ts) names Google's hosts in
+ * `allowedHosts`; those requests are answered by the stand-in and never leave
+ * the test process.
  */
-export const test = base.extend<{ onlyLocalRequests: void }>({
+export const test = base.extend<{ onlyLocalRequests: void; allowedHosts: string[] }>({
+  allowedHosts: [[], { option: true }],
   onlyLocalRequests: [
-    async ({ page, baseURL }, use) => {
+    async ({ page, baseURL, allowedHosts }, use) => {
       const elsewhere: string[] = [];
       page.on("request", (request) => {
-        if (baseURL && !request.url().startsWith(baseURL)) elsewhere.push(request.url());
+        const url = request.url();
+        if (baseURL && !url.startsWith(baseURL) && !allowedHosts.some((host) => url.startsWith(host))) {
+          elsewhere.push(url);
+        }
       });
       await use();
       expect(elsewhere, "requests to other hosts").toEqual([]);
@@ -119,6 +126,15 @@ export async function setUpWithExample(page: Page, { keepTour = false } = {}): P
   await page.getByRole("button", { name: "Open my matrix" }).click();
   await expect(page.getByRole("heading", { name: "Example ideas" })).toBeVisible();
   if (!keepTour) await closeTour(page);
+}
+
+/**
+ * The sidebar, where the desktop layout shows the file's status. The phone
+ * bar at the foot of the page carries the same lines and is only hidden by
+ * CSS, so a bare getByText on a status sentence finds two elements.
+ */
+export function statusArea(page: Page) {
+  return page.getByRole("complementary");
 }
 
 /** Open an idea from the matrix table by its name. */
