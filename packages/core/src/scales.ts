@@ -102,8 +102,7 @@ export const STAGE_INFO: Record<Stage, string> = {
 };
 
 export const FORMULA_INFO = {
-  potential:
-    "Potential is the average of the five scores, scaled 0 to 100. It is blank until all five are filled in.",
+  potential: "Potential is the average of the five scores, scaled 0 to 100. It is blank until all five are filled in.",
   score:
     "Score is Potential × Confidence ÷ 5. It only rises with evidence, so a great-sounding idea cannot outrank one you have actually tested.",
 };

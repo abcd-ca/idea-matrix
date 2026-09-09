@@ -12,6 +12,10 @@ export function downloadText(filename: string, text: string, mime = "text/plain"
 }
 
 export function safeFileStem(name: string): string {
-  const stem = name.replace(/[^\w\- ]+/g, "").trim().replace(/\s+/g, "-").toLowerCase();
+  const stem = name
+    .replace(/[^\w\- ]+/g, "")
+    .trim()
+    .replace(/\s+/g, "-")
+    .toLowerCase();
   return stem || "ideas";
 }

@@ -11,14 +11,7 @@ import {
 } from "@idea-matrix/core";
 import * as drive from "./storage/google-drive";
 import { pickExistingFile, pickNewFile } from "./storage/local-file";
-import {
-  ConflictError,
-  DriveTarget,
-  LocalTarget,
-  forgetTarget,
-  loadTarget,
-  type SaveTarget,
-} from "./storage/target";
+import { ConflictError, DriveTarget, LocalTarget, forgetTarget, loadTarget, type SaveTarget } from "./storage/target";
 import { useAppStore } from "./store";
 
 /**
@@ -281,7 +274,8 @@ export async function writeDocumentNow(doc: MatrixDocument): Promise<void> {
   const store = useAppStore.getState();
   store.setDoc(doc, { dirty: true });
   await saveNow();
-  if (useAppStore.getState().status === "error") throw new Error(useAppStore.getState().error ?? "Could not write the file.");
+  if (useAppStore.getState().status === "error")
+    throw new Error(useAppStore.getState().error ?? "Could not write the file.");
 }
 
 export async function closeFile(): Promise<void> {
@@ -337,7 +331,10 @@ async function saveNow(): Promise<void> {
       }
     } else if (e instanceof drive.DriveAuthError) {
       // Keep the changes; the Resume screen asks for the one click Google needs.
-      store.setStatus("needs-permission", "Google needs you to sign in again before the app can keep saving. Your changes are kept until then.");
+      store.setStatus(
+        "needs-permission",
+        "Google needs you to sign in again before the app can keep saving. Your changes are kept until then.",
+      );
     } else {
       store.setStatus("error", explain(e));
     }
@@ -363,7 +360,10 @@ async function checkForExternalChange(): Promise<void> {
     }
   } catch (e) {
     if (e instanceof drive.DriveAuthError) {
-      store.setStatus("needs-permission", "Google needs you to sign in again before the app can check your file for changes.");
+      store.setStatus(
+        "needs-permission",
+        "Google needs you to sign in again before the app can check your file for changes.",
+      );
       return;
     }
     store.setStatus("error", explain(e));

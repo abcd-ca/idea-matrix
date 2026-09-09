@@ -1,12 +1,6 @@
 import { mkdir, readFile, rename, stat, writeFile } from "node:fs/promises";
 import { dirname } from "node:path";
-import {
-  DocumentError,
-  emptyDocument,
-  parseDocument,
-  serializeDocument,
-  type MatrixDocument,
-} from "@idea-matrix/core";
+import { DocumentError, emptyDocument, parseDocument, serializeDocument, type MatrixDocument } from "@idea-matrix/core";
 
 /**
  * The matrix file on disk. Every operation is read-modify-write against the

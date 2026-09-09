@@ -86,7 +86,9 @@ const STEPS: DriveStep[] = [
       title: "Confidence: how much evidence is behind those scores?",
       description:
         list(Object.entries(CONFIDENCE_INFO.levels).map(([k, v]) => `<b>${k}</b> ${v}`)) +
-        para("Every new idea starts at 1. Desk research can take it to 2; only recorded conversations take it further. Three rules for those conversations:") +
+        para(
+          "Every new idea starts at 1. Desk research can take it to 2; only recorded conversations take it further. Three rules for those conversations:",
+        ) +
         list(CONFIDENCE_INFO.rules) +
         para(`The evidence log on each idea keeps the receipts. ${CONFIDENCE_GATE_SUMMARY}`),
     },
@@ -97,7 +99,9 @@ const STEPS: DriveStep[] = [
       title: "Score is what ranks your ideas",
       description:
         `<p>${FORMULA_INFO.score}</p>` +
-        para("Score can never exceed Potential. The most evidence in the world only proves the idea is as good as you thought.") +
+        para(
+          "Score can never exceed Potential. The most evidence in the world only proves the idea is as good as you thought.",
+        ) +
         para("Same colours as Potential:") +
         BAND_LIST,
     },
@@ -137,7 +141,9 @@ const PHONE_STEPS: DriveStep[] = [
         "<p>The number in the corner is its <b>Score</b>, which is what ranks your ideas. Below the name: its stage, its <b>Potential</b> and its <b>Confidence</b>.</p>" +
         para(FORMULA_INFO.potential) +
         list(CRITERIA.map((c) => `<b>${CRITERION_INFO[c].label}</b>: ${CRITERION_INFO[c].question}`)) +
-        para("Each is a value of 1 to 5. Profitability can also be 0, for something deliberately non-commercial. The colour says which band a number falls in:") +
+        para(
+          "Each is a value of 1 to 5. Profitability can also be 0, for something deliberately non-commercial. The colour says which band a number falls in:",
+        ) +
         BAND_LIST,
     },
   },
@@ -147,7 +153,9 @@ const PHONE_STEPS: DriveStep[] = [
       title: "Confidence: how much evidence is behind those scores?",
       description:
         list(Object.entries(CONFIDENCE_INFO.levels).map(([k, v]) => `<b>${k}</b> ${v}`)) +
-        para("Every new idea starts at 1. Desk research can take it to 2; only recorded conversations take it further. Three rules for those conversations:") +
+        para(
+          "Every new idea starts at 1. Desk research can take it to 2; only recorded conversations take it further. Three rules for those conversations:",
+        ) +
         list(CONFIDENCE_INFO.rules) +
         para(`${FORMULA_INFO.score} The evidence log on each idea keeps the receipts. ${CONFIDENCE_GATE_SUMMARY}`),
     },

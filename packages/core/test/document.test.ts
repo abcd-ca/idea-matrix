@@ -58,7 +58,8 @@ describe("parseDocument", () => {
     expect(() => migrateDocument(bad)).toThrowError(/reach/);
   });
   it("rejects prototype pollution attempts", () => {
-    const text = '{"type":"ideamatrix","schemaVersion":1,"name":"x","ideas":[],"createdAt":"2026-09-04T10:00:00.000Z","updatedAt":"2026-09-04T10:00:00.000Z","__proto__":{"polluted":true}}';
+    const text =
+      '{"type":"ideamatrix","schemaVersion":1,"name":"x","ideas":[],"createdAt":"2026-09-04T10:00:00.000Z","updatedAt":"2026-09-04T10:00:00.000Z","__proto__":{"polluted":true}}';
     expect(() => parseDocument(text)).toThrow(DocumentError);
     expect(({} as Record<string, unknown>).polluted).toBeUndefined();
   });
@@ -85,12 +86,17 @@ describe("updateIdea", () => {
     // An entry with no behaviour recorded (a compliment) does not help.
     expect(() => updateIdea(doc, "sample-weather", { confidence: 3 }, clock)).toThrowError(/up to 2/);
     // Behaviour recorded but no commitment: capped at 4.
-    const { doc: withBehaviour } = addEvidence(doc, "sample-rink", {
-      date: "2026-09-04",
-      who: "Rink owner",
-      whatTheyDoNow: "Checks the ice by hand at midnight.",
-      commitment: "",
-    }, clock);
+    const { doc: withBehaviour } = addEvidence(
+      doc,
+      "sample-rink",
+      {
+        date: "2026-09-04",
+        who: "Rink owner",
+        whatTheyDoNow: "Checks the ice by hand at midnight.",
+        commitment: "",
+      },
+      clock,
+    );
     expect(() => updateIdea(withBehaviour, "sample-rink", { confidence: 4 }, clock)).not.toThrow();
     expect(() => updateIdea(withBehaviour, "sample-rink", { confidence: 5 }, clock)).toThrowError(/up to 4/);
     // A commitment on record allows 5.
@@ -119,12 +125,17 @@ describe("updateIdea", () => {
 describe("evidence", () => {
   it("adds and removes entries, lowering Confidence when the gate no longer holds", () => {
     const base = sampleDocument(clock);
-    const { doc, entryId } = addEvidence(base, "sample-rink", {
-      date: "2026-09-04",
-      who: "Rink owner",
-      whatTheyDoNow: "Checks the ice by hand at midnight.",
-      commitment: "",
-    }, clock);
+    const { doc, entryId } = addEvidence(
+      base,
+      "sample-rink",
+      {
+        date: "2026-09-04",
+        who: "Rink owner",
+        whatTheyDoNow: "Checks the ice by hand at midnight.",
+        commitment: "",
+      },
+      clock,
+    );
     const raised = updateIdea(doc, "sample-rink", { confidence: 4 }, clock);
     expect(raised.ideas.find((i) => i.id === "sample-rink")!.confidence).toBe(4);
     const removed = removeEvidence(raised, "sample-rink", entryId, clock);
@@ -153,7 +164,11 @@ describe("mergeDocuments", () => {
   const t = (s: string) => () => new Date(s);
   it("keeps the newer copy of each idea and every idea from both sides", async () => {
     const { mergeDocuments } = await import("../src/document");
-    const base = addIdea(addIdea(emptyDocument("Mine", t("2026-09-01T00:00:00.000Z")), "A", t("2026-09-01T00:00:00.000Z")).doc, "B", t("2026-09-01T00:00:00.000Z")).doc;
+    const base = addIdea(
+      addIdea(emptyDocument("Mine", t("2026-09-01T00:00:00.000Z")), "A", t("2026-09-01T00:00:00.000Z")).doc,
+      "B",
+      t("2026-09-01T00:00:00.000Z"),
+    ).doc;
     const [a, b] = base.ideas;
     // This computer edits A later; the other computer edits B earlier and adds C.
     const local = updateIdea(base, a.id, { description: "local A" }, t("2026-09-03T00:00:00.000Z"));

@@ -61,12 +61,7 @@ export function blankIdea(name: string, clock: Clock = defaultClock): Idea {
 export class DocumentError extends Error {
   constructor(
     message: string,
-    public readonly code:
-      | "too-large"
-      | "not-json"
-      | "not-a-matrix"
-      | "newer-version"
-      | "invalid",
+    public readonly code: "too-large" | "not-json" | "not-a-matrix" | "newer-version" | "invalid",
   ) {
     super(message);
     this.name = "DocumentError";
@@ -129,7 +124,11 @@ function touch(doc: MatrixDocument, clock: Clock): MatrixDocument {
   return { ...doc, updatedAt: clock().toISOString() };
 }
 
-export function addIdea(doc: MatrixDocument, name: string, clock: Clock = defaultClock): { doc: MatrixDocument; idea: Idea } {
+export function addIdea(
+  doc: MatrixDocument,
+  name: string,
+  clock: Clock = defaultClock,
+): { doc: MatrixDocument; idea: Idea } {
   const idea = blankIdea(name.trim() || "Untitled idea", clock);
   return { doc: touch({ ...doc, ideas: [...doc.ideas, idea] }, clock), idea };
 }
@@ -167,9 +166,7 @@ export function updateIdea(
 
   const allowed = maxConfidenceAllowed(next.evidence);
   if (next.confidence > allowed) {
-    throw new Error(
-      `The evidence log only supports Confidence up to ${allowed} so far.`,
-    );
+    throw new Error(`The evidence log only supports Confidence up to ${allowed} so far.`);
   }
   if (next.stage === "Parked" && next.parkedReason.trim() === "") {
     throw new Error("A parked idea needs a reason.");
@@ -181,11 +178,21 @@ export function updateIdea(
   return touch({ ...doc, ideas: doc.ideas.map((i) => (i.id === ideaId ? next : i)) }, clock);
 }
 
-export function parkIdea(doc: MatrixDocument, ideaId: string, reason: string, clock: Clock = defaultClock): MatrixDocument {
+export function parkIdea(
+  doc: MatrixDocument,
+  ideaId: string,
+  reason: string,
+  clock: Clock = defaultClock,
+): MatrixDocument {
   return updateIdea(doc, ideaId, { stage: "Parked", parkedReason: reason.trim() }, clock);
 }
 
-export function unparkIdea(doc: MatrixDocument, ideaId: string, stage: Stage = "Backlog", clock: Clock = defaultClock): MatrixDocument {
+export function unparkIdea(
+  doc: MatrixDocument,
+  ideaId: string,
+  stage: Stage = "Backlog",
+  clock: Clock = defaultClock,
+): MatrixDocument {
   if (stage === "Parked") throw new Error("Unparking needs a stage other than Parked.");
   return updateIdea(doc, ideaId, { stage }, clock);
 }
@@ -216,7 +223,12 @@ export function addEvidence(
   };
 }
 
-export function removeEvidence(doc: MatrixDocument, ideaId: string, entryId: string, clock: Clock = defaultClock): MatrixDocument {
+export function removeEvidence(
+  doc: MatrixDocument,
+  ideaId: string,
+  entryId: string,
+  clock: Clock = defaultClock,
+): MatrixDocument {
   const current = findIdea(doc, ideaId);
   if (!current) throw new Error("No such idea.");
   const evidence = current.evidence.filter((e) => e.id !== entryId);

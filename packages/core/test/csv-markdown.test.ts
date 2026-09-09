@@ -61,12 +61,12 @@ describe("exportCsv", () => {
     doc.ideas.push({
       ...sampleDocument(clock).ideas[3],
       id: "evil",
-      name: "=HYPERLINK(\"http://x\",\"click\")",
+      name: '=HYPERLINK("http://x","click")',
       description: "+1234",
     });
     const csv = exportCsv(doc);
     const line = csv.split("\n")[1];
-    expect(line.startsWith('"\'=HYPERLINK') || line.startsWith("\"'=")).toBe(true);
+    expect(line.startsWith("\"'=HYPERLINK") || line.startsWith("\"'=")).toBe(true);
     expect(line).toContain("'+1234");
   });
 });

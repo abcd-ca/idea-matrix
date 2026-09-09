@@ -73,12 +73,23 @@ export function EvidenceLog({ idea, onError }: { idea: Idea; onError: (message: 
                     </Button>
                   </span>
                 ) : (
-                  <Button size="icon-xs" variant="ghost" aria-label="Remove entry" onClick={() => setConfirmRemove(e.id)}>
+                  <Button
+                    size="icon-xs"
+                    variant="ghost"
+                    aria-label="Remove entry"
+                    onClick={() => setConfirmRemove(e.id)}
+                  >
                     <Trash2Icon />
                   </Button>
                 )}
               </div>
-              {e.whatTheyDoNow.trim() ? <p>{e.whatTheyDoNow}</p> : <p className="text-xs text-muted-foreground">No current behaviour recorded, so this entry does not count toward Confidence.</p>}
+              {e.whatTheyDoNow.trim() ? (
+                <p>{e.whatTheyDoNow}</p>
+              ) : (
+                <p className="text-xs text-muted-foreground">
+                  No current behaviour recorded, so this entry does not count toward Confidence.
+                </p>
+              )}
               {e.commitment.trim() ? (
                 <p className="text-xs">
                   <span className="font-medium">Commitment:</span> {e.commitment}
@@ -89,9 +100,7 @@ export function EvidenceLog({ idea, onError }: { idea: Idea; onError: (message: 
         </ul>
       )}
 
-      <p className="border-t border-dashed pt-2 text-xs text-muted-foreground">
-        {CONFIDENCE_GATE_SUMMARY}
-      </p>
+      <p className="border-t border-dashed pt-2 text-xs text-muted-foreground">{CONFIDENCE_GATE_SUMMARY}</p>
 
       <AddEvidenceDialog
         open={open}
@@ -136,7 +145,12 @@ function AddEvidenceDialog({
           className="flex flex-col gap-4"
           onSubmit={(e) => {
             e.preventDefault();
-            const err = onAdd({ date, who: who.trim(), whatTheyDoNow: whatTheyDoNow.trim(), commitment: commitment.trim() });
+            const err = onAdd({
+              date,
+              who: who.trim(),
+              whatTheyDoNow: whatTheyDoNow.trim(),
+              commitment: commitment.trim(),
+            });
             if (err) {
               setLocalError(err);
               return;
@@ -147,9 +161,7 @@ function AddEvidenceDialog({
         >
           <DialogHeader>
             <DialogTitle>Add a conversation</DialogTitle>
-            <DialogDescription>
-              {CONFIDENCE_INFO.rules.join(" ")}
-            </DialogDescription>
+            <DialogDescription>{CONFIDENCE_INFO.rules.join(" ")}</DialogDescription>
           </DialogHeader>
 
           <div className="grid gap-3 sm:grid-cols-[140px_1fr]">

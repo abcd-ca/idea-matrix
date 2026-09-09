@@ -203,7 +203,19 @@ export function createServer(store: FileStore): McpServer {
         confidence: scoreArg.optional(),
       },
     },
-    async ({ idea, name, description, riskiestAssumption, stage, reach, impact, profitability, vision, ease, confidence }) => {
+    async ({
+      idea,
+      name,
+      description,
+      riskiestAssumption,
+      stage,
+      reach,
+      impact,
+      profitability,
+      vision,
+      ease,
+      confidence,
+    }) => {
       try {
         let updated: Idea | undefined;
         await store.update((doc) => {
@@ -224,9 +236,10 @@ export function createServer(store: FileStore): McpServer {
             ...(confidence !== undefined ? { confidence } : {}),
           };
           if (Object.keys(patch).length === 0) throw new StoreError("Nothing to change: send at least one field.");
-          const next = found.stage === "Parked" && stage !== undefined
-            ? updateIdea(unparkIdea(doc, found.id, stage as Idea["stage"]), found.id, patch)
-            : updateIdea(doc, found.id, patch);
+          const next =
+            found.stage === "Parked" && stage !== undefined
+              ? updateIdea(unparkIdea(doc, found.id, stage as Idea["stage"]), found.id, patch)
+              : updateIdea(doc, found.id, patch);
           updated = findIdea(next, found.id);
           return next;
         });
@@ -246,9 +259,22 @@ export function createServer(store: FileStore): McpServer {
       inputSchema: {
         idea: z.string().min(1).describe("Idea id, or its exact name."),
         who: z.string().min(1).max(200).describe("Who was spoken to, e.g. 'Strata council chair'."),
-        whatTheyDoNow: z.string().max(20000).describe("What they currently do about the problem. Leave empty if the conversation produced only opinions."),
-        commitment: z.string().max(20000).optional().describe("Money, an introduction, a pilot, their time. Empty if nothing."),
-        date: z.string().regex(/^\d{4}-\d{2}-\d{2}$/).optional().describe("YYYY-MM-DD, defaults to today."),
+        whatTheyDoNow: z
+          .string()
+          .max(20000)
+          .describe(
+            "What they currently do about the problem. Leave empty if the conversation produced only opinions.",
+          ),
+        commitment: z
+          .string()
+          .max(20000)
+          .optional()
+          .describe("Money, an introduction, a pilot, their time. Empty if nothing."),
+        date: z
+          .string()
+          .regex(/^\d{4}-\d{2}-\d{2}$/)
+          .optional()
+          .describe("YYYY-MM-DD, defaults to today."),
       },
     },
     async ({ idea, who, whatTheyDoNow, commitment, date }) => {
@@ -359,7 +385,8 @@ export function createServer(store: FileStore): McpServer {
     "review_matrix",
     {
       title: "Review the whole matrix",
-      description: "An honest read of the matrix: what to talk to customers about next, inconsistent scores, ideas to park, missing assumptions. Changes nothing.",
+      description:
+        "An honest read of the matrix: what to talk to customers about next, inconsistent scores, ideas to park, missing assumptions. Changes nothing.",
     },
     () => ({
       messages: [{ role: "user", content: { type: "text", text: reviewPrompt() } }],

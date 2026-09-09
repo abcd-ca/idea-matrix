@@ -1,0 +1,8 @@
+node_modules/
+dist/
+out/
+.next/
+package-lock.json
+*.mcpb
+CHANGELOG.md
+apps/web/public/

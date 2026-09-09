@@ -19,7 +19,13 @@ async function connect(path: string) {
   await server.connect(serverTransport);
   const c = new Client({ name: "test", version: "0" });
   await c.connect(clientTransport);
-  return { client: c, close: async () => { await c.close(); await server.close(); } };
+  return {
+    client: c,
+    close: async () => {
+      await c.close();
+      await server.close();
+    },
+  };
 }
 
 type ToolResult = { content: { type: string; text?: string }[]; isError?: boolean };

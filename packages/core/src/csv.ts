@@ -1,14 +1,7 @@
 import Papa from "papaparse";
 import { blankIdea, type Clock } from "./document";
 import { potential, score } from "./formulas";
-import {
-  CRITERIA,
-  STAGES,
-  type Criterion,
-  type Idea,
-  type MatrixDocument,
-  type Stage,
-} from "./schema";
+import { CRITERIA, STAGES, type Criterion, type Idea, type MatrixDocument, type Stage } from "./schema";
 
 /**
  * CSV columns, matching the original spreadsheet template so a sheet export
@@ -100,7 +93,9 @@ export function importCsv(text: string, clock?: Clock): CsvImportResult {
     }
     const confidence = parseScore(pick(row, "Confidence"), 1) ?? 1;
     if (confidence > 2) {
-      warnings.push(`"${name}": Confidence ${confidence} was lowered to 2 because an import has no evidence log. Add evidence entries to raise it.`);
+      warnings.push(
+        `"${name}": Confidence ${confidence} was lowered to 2 because an import has no evidence log. Add evidence entries to raise it.`,
+      );
     }
     idea.confidence = Math.min(confidence, 2);
     idea.parkedReason = pick(row, "Parked / killed because");
@@ -136,4 +131,3 @@ export function exportCsv(doc: MatrixDocument): string {
   // escapeFormulae stops a cell starting with = + - @ from running as a formula in a spreadsheet.
   return Papa.unparse(rows, { columns: [...CSV_COLUMNS], newline: "\n", escapeFormulae: true }) + "\n";
 }
-

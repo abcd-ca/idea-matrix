@@ -98,8 +98,8 @@ export function SetupWizard() {
               <Alert>
                 <AlertTitle>“This computer” needs Chrome or Edge</AlertTitle>
                 <AlertDescription>
-                  Your browser can’t save changes back to a file on disk, so this option is off. Open this page in Chrome
-                  or Edge to use it, or keep your ideas in Google Drive, which works in any browser.
+                  Your browser can’t save changes back to a file on disk, so this option is off. Open this page in
+                  Chrome or Edge to use it, or keep your ideas in Google Drive, which works in any browser.
                 </AlertDescription>
               </Alert>
             ) : null}
@@ -133,7 +133,9 @@ export function SetupWizard() {
                 Back
               </Button>
               <span className="flex items-center gap-3">
-                {where === null ? <span className="hidden text-xs text-muted-foreground sm:inline">Choose a location to continue</span> : null}
+                {where === null ? (
+                  <span className="hidden text-xs text-muted-foreground sm:inline">Choose a location to continue</span>
+                ) : null}
                 <Button disabled={where === null} onClick={() => setStep("file")}>
                   Continue
                 </Button>
@@ -145,7 +147,9 @@ export function SetupWizard() {
         {step === "file" ? (
           <>
             <header className="flex flex-col gap-2">
-              <h1 className="font-heading text-2xl font-semibold sm:text-3xl">Open a matrix you already have, or create a new one?</h1>
+              <h1 className="font-heading text-2xl font-semibold sm:text-3xl">
+                Open a matrix you already have, or create a new one?
+              </h1>
               <p className="text-muted-foreground">
                 Keeping your ideas <strong>{describeWhere(where === "dropbox" ? null : where)}</strong>.{" "}
                 <button type="button" className="underline underline-offset-4" onClick={() => setStep("where")}>
@@ -233,7 +237,9 @@ export function SetupWizard() {
                     </span>
                   </label>
                   <Button
-                    disabled={busy || driveName.trim() === "" || (driveFolder === "new" && driveFolderName.trim() === "")}
+                    disabled={
+                      busy || driveName.trim() === "" || (driveFolder === "new" && driveFolderName.trim() === "")
+                    }
                     onClick={async () => {
                       setBusy(true);
                       setError(null);
@@ -256,8 +262,8 @@ export function SetupWizard() {
                 <div className="flex flex-col gap-3 rounded-md border p-5">
                   <h2 className="font-heading text-xl font-bold">Open an existing matrix</h2>
                   <p className="flex-1 text-sm text-muted-foreground">
-                    You already have a matrix file, maybe from another computer or a backup. The picker shows JSON files,
-                    and the app checks that the one you choose really is a matrix before loading it.
+                    You already have a matrix file, maybe from another computer or a backup. The picker shows JSON
+                    files, and the app checks that the one you choose really is a matrix before loading it.
                   </p>
                   <Button
                     variant="outline"
@@ -311,8 +317,8 @@ export function SetupWizard() {
             <header className="flex flex-col gap-2">
               <h1 className="font-heading text-2xl font-semibold sm:text-3xl">What should go in it?</h1>
               <p className="text-muted-foreground">
-                <strong>{useAppStore.getState().fileName ?? "Your file"}</strong> is saved {describeWhere(where === "dropbox" ? null : where)}. It is
-                empty until you choose what goes in it.
+                <strong>{useAppStore.getState().fileName ?? "Your file"}</strong> is saved{" "}
+                {describeWhere(where === "dropbox" ? null : where)}. It is empty until you choose what goes in it.
               </p>
             </header>
 

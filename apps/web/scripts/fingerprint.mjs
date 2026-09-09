@@ -124,8 +124,10 @@ const isMain = process.argv[1] && fileURLToPath(import.meta.url) === process.arg
 if (isMain) {
   const [command, arg] = process.argv.slice(2);
   const run = command === "verify" ? verify(arg) : stamp();
-  run.then((code) => process.exit(code ?? 0)).catch((err) => {
-    console.error(err instanceof Error ? err.message : err);
-    process.exit(1);
-  });
+  run
+    .then((code) => process.exit(code ?? 0))
+    .catch((err) => {
+      console.error(err instanceof Error ? err.message : err);
+      process.exit(1);
+    });
 }

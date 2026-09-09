@@ -37,7 +37,10 @@ const MUTED = "#6b6b6b";
 /** The mark's drawing, without the favicon's colour-scheme stylesheet. */
 async function markBody() {
   const svg = await readFile(SOURCE, "utf8");
-  const inner = svg.replace(/<style>[\s\S]*?<\/style>/, "").replace(/^[\s\S]*?<svg[^>]*>/, "").replace(/<\/svg>\s*$/, "");
+  const inner = svg
+    .replace(/<style>[\s\S]*?<\/style>/, "")
+    .replace(/^[\s\S]*?<svg[^>]*>/, "")
+    .replace(/<\/svg>\s*$/, "");
   return inner.trim();
 }
 
@@ -114,7 +117,9 @@ async function main() {
     await writeFile(path, data);
   };
 
-  const favicons = await Promise.all([16, 32, 48].map(async (size) => ({ size, data: await png(markSvg(body, size)) })));
+  const favicons = await Promise.all(
+    [16, 32, 48].map(async (size) => ({ size, data: await png(markSvg(body, size)) })),
+  );
   await out("src/app/favicon.ico", ico(favicons));
   await out("src/app/apple-icon.png", await png(markSvg(body, 180, 28, TILE)));
   await out("public/icons/icon-192.png", await png(markSvg(body, 192, 30, TILE)));
@@ -124,7 +129,9 @@ async function main() {
   await out("public/og.png", await png(previewSvg(body, 1200, 630, fonts)));
   await out("public/social-preview.png", await png(previewSvg(body, 1280, 640, fonts)));
   await out("icon.png", await png(markSvg(body, 512, 80, TILE)), MCP);
-  console.log("icons: favicon.ico, apple-icon.png, icons/ (192, 512, maskable), og.png, social-preview.png, packages/mcp/icon.png");
+  console.log(
+    "icons: favicon.ico, apple-icon.png, icons/ (192, 512, maskable), og.png, social-preview.png, packages/mcp/icon.png",
+  );
 }
 
 await main();

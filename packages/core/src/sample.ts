@@ -73,7 +73,8 @@ export function sampleDocument(clock: Clock = () => new Date()): MatrixDocument 
           id: "sample-tools-e1",
           date: day(12),
           who: "Neighbour, three doors down",
-          whatTheyDoNow: "Lends his pressure washer to two families; keeps track in his head and lost a ladder for a month.",
+          whatTheyDoNow:
+            "Lends his pressure washer to two families; keeps track in his head and lost a ladder for a month.",
           commitment: "",
         },
         {
