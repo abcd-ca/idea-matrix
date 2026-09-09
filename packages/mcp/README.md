@@ -6,16 +6,18 @@ Nothing here talks to any server of ours. The only thing that leaves your machin
 
 ## Claude Desktop
 
-1. Download `idea-matrix.mcpb` from the releases page.
+1. Download `idea-matrix.mcpb` from the [releases page](https://github.com/abcd-ca/idea-matrix/releases).
 2. Double-click it (or drag it into Claude Desktop → Settings → Extensions).
 3. When asked, pick your matrix file, usually `ideas.ideamatrix.json`, the one the app created.
+
+**Tip for macOS:** keep the file out of Desktop, Documents and Downloads. macOS guards those three folders with a per-app permission, and Claude Desktop does not have it, so the extension cannot read a file there. A folder you make in your home folder, such as `~/Ideas`, works without any setup. If the file is already in one of the guarded folders, move it and update the extension's setting, or allow Claude in System Settings → Privacy & Security → Files and Folders.
 
 Then, in a chat, choose the **Work on my idea matrix** prompt, or just say "show me my idea matrix".
 
 ## Claude Code
 
 ```
-claude mcp add idea-matrix -- npx -y @idea-matrix/mcp mcp --file ~/Documents/ideas.ideamatrix.json
+claude mcp add idea-matrix -- npx -y @idea-matrix/mcp mcp --file ~/Ideas/ideas.ideamatrix.json
 ```
 
 Then `/idea-matrix:idea_matrix` lists your ideas and asks which to work on, or ask in plain words.
