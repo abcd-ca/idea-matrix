@@ -1,19 +1,19 @@
 "use client";
 
-import { emptyDocument, sampleDocument } from "@idea-matrix/core";
-import { cn } from "cn";
-import { useRouter } from "next/navigation";
-import { useEffect, useRef, useState, useSyncExternalStore, type ReactNode } from "react";
+import { LogoMark } from "@/components/logo-mark";
 import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert";
 import { Button } from "@/components/ui/button";
-import { LogoMark } from "@/components/logo-mark";
-import { createDriveFile, createNewFile, openDriveFile, openExistingFile, writeDocumentNow } from "@/lib/file-session";
 import { MOM_TEST_URL } from "@/lib/config";
+import { createDriveFile, createNewFile, openDriveFile, openExistingFile, writeDocumentNow } from "@/lib/file-session";
 import { MOM_TEST_SUMMARY, OVERVIEW_AI, OVERVIEW_CARDS, OVERVIEW_INTRO, OVERVIEW_TITLE } from "@/lib/overview";
 import { driveConfigured } from "@/lib/storage/google-drive";
 import { supportsLocalFile } from "@/lib/storage/local-file";
 import { describeWhere, type TargetKind } from "@/lib/storage/target";
 import { useAppStore } from "@/lib/store";
+import { emptyDocument, sampleDocument } from "@idea-matrix/core";
+import { cn } from "cn";
+import { useRouter } from "next/navigation";
+import { useEffect, useRef, useState, useSyncExternalStore, type ReactNode } from "react";
 
 // Dropbox is a card on the screen but not a target yet.
 type Where = TargetKind | "dropbox";
@@ -157,10 +157,7 @@ export function SetupWizard() {
                 Open a matrix you already have, or create a new one?
               </h1>
               <p className="text-muted-foreground">
-                Keeping your ideas <strong>{describeWhere(where === "dropbox" ? null : where)}</strong>.{" "}
-                <button type="button" className="underline underline-offset-4" onClick={() => setStep("where")}>
-                  Change
-                </button>
+                Keeping your ideas <strong>{describeWhere(where === "dropbox" ? null : where)}</strong>.
               </p>
             </header>
 
@@ -315,7 +312,8 @@ export function SetupWizard() {
             )}
 
             <footer className="flex items-center justify-start">
-              <Button variant="ghost" onClick={() => setStep("where")} disabled={busy}>
+              {/* Never disabled: going back while a picker is open is harmless, and a picker that never answers must not trap the person here. */}
+              <Button variant="ghost" onClick={() => setStep("where")}>
                 Back
               </Button>
             </footer>
