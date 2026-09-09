@@ -1,5 +1,11 @@
 {
   "language": "Langue",
+  "theme": "Thème",
+  "themes": {
+    "system": "Comme le système",
+    "light": "Clair",
+    "dark": "Sombre"
+  },
   "nav": {
     "main": "Principal",
     "matrix": "Matrice",

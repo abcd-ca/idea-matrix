@@ -3,6 +3,7 @@
 import { create } from "zustand";
 import { i18n } from "./i18n";
 import {
+  DARK_QUERY,
   DEFAULT_LANGUAGE,
   DEFAULT_THEME,
   clearPreferences,
@@ -38,12 +39,29 @@ export interface PreferencesState {
   reset: () => void;
 }
 
+/** The operating system's own preference, which the "system" theme follows. */
+function systemDark(): boolean {
+  return typeof window.matchMedia === "function" && window.matchMedia(DARK_QUERY).matches;
+}
+
 /** Put the preferences into effect: the app's language, <html lang>, and the dark class. */
 function apply(language: Language, theme: Theme): void {
   if (i18n.language !== language) void i18n.changeLanguage(language);
   const root = document.documentElement;
   root.lang = language;
-  root.classList.toggle("dark", isDark(theme));
+  root.classList.toggle("dark", isDark(theme, systemDark()));
+}
+
+/**
+ * Follow the operating system while the theme is "system": when it switches
+ * (sunset, or a toggle in its settings) the page switches with it. Listened
+ * for once, from the first hydrate; a stored "light" or "dark" ignores it.
+ */
+let watchingSystem = false;
+function watchSystemTheme(reapply: () => void): void {
+  if (watchingSystem || typeof window.matchMedia !== "function") return;
+  watchingSystem = true;
+  window.matchMedia(DARK_QUERY).addEventListener("change", reapply);
 }
 
 export const usePreferences = create<PreferencesState>()((set, get) => ({
@@ -58,6 +76,10 @@ export const usePreferences = create<PreferencesState>()((set, get) => ({
     const theme = stored.theme ?? DEFAULT_THEME;
     set({ hydrated: true, language, theme, whatsNewSeen: stored.whatsNewSeen });
     apply(language, theme);
+    watchSystemTheme(() => {
+      const current = get();
+      if (current.theme === "system") apply(current.language, current.theme);
+    });
   },
   setLanguage: (language) => {
     writePreferences({ language });

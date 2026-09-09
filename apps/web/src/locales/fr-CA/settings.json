@@ -8,7 +8,7 @@
     "button": "Recommencer sur cet appareil",
     "note": "Détache cet appareil de votre fichier d'idées sans le supprimer. Vous pourrez vous reconnecter au fichier plus tard. C'est utile sur un ordinateur partagé.",
     "title": "Recommencer sur cet appareil?",
-    "body": "Votre fichier de matrice reste exactement où il est, sur cet ordinateur ou dans votre Google Drive, avec tout ce qu'il contient. Ceci efface seulement ce que l'application retient ici : quel fichier était ouvert, la connexion Google, la copie en cache, le choix de langue et la visite guidée. La prochaine visite commence à l'écran d'accueil, d'où vous pouvez rouvrir le même fichier."
+    "body": "Votre fichier de matrice reste exactement où il est, sur cet ordinateur ou dans votre Google Drive, avec tout ce qu'il contient. Ceci efface seulement ce que l'application retient ici : quel fichier était ouvert, la connexion Google, la copie en cache, les choix de langue et de thème et la visite guidée. La prochaine visite commence à l'écran d'accueil, d'où vous pouvez rouvrir le même fichier."
   },
   "where": {
     "title": "Où vivent vos idées",

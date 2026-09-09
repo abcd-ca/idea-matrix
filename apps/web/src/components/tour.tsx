@@ -3,6 +3,7 @@
 import { driver, type DriveStep } from "driver.js";
 import { useEffect } from "react";
 import { BANDS, CRITERIA, STAGES, type Band } from "@idea-matrix/core";
+import { BAND_CLASSES } from "@/lib/bands";
 import { MOM_TEST_URL } from "@/lib/config";
 import { overview } from "@/lib/overview";
 import { useAppStore } from "@/lib/store";
@@ -20,16 +21,9 @@ function link(html: string, url: string): string {
   return html.replace("<a>", `<a href="${url}" target="_blank" rel="noreferrer" style="text-decoration:underline">`);
 }
 
-// The same colours as the pills in the table (light theme values from lib/bands.ts).
-const BAND_SWATCH: Record<Band, { bg: string; fg: string }> = {
-  grey: { bg: "#e5e5e5", fg: "#262626" },
-  amber: { bg: "#fde68a", fg: "#451a03" },
-  lightGreen: { bg: "#a7f3d0", fg: "#022c22" },
-  darkGreen: { bg: "#059669", fg: "#ffffff" },
-};
+// The same classes as the pills in the table, so the chips follow the theme.
 function bandChip(key: Band, text: string): string {
-  const c = BAND_SWATCH[key];
-  return `<span style="display:inline-block;min-width:2.5em;text-align:center;padding:1px 8px;border-radius:6px;font-weight:600;background:${c.bg};color:${c.fg}">${BANDS[key].min}</span> ${text}`;
+  return `<span class="inline-block min-w-10 rounded-md px-2 py-0.5 text-center font-semibold ${BAND_CLASSES[key]}">${BANDS[key].min}</span> ${text}`;
 }
 
 /**
