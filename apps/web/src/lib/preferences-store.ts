@@ -28,9 +28,12 @@ export interface PreferencesState {
   hydrated: boolean;
   language: Language;
   theme: Theme;
+  /** The id of the newest "What's new" entry seen on this device; none until the bell is opened or the first run marks it. */
+  whatsNewSeen: string | undefined;
   hydrate: () => void;
   setLanguage: (language: Language) => void;
   setTheme: (theme: Theme) => void;
+  markWhatsNewSeen: (id: string) => void;
   /** Forget the stored record and go back to the device defaults: the browser's language, the system theme. */
   reset: () => void;
 }
@@ -47,12 +50,13 @@ export const usePreferences = create<PreferencesState>()((set, get) => ({
   hydrated: false,
   language: DEFAULT_LANGUAGE,
   theme: DEFAULT_THEME,
+  whatsNewSeen: undefined,
 
   hydrate: () => {
     const stored = readPreferences();
     const language = stored.language ?? detectLanguage(navigator.languages ?? [navigator.language]);
     const theme = stored.theme ?? DEFAULT_THEME;
-    set({ hydrated: true, language, theme });
+    set({ hydrated: true, language, theme, whatsNewSeen: stored.whatsNewSeen });
     apply(language, theme);
   },
   setLanguage: (language) => {
@@ -64,6 +68,10 @@ export const usePreferences = create<PreferencesState>()((set, get) => ({
     writePreferences({ theme });
     set({ theme });
     apply(get().language, theme);
+  },
+  markWhatsNewSeen: (id) => {
+    writePreferences({ whatsNewSeen: id });
+    set({ whatsNewSeen: id });
   },
   reset: () => {
     clearPreferences();

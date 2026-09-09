@@ -1,4 +1,5 @@
 import { sampleDocument } from "@idea-matrix/core";
+import { WHATS_NEW, latestId } from "../../src/lib/whats-new";
 import { appLocalStorageKeys, indexedDbState } from "../device-storage";
 import { FILE_NAME, expect, expectInsideViewport, readMatrixFile, setUpWithExample, test } from "./helpers";
 
@@ -46,10 +47,14 @@ test("phone start over: the dialog fits the screen, Cancel keeps everything, con
   await expect(page.getByRole("button", { name: "Get started" })).toBeVisible();
 
   // Nothing remembered: the matrix screen sends the visit back to setup, and
-  // the device holds no key of the app's beyond an empty cache.
+  // the device holds nothing of the app's beyond an empty cache.
   await page.goto("/");
   await expect(page).toHaveURL(/\/setup\/$/);
-  expect(await appLocalStorageKeys(page)).toEqual([]);
+  // That visit is a first run again, so the only thing stored is the What's new marker a newcomer gets.
+  await expect.poll(() => appLocalStorageKeys(page)).toEqual(["ideamatrix.preferences"]);
+  expect(await page.evaluate(() => JSON.parse(localStorage.getItem("ideamatrix.preferences") ?? "null"))).toEqual({
+    whatsNewSeen: latestId(WHATS_NEW),
+  });
   const after = await indexedDbState(page);
   expect(after.keys.filter((key) => key !== "ideamatrix.cache")).toEqual([]);
   expect(after.cache?.doc ?? null).toBeNull();

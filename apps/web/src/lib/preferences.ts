@@ -2,7 +2,8 @@ import { z } from "zod";
 
 /**
  * Preferences of the device, not of the matrix file: the language the app
- * speaks and, later, the theme. Nothing here goes into the document, so
+ * speaks, later the theme, and how far through the "What's new" feed this
+ * device has read. Nothing here goes into the document, so
  * saving, revisions and the MCP server never see them. One small record in
  * local storage, read through a schema at the boundary; a missing or
  * unreadable record means the defaults, which need no record at all.
@@ -44,6 +45,13 @@ export const DEFAULT_THEME: Theme = "system";
 export const preferencesSchema = z.object({
   language: z.enum(LANGUAGES).optional(),
   theme: z.enum(THEMES).optional(),
+  /**
+   * The id of the newest "What's new" entry this device has seen (see
+   * whats-new.ts). Any string, on purpose: a newer copy of the app may have
+   * written an id this one does not know, and it must survive a round trip
+   * through this schema rather than be dropped.
+   */
+  whatsNewSeen: z.string().min(1).optional(),
 });
 export type Preferences = z.infer<typeof preferencesSchema>;
 

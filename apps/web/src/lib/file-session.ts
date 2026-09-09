@@ -14,8 +14,9 @@ import { pickExistingFile, pickNewFile } from "./storage/local-file";
 import { ConflictError, DriveTarget, LocalTarget, forgetTarget, loadTarget, type SaveTarget } from "./storage/target";
 import { CACHE_KEY, useAppStore } from "./store";
 import { i18n } from "./i18n";
-import { SHOW_SCORES_KEY } from "./preferences";
+import { SHOW_SCORES_KEY, readPreferences } from "./preferences";
 import { usePreferences } from "./preferences-store";
+import { WHATS_NEW, seenIdAtStart } from "./whats-new";
 import { del } from "idb-keyval";
 
 /**
@@ -79,6 +80,7 @@ export async function startSession(): Promise<void> {
   started = true;
   const store = useAppStore.getState();
   const remembered = await loadTarget();
+  settleWhatsNewMarker(remembered !== null);
   if (!remembered) {
     // Nothing remembered: whatever is cached is stale, since the file is the truth.
     if (store.doc && !store.dirty) store.setDoc(null);
@@ -92,6 +94,20 @@ export async function startSession(): Promise<void> {
     return;
   }
   await readIntoStore();
+}
+
+/**
+ * The first run is the moment the app finds nothing remembered on this
+ * device, and that is when the "What's new" marker is set to the latest entry
+ * (see seenIdAtStart): the bell starts quiet for someone who has never used
+ * the app, and anyone with a remembered file or a marker is left alone. The
+ * record is read straight from storage rather than the preferences store so
+ * this does not depend on which layout effect ran first.
+ */
+function settleWhatsNewMarker(rememberedFile: boolean): void {
+  const seenId = readPreferences().whatsNewSeen;
+  const next = seenIdAtStart(WHATS_NEW, { rememberedFile, seenId });
+  if (next !== undefined && next !== seenId) usePreferences.getState().markWhatsNewSeen(next);
 }
 
 /**
