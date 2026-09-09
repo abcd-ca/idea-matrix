@@ -3,13 +3,7 @@
 import { CheckIcon, CopyIcon, PlugIcon } from "lucide-react";
 import { useState, type ReactNode } from "react";
 import { Button } from "@/components/ui/button";
-import {
-  Dialog,
-  DialogContent,
-  DialogDescription,
-  DialogHeader,
-  DialogTitle,
-} from "@/components/ui/dialog";
+import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle } from "@/components/ui/dialog";
 import { MCP_DOCS_URL, RELEASES_URL } from "@/lib/config";
 import { useAppStore } from "@/lib/store";
 
@@ -52,8 +46,8 @@ function ConnectAiDialog({ open, onOpenChange }: { open: boolean; onOpenChange: 
         <DialogHeader>
           <DialogTitle>Connect to an AI agent</DialogTitle>
           <DialogDescription>
-            The Idea Matrix MCP server runs on this computer and works on <strong>{fileName}</strong>, the same file
-            as the app, under the same rules: Confidence cannot rise without evidence, and nothing is deleted. Only the
+            The Idea Matrix MCP server runs on this computer and works on <strong>{fileName}</strong>, the same file as
+            the app, under the same rules: Confidence cannot rise without evidence, and nothing is deleted. Only the
             idea text you ask about goes to the assistant, on your own account.
           </DialogDescription>
         </DialogHeader>

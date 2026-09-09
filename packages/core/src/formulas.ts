@@ -15,20 +15,14 @@ export function potential(scores: Scores): number | null {
 }
 
 /** Score = Potential × Confidence ÷ 5. Null when Potential is null. */
-export function score(
-  potentialValue: number | null,
-  confidence: number,
-): number | null {
+export function score(potentialValue: number | null, confidence: number): number | null {
   if (potentialValue === null) return null;
   return Math.round((potentialValue * confidence) / 5);
 }
 
 export type Band = "grey" | "amber" | "lightGreen" | "darkGreen";
 
-export const BANDS: Record<
-  Band,
-  { min: number; max: number; label: string; advice: string }
-> = {
+export const BANDS: Record<Band, { min: number; max: number; label: string; advice: string }> = {
   grey: { min: 0, max: 39, label: "not yet", advice: "not worth time yet" },
   amber: { min: 40, max: 59, label: "worth a look", advice: "worth a look" },
   lightGreen: {

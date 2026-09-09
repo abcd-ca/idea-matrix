@@ -23,7 +23,9 @@ export function ExportMenu() {
         Export <ChevronDownIcon data-icon="inline-end" />
       </DropdownMenuTrigger>
       <DropdownMenuContent className="w-80">
-        <DropdownMenuItem onClick={() => downloadText(`${stem}${FILE_EXTENSION}`, serializeDocument(doc), "application/json")}>
+        <DropdownMenuItem
+          onClick={() => downloadText(`${stem}${FILE_EXTENSION}`, serializeDocument(doc), "application/json")}
+        >
           <div>
             <p>JSON</p>
             <p className="text-xs text-muted-foreground">A copy of the matrix file itself. Always round-trips.</p>

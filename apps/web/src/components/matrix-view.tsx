@@ -103,7 +103,11 @@ export function MatrixView({ parked = false }: { parked?: boolean }) {
               sortUndefined: "last",
               cell: (info) => {
                 const v = info.getValue();
-                return v === null ? <span className="text-muted-foreground">–</span> : <span className="tabular-nums">{v}</span>;
+                return v === null ? (
+                  <span className="text-muted-foreground">–</span>
+                ) : (
+                  <span className="tabular-nums">{v}</span>
+                );
               },
             }),
           )
@@ -204,7 +208,11 @@ export function MatrixView({ parked = false }: { parked?: boolean }) {
                         )}
                         onClick={h.column.getToggleSortingHandler()}
                         aria-sort={
-                          h.column.getIsSorted() === "asc" ? "ascending" : h.column.getIsSorted() === "desc" ? "descending" : undefined
+                          h.column.getIsSorted() === "asc"
+                            ? "ascending"
+                            : h.column.getIsSorted() === "desc"
+                              ? "descending"
+                              : undefined
                         }
                       >
                         <span className="inline-flex items-center gap-1">

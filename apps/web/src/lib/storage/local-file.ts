@@ -25,7 +25,8 @@ function isAbort(e: unknown): boolean {
 
 /** Returns null when the user cancels the dialog. */
 export async function pickExistingFile(): Promise<FileSystemFileHandle | null> {
-  if (!window.showOpenFilePicker) throw new Error("This browser cannot save changes back to a file on disk. Open this page in Chrome or Edge.");
+  if (!window.showOpenFilePicker)
+    throw new Error("This browser cannot save changes back to a file on disk. Open this page in Chrome or Edge.");
   try {
     const [handle] = await window.showOpenFilePicker({ types: FILE_TYPES, multiple: false, id: PICKER_ID });
     return handle ?? null;
@@ -37,7 +38,8 @@ export async function pickExistingFile(): Promise<FileSystemFileHandle | null> {
 
 /** Returns null when the user cancels the dialog. */
 export async function pickNewFile(suggestedName: string): Promise<FileSystemFileHandle | null> {
-  if (!window.showSaveFilePicker) throw new Error("This browser cannot save changes back to a file on disk. Open this page in Chrome or Edge.");
+  if (!window.showSaveFilePicker)
+    throw new Error("This browser cannot save changes back to a file on disk. Open this page in Chrome or Edge.");
   try {
     return await window.showSaveFilePicker({ types: FILE_TYPES, suggestedName, id: PICKER_ID });
   } catch (e) {

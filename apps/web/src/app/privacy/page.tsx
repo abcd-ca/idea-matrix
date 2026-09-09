@@ -19,13 +19,13 @@ export default function PrivacyPage() {
 
       <Section title="Where your ideas are">
         <p>
-          In one file that you chose: on your own computer, or in your own Google Drive. {APP_NAME} has no accounts
-          and no database. The site you loaded is a folder of static files; there is no server-side code at all.
+          In one file that you chose: on your own computer, or in your own Google Drive. {APP_NAME} has no accounts and
+          no database. The site you loaded is a folder of static files; there is no server-side code at all.
         </p>
         <p>
-          On your computer, you can see the file in Finder or Explorer. You can copy it, back it up, put it in a
-          folder your iCloud, Dropbox, OneDrive or Google Drive client syncs, or open it in a text editor. It is plain
-          JSON. In Google Drive it is the same file, in the folder you picked, and you can download it from there.
+          On your computer, you can see the file in Finder or Explorer. You can copy it, back it up, put it in a folder
+          your iCloud, Dropbox, OneDrive or Google Drive client syncs, or open it in a text editor. It is plain JSON. In
+          Google Drive it is the same file, in the folder you picked, and you can download it from there.
         </p>
       </Section>
 
@@ -35,14 +35,14 @@ export default function PrivacyPage() {
           <li>Use the app: score an idea, add a conversation, park something.</li>
           <li>
             Watch the list. After the page has loaded, nothing else is requested. The one exception is a small file
-            called build.json, fetched from this same site when you open Settings or this page, so the app can show
-            its fingerprint. There are no calls to any server, because there is nothing to call.
+            called build.json, fetched from this same site when you open Settings or this page, so the app can show its
+            fingerprint. There are no calls to any server, because there is nothing to call.
           </li>
         </ol>
         <p>
           If you keep your matrix in Google Drive, you will also see requests to googleapis.com: one to read or write
-          your file, and one every half minute to ask whether it changed elsewhere. Those go to Google, on your
-          account, with the file’s contents. Nothing goes anywhere else.
+          your file, and one every half minute to ask whether it changed elsewhere. Those go to Google, on your account,
+          with the file’s contents. Nothing goes anywhere else.
         </p>
       </Section>
 
@@ -51,13 +51,13 @@ export default function PrivacyPage() {
           Two of Google’s own scripts load, from accounts.google.com and apis.google.com, and only after you choose
           Drive: one for signing in, one for the file picker. Google signs you in on its own page and hands the app a
           key that lets it read and write files in your Drive for about an hour. That key stays in this browser tab, in
-          its session storage, so a reload does not ask you to sign in again. It is gone when the tab closes or the
-          hour is up, and there is no server of the app’s to send it to; after that, one click gets a new one.
+          its session storage, so a reload does not ask you to sign in again. It is gone when the tab closes or the hour
+          is up, and there is no server of the app’s to send it to; after that, one click gets a new one.
         </p>
         <p>
-          The permission the app asks for is the narrowest Google offers: only files the app created, or that you
-          picked in the file picker. It cannot list your Drive, and it cannot read anything else in it. You can take
-          the permission away at any time in your Google Account under Security, Third-party apps.
+          The permission the app asks for is the narrowest Google offers: only files the app created, or that you picked
+          in the file picker. It cannot list your Drive, and it cannot read anything else in it. You can take the
+          permission away at any time in your Google Account under Security, Third-party apps.
         </p>
         <p>
           Google can see the file, because it is plain JSON in their storage, the same as any document you keep there.
@@ -68,8 +68,8 @@ export default function PrivacyPage() {
       <Section title="What the browser remembers">
         <p>
           A cached copy of your matrix and a pointer to your file live in this browser’s private storage, so the app
-          opens instantly and works offline. They never leave the browser. Clearing site data removes
-          them; your file is untouched.
+          opens instantly and works offline. They never leave the browser. Clearing site data removes them; your file is
+          untouched.
         </p>
         <p>
           On a return visit the browser asks for one click before the app may write to your file again. That prompt is
@@ -87,10 +87,10 @@ export default function PrivacyPage() {
 
       <Section title="AI assistants">
         <p>
-          {APP_NAME} comes with a small program you can install so Claude Desktop, Claude Code or a local model can
-          read and update your matrix through the Model Context Protocol. It runs on your computer, on the same file as
-          the app. When you use it, the text of the idea you ask about goes to whichever assistant you connected, on
-          your account, and nowhere else. There is no server of the app’s in between.
+          {APP_NAME} comes with a small program you can install so Claude Desktop, Claude Code or a local model can read
+          and update your matrix through the Model Context Protocol. It runs on your computer, on the same file as the
+          app. When you use it, the text of the idea you ask about goes to whichever assistant you connected, on your
+          account, and nowhere else. There is no server of the app’s in between.
         </p>
       </Section>
 

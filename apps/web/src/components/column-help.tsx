@@ -26,7 +26,12 @@ export function BandChips() {
         const b = BANDS[key];
         return (
           <li key={key} className="flex items-center gap-2">
-            <span className={cn("inline-block min-w-9 rounded-md px-2 py-0.5 text-center font-semibold tabular-nums", BAND_CLASSES[key])}>
+            <span
+              className={cn(
+                "inline-block min-w-9 rounded-md px-2 py-0.5 text-center font-semibold tabular-nums",
+                BAND_CLASSES[key],
+              )}
+            >
               {b.min}
             </span>
             <span>
@@ -123,7 +128,10 @@ export function ColumnHelp({ columnId, children }: { columnId: string; children:
         {children}
         <InfoIcon className="size-3 opacity-60" aria-hidden />
       </TooltipTrigger>
-      <TooltipContent side="bottom" className="max-w-sm flex-col items-start gap-1.5 px-3 py-2.5 text-left text-xs leading-relaxed">
+      <TooltipContent
+        side="bottom"
+        className="max-w-sm flex-col items-start gap-1.5 px-3 py-2.5 text-left text-xs leading-relaxed"
+      >
         {content}
       </TooltipContent>
     </Tooltip>

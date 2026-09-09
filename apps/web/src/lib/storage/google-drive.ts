@@ -83,9 +83,7 @@ let pickerReady: Promise<void> | null = null;
 
 function loadPicker(): Promise<void> {
   if (!pickerReady) {
-    pickerReady = loadScript(GAPI_SRC).then(
-      () => new Promise<void>((resolve) => gapi.load("picker", resolve)),
-    );
+    pickerReady = loadScript(GAPI_SRC).then(() => new Promise<void>((resolve) => gapi.load("picker", resolve)));
   }
   return pickerReady;
 }
@@ -220,7 +218,8 @@ async function call(url: string, init: RequestInit = {}): Promise<Response> {
 export async function getInfo(id: string): Promise<DriveFileInfo> {
   const response = await call(`${FILES}/${encodeURIComponent(id)}?fields=${FIELDS}`);
   const info = (await response.json()) as DriveFileInfo;
-  if (info.trashed) throw new DriveRequestError("The file is in Google Drive's bin. Restore it there, or open a different file.", 404);
+  if (info.trashed)
+    throw new DriveRequestError("The file is in Google Drive's bin. Restore it there, or open a different file.", 404);
   return info;
 }
 

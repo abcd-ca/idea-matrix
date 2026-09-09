@@ -14,14 +14,7 @@ import { createJSONStorage, persist, type StateStorage } from "zustand/middlewar
  *   before it will let the app write to it again
  * - ready / saving / saved / error: normal life with a file
  */
-export type FileStatus =
-  | "no-file"
-  | "needs-permission"
-  | "loading"
-  | "ready"
-  | "saving"
-  | "saved"
-  | "error";
+export type FileStatus = "no-file" | "needs-permission" | "loading" | "ready" | "saving" | "saved" | "error";
 
 export interface AppState {
   hydrated: boolean;
@@ -73,8 +66,7 @@ export const useAppStore = create<AppState>()(
       tourPending: false,
 
       setHydrated: () => setState({ hydrated: true }),
-      setDoc: (doc, options) =>
-        setState({ doc, dirty: doc !== null && (options?.dirty ?? false), error: null }),
+      setDoc: (doc, options) => setState({ doc, dirty: doc !== null && (options?.dirty ?? false), error: null }),
       mutate: (change) => {
         const current = getState().doc;
         if (!current) return "No matrix is open.";

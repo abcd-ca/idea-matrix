@@ -32,14 +32,14 @@ Local models work the same way through a client that supports MCP, such as LM St
 
 ## What Claude can do
 
-| Tool | What it does |
-|---|---|
-| `list_ideas` | The matrix with scores, Confidence, Potential and Score, sorted by Score |
-| `get_idea` | One idea in full, including its evidence log and how high Confidence may go |
-| `add_idea` | A new idea at Backlog, unscored |
-| `update_idea` | Change text, stage, scores or Confidence. The Confidence gate applies |
-| `add_evidence` | Record a conversation: who, what they currently do, any commitment |
-| `park_idea` / `unpark_idea` | Set aside with a reason, or bring back |
+| Tool                        | What it does                                                                |
+| --------------------------- | --------------------------------------------------------------------------- |
+| `list_ideas`                | The matrix with scores, Confidence, Potential and Score, sorted by Score    |
+| `get_idea`                  | One idea in full, including its evidence log and how high Confidence may go |
+| `add_idea`                  | A new idea at Backlog, unscored                                             |
+| `update_idea`               | Change text, stage, scores or Confidence. The Confidence gate applies       |
+| `add_evidence`              | Record a conversation: who, what they currently do, any commitment          |
+| `park_idea` / `unpark_idea` | Set aside with a reason, or bring back                                      |
 
 Two prompts: **idea_matrix** lists the ideas as a numbered list, asks which one to work on (by number, name or id), then runs the scoring conversation (summarise, ask the one or two questions that matter, propose scores with reasons, write only what is agreed); **review_matrix** gives an honest read of the whole matrix without changing anything.
 

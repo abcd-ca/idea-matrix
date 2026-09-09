@@ -25,7 +25,10 @@ export function sectionFor(text, version) {
       break;
     }
   }
-  return lines.slice(start + 1, end).join("\n").trim();
+  return lines
+    .slice(start + 1, end)
+    .join("\n")
+    .trim();
 }
 
 /** Prepend a section for `version` listing the commits since tag v<previous>, unless one exists. */
@@ -41,7 +44,8 @@ export function startSection(previous, version) {
   const date = new Date().toISOString().slice(0, 10);
   const section = `## ${version} (${date})\n\n${subjects.map((line) => `- ${line}`).join("\n") || "- "}\n\n`;
   const at = text.indexOf("\n## ");
-  const updated = at === -1 ? `${text.trimEnd()}\n\n${section}` : `${text.slice(0, at + 1)}${section}${text.slice(at + 1)}`;
+  const updated =
+    at === -1 ? `${text.trimEnd()}\n\n${section}` : `${text.slice(0, at + 1)}${section}${text.slice(at + 1)}`;
   writeFileSync(PATH, updated);
   return true;
 }

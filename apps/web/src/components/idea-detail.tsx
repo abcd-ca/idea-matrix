@@ -182,7 +182,11 @@ export function IdeaDetail() {
             <p className="text-xs font-medium text-muted-foreground">Potential</p>
             <div className="flex items-baseline gap-3">
               <span className="font-heading text-5xl font-semibold tabular-nums">{p ?? "–"}</span>
-              {pBand ? <BandPill value={p} showLabel /> : <span className="text-sm text-muted-foreground">needs all five scores</span>}
+              {pBand ? (
+                <BandPill value={p} showLabel />
+              ) : (
+                <span className="text-sm text-muted-foreground">needs all five scores</span>
+              )}
             </div>
             <p className="text-xs text-muted-foreground">{FORMULA_INFO.potential}</p>
             <p className="text-xs font-medium text-muted-foreground">Score</p>
@@ -191,7 +195,9 @@ export function IdeaDetail() {
               {sBand ? <BandPill value={s} showLabel /> : null}
             </div>
             <p className="text-xs text-muted-foreground">
-              {p !== null && sBand ? `${BANDS[sBand].advice.charAt(0).toUpperCase()}${BANDS[sBand].advice.slice(1)}. ` : ""}
+              {p !== null && sBand
+                ? `${BANDS[sBand].advice.charAt(0).toUpperCase()}${BANDS[sBand].advice.slice(1)}. `
+                : ""}
               {FORMULA_INFO.score}
             </p>
             {p !== null && idea.confidence < 5 ? (

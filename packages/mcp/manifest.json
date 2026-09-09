@@ -41,8 +41,17 @@
     { "name": "unpark_idea", "description": "Bring a parked idea back." }
   ],
   "prompts": [
-    { "name": "idea_matrix", "description": "List my ideas and work on one.", "arguments": ["idea"], "text": "Show me my idea matrix and help me work on one of the ideas." },
-    { "name": "review_matrix", "description": "Review the whole matrix without changing it.", "text": "Review my whole idea matrix." }
+    {
+      "name": "idea_matrix",
+      "description": "List my ideas and work on one.",
+      "arguments": ["idea"],
+      "text": "Show me my idea matrix and help me work on one of the ideas."
+    },
+    {
+      "name": "review_matrix",
+      "description": "Review the whole matrix without changing it.",
+      "text": "Review my whole idea matrix."
+    }
   ],
   "compatibility": {
     "claude_desktop": ">=0.10.0",

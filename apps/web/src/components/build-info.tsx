@@ -20,7 +20,8 @@ type BuildFile = z.infer<typeof BuildFile>;
 
 type State = { kind: "loading" } | { kind: "missing" } | { kind: "ready"; build: BuildFile };
 
-const shortCommit = (commit: string) => commit.replace(/-dirty$/, "").slice(0, 7) + (commit.endsWith("-dirty") ? " (with local changes)" : "");
+const shortCommit = (commit: string) =>
+  commit.replace(/-dirty$/, "").slice(0, 7) + (commit.endsWith("-dirty") ? " (with local changes)" : "");
 const commitSha = (commit: string) => commit.replace(/-dirty$/, "");
 const isSha = (commit: string) => /^[0-9a-f]{40}$/.test(commitSha(commit));
 
@@ -60,9 +61,7 @@ export function BuildInfo() {
       {state.kind === "loading" ? (
         <p className="text-muted-foreground">Reading the fingerprint…</p>
       ) : state.kind === "missing" ? (
-        <p className="text-muted-foreground">
-          No fingerprint here: this is a development build, not a deployed one.
-        </p>
+        <p className="text-muted-foreground">No fingerprint here: this is a development build, not a deployed one.</p>
       ) : (
         <>
           <p>

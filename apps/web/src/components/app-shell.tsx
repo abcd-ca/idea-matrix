@@ -30,7 +30,8 @@ export function AppShell({ children }: { children: ReactNode }) {
   const pathname = usePathname();
   const parkedCount = useAppStore((s) => s.doc?.ideas.filter((i) => i.stage === "Parked").length ?? 0);
 
-  const isActive = (href: string) => (href === "/" ? pathname === "/" || pathname.startsWith("/idea") : pathname.startsWith(href));
+  const isActive = (href: string) =>
+    href === "/" ? pathname === "/" || pathname.startsWith("/idea") : pathname.startsWith(href);
 
   return (
     <div className="flex min-h-svh flex-col md:flex-row">

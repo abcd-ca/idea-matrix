@@ -13,23 +13,10 @@ export const SCHEMA_VERSION = 1;
 export const FILE_TYPE = "ideamatrix";
 export const FILE_EXTENSION = ".ideamatrix.json";
 
-export const STAGES = [
-  "Backlog",
-  "Exploring",
-  "Talking to customers",
-  "Validated",
-  "Building",
-  "Parked",
-] as const;
+export const STAGES = ["Backlog", "Exploring", "Talking to customers", "Validated", "Building", "Parked"] as const;
 export type Stage = (typeof STAGES)[number];
 
-export const CRITERIA = [
-  "reach",
-  "impact",
-  "profitability",
-  "vision",
-  "ease",
-] as const;
+export const CRITERIA = ["reach", "impact", "profitability", "vision", "ease"] as const;
 export type Criterion = (typeof CRITERIA)[number];
 
 const MAX_TEXT = 20_000;
@@ -117,9 +104,7 @@ export const ideaPatchSchema = z
   .strict();
 export type IdeaPatch = z.infer<typeof ideaPatchSchema>;
 
-export const evidencePatchSchema = evidenceEntrySchema
-  .omit({ id: true })
-  .strict();
+export const evidencePatchSchema = evidenceEntrySchema.omit({ id: true }).strict();
 export type EvidenceInput = z.infer<typeof evidencePatchSchema>;
 
 /** Largest file the app will attempt to parse, in bytes. */
