@@ -32,7 +32,7 @@ export function AppUpdate() {
   return (
     <div
       role="status"
-      className="fixed inset-x-4 bottom-4 z-50 mx-auto flex max-w-md flex-wrap items-center justify-between gap-3 rounded-lg border bg-background p-3 text-sm shadow-lg"
+      className="fixed inset-x-4 bottom-[calc(1rem+env(safe-area-inset-bottom))] z-50 mx-auto flex max-w-md flex-wrap items-center justify-between gap-3 rounded-lg border bg-background p-3 text-sm shadow-lg"
     >
       <p>{t("update.ready", { app: APP_NAME })}</p>
       <div className="flex gap-2">
