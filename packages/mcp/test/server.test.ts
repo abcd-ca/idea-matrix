@@ -1,12 +1,12 @@
 import { Client } from "@modelcontextprotocol/sdk/client/index.js";
 import { InMemoryTransport } from "@modelcontextprotocol/sdk/inMemory.js";
 import { parseDocument, sampleDocument, serializeDocument } from "@idea-matrix/core";
-import { mkdtemp, readFile, writeFile } from "node:fs/promises";
+import { chmod, mkdtemp, readFile, writeFile } from "node:fs/promises";
 import { tmpdir } from "node:os";
 import { join } from "node:path";
 import { afterEach, beforeEach, describe, expect, it } from "vitest";
 import { createServer } from "../src/server";
-import { FileStore } from "../src/store";
+import { FileStore, readRefusedMessage } from "../src/store";
 
 let dir: string;
 let file: string;
@@ -129,6 +129,39 @@ describe("tools", () => {
     expect(result.content[0].text).toMatch(/No matrix file/);
     await other.close();
   });
+
+  it("reports a file it is not allowed to read, and keeps serving", async () => {
+    if (process.getuid?.() === 0) return; // root reads anything
+    const locked = join(dir, "locked.ideamatrix.json");
+    await writeFile(locked, serializeDocument(sampleDocument()));
+    await chmod(locked, 0o000);
+    const other = await connect(locked);
+    const result = (await other.client.callTool({ name: "list_ideas", arguments: {} })) as ToolResult;
+    expect(result.isError).toBe(true);
+    expect(result.content[0].text).toMatch(/not allowed to read .*locked\.ideamatrix\.json \(EACCES\)/);
+    await chmod(locked, 0o600);
+    const again = (await other.client.callTool({ name: "list_ideas", arguments: {} })) as ToolResult;
+    expect(again.isError).toBeFalsy();
+    await other.close();
+  });
+
+  it("names the guarded macOS folder and the setting that opens it", () => {
+    const mac = { platform: "darwin" as const, home: "/Users/sam" };
+    const text = readRefusedMessage("/Users/sam/Downloads/ideas.ideamatrix.json", "EPERM", mac);
+    expect(text).toMatch(/keeping this program out of your Downloads folder/);
+    expect(text).toMatch(/Files and Folders/);
+    expect(text).toMatch(/turn on Downloads/);
+    expect(readRefusedMessage("/Users/sam/Documents/x/ideas.ideamatrix.json", "EPERM", mac)).toMatch(
+      /Documents folder/,
+    );
+    expect(readRefusedMessage("/Users/sam/ideas/ideas.ideamatrix.json", "EPERM", mac)).toMatch(/not allowed to read/);
+    expect(
+      readRefusedMessage("/Users/sam/Downloads/ideas.ideamatrix.json", "EACCES", {
+        platform: "linux",
+        home: "/Users/sam",
+      }),
+    ).toMatch(/not allowed to read/);
+  });
 });
 
 describe("prompts and resources", () => {
@@ -142,6 +175,14 @@ describe("prompts and resources", () => {
     expect(text).toContain("commitment counts as proof");
     const bare = await client.getPrompt({ name: "idea_matrix", arguments: {} });
     expect((bare.messages[0].content as { text: string }).text).toContain("numbered list");
+    expect((bare.messages[0].content as { text: string }).text).toContain("the id in square brackets");
+  });
+
+  it("tells every assistant to show ids, without being asked", async () => {
+    expect(client.getInstructions()).toMatch(/id in square brackets/);
+    const tools = await client.listTools();
+    const list = tools.tools.find((t) => t.name === "list_ideas");
+    expect(list?.description).toMatch(/id in square brackets/);
   });
 
   it("serves the matrix as markdown", async () => {

@@ -1,6 +1,14 @@
 import { CONFIDENCE_INFO, CRITERION_INFO, CRITERIA, STAGE_INFO, STAGES } from "@idea-matrix/core";
 
 /**
+ * The one rule about ids, stated in the server's instructions, in the
+ * list_ideas description and in the walkthrough, so the person never has to
+ * ask for them. Every tool result carries the id; this makes sure it is shown.
+ */
+export const SHOW_IDS_RULE =
+  "Whenever you show ideas to the person, put each idea's id in square brackets after its name, and number the rows when showing a list, so they can refer to an idea by number or id instead of typing its name.";
+
+/**
  * The "idea matrix" walkthrough, offered to the assistant as an MCP prompt.
  * This is the conversation the app's owner has been having by hand: read the
  * idea, ask the one or two questions that change the score most, propose
@@ -10,7 +18,7 @@ import { CONFIDENCE_INFO, CRITERION_INFO, CRITERIA, STAGE_INFO, STAGES } from "@
 export function walkthroughPrompt(ideaName?: string): string {
   const target = ideaName
     ? `The idea to work on is "${ideaName}". Find it with list_ideas and read it with get_idea, then start at step 1 of the conversation below.`
-    : `Start by calling list_ideas and showing me what is in the matrix as a numbered list, one line per idea: the number, the name, the stage, Potential, Confidence and Score, in the order the tool returns them. Keep it compact; no commentary yet beyond one line noting anything unscored or parked (call list_ideas again with includeParked if I ask about parked ideas). Then ask which one I want to work on. I will answer with a number, a name or an id; use the numbering from the list you showed. When I have picked, read it with get_idea and start at step 1 of the conversation below. If I ask for something else instead, such as adding a new idea or reviewing the whole matrix, do that.`;
+    : `Start by calling list_ideas and showing me what is in the matrix as a numbered list, one line per idea: the number, the name with the id in square brackets, the stage, Potential, Confidence and Score, in the order the tool returns them. Keep it compact; no commentary yet beyond one line noting anything unscored or parked (call list_ideas again with includeParked if I ask about parked ideas). Then ask which one I want to work on. I will answer with a number, a name or an id; use the numbering from the list you showed. When I have picked, read it with get_idea and start at step 1 of the conversation below. If I ask for something else instead, such as adding a new idea or reviewing the whole matrix, do that.`;
   const scales = CRITERIA.map((c) => {
     const info = CRITERION_INFO[c];
     const levels = Object.entries(info.levels)
