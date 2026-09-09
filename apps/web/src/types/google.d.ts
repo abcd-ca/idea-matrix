@@ -49,6 +49,7 @@ declare namespace google.picker {
     setMimeTypes(mimeTypes: string): DocsView;
     setMode(mode: string): DocsView;
     setParent(parentId: string): DocsView;
+    setQuery(query: string): DocsView;
   }
   const DocsViewMode: { LIST: string; GRID: string };
   class PickerBuilder {

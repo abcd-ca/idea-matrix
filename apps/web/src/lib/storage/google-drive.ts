@@ -1,3 +1,4 @@
+import { FILE_EXTENSION } from "@idea-matrix/core";
 import { GOOGLE_API_KEY, GOOGLE_APP_ID, GOOGLE_CLIENT_ID } from "../config";
 
 /**
@@ -333,16 +334,23 @@ async function openPicker(makeView: () => google.picker.DocsView, title: string)
   });
 }
 
-/** Choose an existing matrix file. Picking it is what grants the app access to it. */
+/**
+ * Choose an existing matrix file. Picking it is what grants the app access
+ * to it. The view is Drive's folder tree, with JSON files in it, and a
+ * double-click opens a folder. On a touch screen the picker's folders open
+ * on nothing (tap, double tap, long press, tried on iOS Safari), so there
+ * the view starts from a search for matrix files instead; clearing the
+ * search box shows the folders again.
+ */
 export function pickFile(): Promise<Picked | null> {
-  return openPicker(
-    () =>
-      new google.picker.DocsView(google.picker.ViewId.DOCS)
-        .setIncludeFolders(true)
-        .setMimeTypes(MIME)
-        .setMode(google.picker.DocsViewMode.LIST),
-    "Open your Idea Matrix file",
-  );
+  const touch = typeof matchMedia === "function" && matchMedia("(pointer: coarse)").matches;
+  return openPicker(() => {
+    const view = new google.picker.DocsView(google.picker.ViewId.DOCS)
+      .setIncludeFolders(true)
+      .setMimeTypes(MIME)
+      .setMode(google.picker.DocsViewMode.LIST);
+    return touch ? view.setQuery(FILE_EXTENSION) : view;
+  }, "Open your Idea Matrix file");
 }
 
 /** Choose the folder a new matrix file goes in. */

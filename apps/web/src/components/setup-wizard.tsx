@@ -176,7 +176,8 @@ export function SetupWizard() {
                   <h2 className="font-heading text-xl font-bold">Open an existing matrix</h2>
                   <p className="flex-1 text-sm text-muted-foreground">
                     You already have a matrix file in your Drive, maybe from another computer. Google asks you to sign
-                    in, then a picker shows your JSON files. Picking one is what gives the app access to it, and to
+                    in, then a picker shows your JSON files and folders (on a phone it starts from a search for matrix
+                    files, since its folders do not open there). Picking one is what gives the app access to it, and to
                     nothing else in your Drive.
                   </p>
                   <Button
