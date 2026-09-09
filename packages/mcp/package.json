@@ -20,6 +20,7 @@
     "dev": "tsx src/cli.ts",
     "typecheck": "tsc --noEmit",
     "test": "vitest run",
+    "prebundle": "node ../../scripts/icons.mjs",
     "bundle": "npm run build && npx --yes @anthropic-ai/mcpb@2.1.2 pack . dist/idea-matrix.mcpb"
   },
   "dependencies": {

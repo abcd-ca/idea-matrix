@@ -8,6 +8,14 @@ ROADMAP.md
 node_modules/
 
 # next.js
+# generated from apps/web/src/app/icon.svg by apps/web/scripts/icons.mjs
+apps/web/src/app/favicon.ico
+apps/web/src/app/apple-icon.png
+apps/web/public/icons/
+apps/web/public/og.png
+apps/web/public/social-preview.png
+packages/mcp/icon.png
+
 apps/web/.next/
 apps/web/out/
 apps/web/next-env.d.ts
