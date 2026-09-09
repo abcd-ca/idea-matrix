@@ -1,19 +1,19 @@
 "use client";
 
-import { emptyDocument, sampleDocument } from "@idea-matrix/core";
-import { cn } from "cn";
-import { useRouter } from "next/navigation";
-import { useEffect, useRef, useState, useSyncExternalStore, type ReactNode } from "react";
+import { LogoMark } from "@/components/logo-mark";
 import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert";
 import { Button } from "@/components/ui/button";
-import { LogoMark } from "@/components/logo-mark";
-import { createDriveFile, createNewFile, openDriveFile, openExistingFile, writeDocumentNow } from "@/lib/file-session";
 import { MOM_TEST_URL } from "@/lib/config";
+import { createDriveFile, createNewFile, openDriveFile, openExistingFile, writeDocumentNow } from "@/lib/file-session";
 import { MOM_TEST_SUMMARY, OVERVIEW_AI, OVERVIEW_CARDS, OVERVIEW_INTRO, OVERVIEW_TITLE } from "@/lib/overview";
 import { driveConfigured } from "@/lib/storage/google-drive";
 import { supportsLocalFile } from "@/lib/storage/local-file";
 import { describeWhere, type TargetKind } from "@/lib/storage/target";
 import { useAppStore } from "@/lib/store";
+import { emptyDocument, sampleDocument } from "@idea-matrix/core";
+import { cn } from "cn";
+import { useRouter } from "next/navigation";
+import { useEffect, useRef, useState, useSyncExternalStore, type ReactNode } from "react";
 
 // Dropbox is a card on the screen but not a target yet.
 type Where = TargetKind | "dropbox";
@@ -46,7 +46,7 @@ export function SetupWizard() {
   const supported = useSyncExternalStore(
     () => () => undefined,
     () => supportsLocalFile(),
-    () => null,
+    () => null
   );
 
   const finish = () => {
@@ -157,10 +157,7 @@ export function SetupWizard() {
                 Open a matrix you already have, or create a new one?
               </h1>
               <p className="text-muted-foreground">
-                Keeping your ideas <strong>{describeWhere(where === "dropbox" ? null : where)}</strong>.{" "}
-                <button type="button" className="underline underline-offset-4" onClick={() => setStep("where")}>
-                  Change
-                </button>
+                Keeping your ideas <strong>{describeWhere(where === "dropbox" ? null : where)}</strong>.
               </p>
             </header>
 
@@ -251,7 +248,7 @@ export function SetupWizard() {
                       setError(null);
                       const result = await createDriveFile(
                         driveName,
-                        driveFolder === "new" ? { kind: "new", name: driveFolderName } : { kind: "pick" },
+                        driveFolder === "new" ? { kind: "new", name: driveFolderName } : { kind: "pick" }
                       );
                       setBusy(false);
                       if (result === "created") setStep("start");
@@ -311,7 +308,8 @@ export function SetupWizard() {
             )}
 
             <footer className="flex items-center justify-start">
-              <Button variant="ghost" onClick={() => setStep("where")} disabled={busy}>
+              {/* Never disabled: going back while a picker is open is harmless, and a picker that never answers must not trap the person here. */}
+              <Button variant="ghost" onClick={() => setStep("where")}>
                 Back
               </Button>
             </footer>
@@ -391,7 +389,7 @@ function Progress({ step }: { step: Step }) {
             className={cn(
               "rounded-md border px-2 py-0.5",
               current && "border-primary bg-primary text-primary-foreground",
-              done && "bg-muted text-muted-foreground",
+              done && "bg-muted text-muted-foreground"
             )}
             aria-current={current ? "step" : undefined}
           >
@@ -443,7 +441,7 @@ function ChoiceCard({
       className={cn(
         "flex flex-col gap-2 rounded-md border p-4 text-left transition-colors focus-visible:ring-3 focus-visible:ring-ring/50 focus-visible:outline-none",
         selected ? "border-primary bg-primary/5 ring-1 ring-primary" : "hover:bg-muted/50",
-        disabled && "cursor-not-allowed opacity-50 hover:bg-transparent",
+        disabled && "cursor-not-allowed opacity-50 hover:bg-transparent"
       )}
     >
       <span className="font-heading text-lg font-bold">{title}</span>
