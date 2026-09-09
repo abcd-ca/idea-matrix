@@ -92,7 +92,8 @@
   "picker": {
     "fileType": "Fichier Idea Matrix",
     "openTitle": "Ouvrez votre fichier Idea Matrix",
-    "folderTitle": "Choisissez un dossier pour votre fichier Idea Matrix"
+    "folderTitle": "Choisissez un dossier pour votre fichier Idea Matrix",
+    "folderTip": "Pour ouvrir un dossier, touchez-le ou cliquez-le deux fois. Une seule fois ne fait que le sélectionner."
   },
   "overview": {
     "title": "Évaluez vos idées de projets",

@@ -92,7 +92,8 @@
   "picker": {
     "fileType": "Idea Matrix file",
     "openTitle": "Open your Idea Matrix file",
-    "folderTitle": "Choose a folder for your Idea Matrix file"
+    "folderTitle": "Choose a folder for your Idea Matrix file",
+    "folderTip": "To open a folder, tap or click it twice. Once only selects it."
   },
   "overview": {
     "title": "Score your project ideas",

@@ -1,4 +1,5 @@
 import { GOOGLE_API_KEY, GOOGLE_APP_ID, GOOGLE_CLIENT_ID } from "../config";
+import { pickerClosed, pickerOpened } from "../drive-picker-tip";
 import { i18n } from "../i18n";
 
 /**
@@ -326,13 +327,16 @@ async function openPicker(makeView: () => google.picker.DocsView, title: string)
           const doc = data.docs?.[0];
           resolve(doc ? { id: doc.id, name: doc.name } : null);
           picker.dispose();
+          pickerClosed();
         } else if (data.action === google.picker.Action.CANCEL) {
           resolve(null);
           picker.dispose();
+          pickerClosed();
         }
       })
       .build();
     picker.setVisible(true);
+    pickerOpened();
   });
 }
 
