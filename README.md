@@ -39,14 +39,14 @@ npm run build       # static export to apps/web/out
 
 ## Layout
 
-- `packages/core` holds the file format (zod schemas), the formulas, the Confidence gate, CSV and Markdown export, CSV import, and the fictional example matrix. No React and no browser APIs, so the MCP server and CLI share it.
+- `packages/core` holds the file format (zod schemas), the formulas, the Confidence gate, CSV and Markdown export, and the fictional example matrix. No React and no browser APIs, so the MCP server and CLI share it.
 - `apps/web` is the Next.js app, exported as a static site.
 - `packages/mcp` is the MCP server, Claude Desktop bundle and CLI, built on the core package.
 - The decisions behind the design and what comes next live in a roadmap I keep outside the repo.
 
 ## Contributing
 
-Pull requests are welcome. Every pull request runs typecheck, lint, tests and a build. A few rules that will not change:
+Pull requests are welcome; `CONTRIBUTING.md` has the setup and the house style. Every pull request runs typecheck, lint, the Prettier check, tests and a build. A few rules that will not change:
 
 - Never build JSON by hand; always stringify a parsed document.
 - Validate every input at the boundary with the schemas in `packages/core`.
