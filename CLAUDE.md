@@ -46,4 +46,13 @@ The bell in the header lists the features added since the device last looked; th
 
 ## Git
 
-Main takes pull requests only, with a green CI check; GitHub enforces that now the repo is public. Work on branches and open pull requests. Do not commit or push unless asked. When asked to commit and the working tree holds unrelated changes, make one commit per concern rather than one commit for everything.
+Main takes pull requests only, with a green CI check; GitHub enforces that now the repo is public. Do not commit or push unless asked. When asked to commit and the working tree holds unrelated changes, make one commit per concern rather than one commit for everything.
+
+Every feature or fix gets its own branch and its own worktree, never a checkout of the main clone. Features are `feature/<short-name>`, fixes are `fix/<short-name>`. The worktrees live beside the clone, one directory per branch, named after it:
+
+```
+git worktree add ../worktrees/feature/<short-name> -b feature/<short-name> main
+cd ../worktrees/feature/<short-name> && npm ci
+```
+
+Work, run `npm run check`, commit and push from that directory; the main clone stays on `main`. When the pull request has merged, `git worktree remove ../worktrees/feature/<short-name>` and delete the local branch; the remote branch deletes itself on merge.
