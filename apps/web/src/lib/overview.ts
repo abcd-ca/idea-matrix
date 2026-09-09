@@ -14,7 +14,7 @@ export const OVERVIEW_CARDS: { title: string; text: string }[] = [
     text: "Each idea gets a value of 1 to 5 for Reach, Impact, Profitability, Vision and Ease. Together they give its Potential: how good it could be.",
   },
   {
-    title: "Confidence keeps you honest",
+    title: "Confidence counts the evidence",
     text: "A separate score for how much evidence sits behind those numbers, from gut feel to a customer commitment. Score is Potential × Confidence ÷ 5, so nothing ranks high until real people have backed it up.",
   },
   {

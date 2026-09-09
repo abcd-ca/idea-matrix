@@ -1,6 +1,6 @@
 {
   "name": "@idea-matrix/web",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "private": true,
   "scripts": {
     "predev": "node ../../scripts/icons.mjs",
@@ -9,7 +9,8 @@
     "build": "next build && node scripts/fingerprint.mjs",
     "start": "npx serve out",
     "lint": "eslint",
-    "typecheck": "tsc --noEmit"
+    "typecheck": "tsc --noEmit",
+    "test:e2e": "playwright test"
   },
   "dependencies": {
     "@base-ui/react": "^1.8.0",
@@ -30,6 +31,7 @@
   },
   "devDependencies": {
     "@fontsource/nunito-sans": "^5.3.0",
+    "@playwright/test": "~1.62.0",
     "@tailwindcss/postcss": "^4",
     "@types/node": "^20",
     "@types/react": "^19",
