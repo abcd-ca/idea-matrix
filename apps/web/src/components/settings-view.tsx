@@ -24,7 +24,7 @@ import {
 import { driveConfigured } from "@/lib/storage/google-drive";
 import { supportsLocalFile } from "@/lib/storage/local-file";
 import { useAppStore } from "@/lib/store";
-import { LanguageSelect } from "@/components/device-preferences";
+import { LanguageSelect, ThemeSelect } from "@/components/device-preferences";
 import { StartOver } from "@/components/start-over-dialog";
 import { Trans, useTranslation } from "react-i18next";
 import { useNameField } from "@/lib/use-name-field";
@@ -53,9 +53,15 @@ export function SettingsView() {
       <h1 className="font-heading text-2xl font-semibold sm:text-3xl">{t("title")}</h1>
 
       <Section title={t("device.title")}>
-        <div className="flex max-w-sm flex-col gap-1.5">
-          <Label htmlFor="language">{t("language", { ns: "common" })}</Label>
-          <LanguageSelect id="language" className="w-fit" />
+        <div className="flex flex-wrap gap-x-8 gap-y-3">
+          <div className="flex flex-col gap-1.5">
+            <Label htmlFor="language">{t("language", { ns: "common" })}</Label>
+            <LanguageSelect id="language" className="w-fit" />
+          </div>
+          <div className="flex flex-col gap-1.5">
+            <Label htmlFor="theme">{t("theme", { ns: "common" })}</Label>
+            <ThemeSelect id="theme" className="w-fit" />
+          </div>
         </div>
         <p className="text-xs text-muted-foreground">{t("device.note")}</p>
         <StartOver />
