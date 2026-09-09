@@ -12,7 +12,7 @@ A local-first web app for scoring project ideas. Read `README.md` for what it is
 ## Commands
 
 - `npm run dev` from the repo root starts the app (open it in Chrome or Edge).
-- `npm run check` runs typecheck, lint, tests and the static build, the same as CI. Run it before saying a change is done.
+- `npm run check` runs typecheck, lint, the Prettier check, tests and the static build, the same as CI. Run it before saying a change is done. `npm run format` rewrites files with Prettier; there is nothing to configure beyond `.prettierrc.json`.
 - `npm run bump -- patch|minor|major` sets the version in every package and in the extension manifest, and starts the next `CHANGELOG.md` section from the commits since the previous release; trim it to what a user would care about. Commit that on a branch; when it reaches main, the Release workflow tags it and publishes the GitHub Release with that section as the notes, plus the Claude Desktop bundle and the build fingerprint. Nobody pushes tags by hand.
 
 ## Rules that do not change
