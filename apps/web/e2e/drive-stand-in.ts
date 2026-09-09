@@ -55,7 +55,8 @@ window.google.accounts = {
 /**
  * Loaded in place of https://apis.google.com/js/api.js. The picker "picks"
  * whatever the test put in window.__ideamatrixPick, or cancels when nothing
- * is there; every builder and view method returns itself, as Google's do.
+ * is there, after window.__ideamatrixPickDelay milliseconds if a test set
+ * that; every builder and view method returns itself, as Google's do.
  */
 const GAPI_SCRIPT = `
 window.gapi = { load(name, callback) { setTimeout(callback, 0); } };
@@ -80,7 +81,9 @@ window.google.picker = {
     builder.build = () => ({
       setVisible() {
         const doc = window.__ideamatrixPick;
-        setTimeout(() => callback(doc ? { action: "picked", docs: [doc] } : { action: "cancel" }), 0);
+        // __ideamatrixPickDelay keeps the picker "open" that long first, for what the app shows beside it.
+        const delay = window.__ideamatrixPickDelay || 0;
+        setTimeout(() => callback(doc ? { action: "picked", docs: [doc] } : { action: "cancel" }), delay);
       },
       dispose() {},
     });

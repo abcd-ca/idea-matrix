@@ -4,6 +4,7 @@ import { IBM_Plex_Sans, Nunito_Sans } from "next/font/google";
 import "./globals.css";
 import "driver.js/dist/driver.css";
 import { AppUpdate } from "@/components/app-update";
+import { DrivePickerTip } from "@/components/drive-picker-tip";
 import { FileSession } from "@/components/file-session";
 import { TooltipProvider } from "@/components/ui/tooltip";
 import { DevicePreferences } from "@/components/device-preferences";
@@ -104,6 +105,7 @@ export default function RootLayout({ children }: { children: ReactNode }) {
           <DevicePreferences />
           <FileSession />
           <AppUpdate />
+          <DrivePickerTip />
           {children}
         </TooltipProvider>
       </body>
