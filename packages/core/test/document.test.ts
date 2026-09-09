@@ -148,3 +148,30 @@ describe("addIdea and deleteIdea", () => {
     expect(() => deleteIdea(doc, "missing", clock)).toThrow();
   });
 });
+
+describe("mergeDocuments", () => {
+  const t = (s: string) => () => new Date(s);
+  it("keeps the newer copy of each idea and every idea from both sides", async () => {
+    const { mergeDocuments } = await import("../src/document");
+    const base = addIdea(addIdea(emptyDocument("Mine", t("2026-09-01T00:00:00.000Z")), "A", t("2026-09-01T00:00:00.000Z")).doc, "B", t("2026-09-01T00:00:00.000Z")).doc;
+    const [a, b] = base.ideas;
+    // This computer edits A later; the other computer edits B earlier and adds C.
+    const local = updateIdea(base, a.id, { description: "local A" }, t("2026-09-03T00:00:00.000Z"));
+    let remote = updateIdea(base, b.id, { description: "remote B" }, t("2026-09-02T00:00:00.000Z"));
+    remote = addIdea(remote, "C", t("2026-09-02T00:00:00.000Z")).doc;
+    const merged = mergeDocuments(local, remote);
+    expect(merged.ideas.map((i) => i.name)).toEqual(["A", "B", "C"]);
+    expect(merged.ideas[0].description).toBe("local A");
+    expect(merged.ideas[1].description).toBe("remote B");
+    expect(merged.updatedAt).toBe("2026-09-03T00:00:00.000Z");
+    expect(merged.name).toBe("Mine");
+  });
+  it("takes the name from whichever document was touched last", async () => {
+    const { mergeDocuments, renameDocument } = await import("../src/document");
+    const base = emptyDocument("Old", t("2026-09-01T00:00:00.000Z"));
+    const local = renameDocument(base, "Local", t("2026-09-02T00:00:00.000Z"));
+    const remote = renameDocument(base, "Remote", t("2026-09-04T00:00:00.000Z"));
+    expect(mergeDocuments(local, remote).name).toBe("Remote");
+    expect(mergeDocuments(remote, local).name).toBe("Remote");
+  });
+});

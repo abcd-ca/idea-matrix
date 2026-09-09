@@ -2,6 +2,7 @@
 
 import { cn } from "cn";
 import { AlertCircleIcon, CheckIcon, LoaderCircleIcon } from "lucide-react";
+import { describeWhere } from "@/lib/storage/target";
 import { useAppStore } from "@/lib/store";
 
 /**
@@ -14,9 +15,10 @@ export function SaveIndicator({ className }: { className?: string }) {
   const dirty = useAppStore((s) => s.dirty);
   const error = useAppStore((s) => s.error);
   const fileName = useAppStore((s) => s.fileName);
+  const target = useAppStore((s) => s.target);
 
   let icon = <CheckIcon className="size-3.5" aria-hidden />;
-  let text = `Saved to ${fileName ?? "your file"} on this computer`;
+  let text = `Saved to ${fileName ?? "your file"} ${describeWhere(target)}`;
   let tone = "text-muted-foreground";
   if (status === "error") {
     icon = <AlertCircleIcon className="size-3.5" aria-hidden />;

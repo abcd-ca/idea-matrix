@@ -1,12 +1,9 @@
-import { del, get, set } from "idb-keyval";
-
 /**
- * The "a file on this computer" save target: a FileSystemFileHandle from the
- * File System Access API. The handle lives in IndexedDB (it cannot be
- * serialised to JSON), the document itself lives in the file.
+ * The "a file on this computer" side of the File System Access API: dialogs,
+ * permissions, reading and writing a FileSystemFileHandle. The handle itself
+ * is remembered by `target.ts`.
  */
 
-const HANDLE_KEY = "ideamatrix.fileHandle";
 const PICKER_ID = "ideamatrix";
 
 const FILE_TYPES: FilePickerAcceptType[] = [
@@ -20,26 +17,6 @@ export function supportsLocalFile(): boolean {
     typeof window.showOpenFilePicker === "function" &&
     typeof window.showSaveFilePicker === "function"
   );
-}
-
-export async function loadHandle(): Promise<FileSystemFileHandle | undefined> {
-  try {
-    return await get<FileSystemFileHandle>(HANDLE_KEY);
-  } catch {
-    return undefined;
-  }
-}
-
-export async function saveHandle(handle: FileSystemFileHandle): Promise<void> {
-  await set(HANDLE_KEY, handle);
-}
-
-export async function clearHandle(): Promise<void> {
-  try {
-    await del(HANDLE_KEY);
-  } catch {
-    // nothing to clear
-  }
 }
 
 function isAbort(e: unknown): boolean {
