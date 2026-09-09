@@ -45,5 +45,8 @@ Thumbs.db
 
 # playwright session files
 .playwright-mcp/
+# playwright e2e output
+apps/web/playwright-report/
+apps/web/test-results/
 # Per-machine MCP server config (absolute paths), not for the repo.
 .mcp.json

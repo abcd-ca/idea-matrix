@@ -6,3 +6,5 @@ package-lock.json
 *.mcpb
 CHANGELOG.md
 apps/web/public/
+playwright-report/
+test-results/
