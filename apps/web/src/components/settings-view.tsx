@@ -26,6 +26,7 @@ import { supportsLocalFile } from "@/lib/storage/local-file";
 import { useAppStore } from "@/lib/store";
 import { LanguageSelect } from "@/components/device-preferences";
 import { Trans, useTranslation } from "react-i18next";
+import { useNameField } from "@/lib/use-name-field";
 
 export function SettingsView() {
   const { t } = useTranslation("settings");
@@ -36,6 +37,7 @@ export function SettingsView() {
   const mutate = useAppStore((s) => s.mutate);
   const [busy, setBusy] = useState(false);
   const [error, setError] = useState<string | null>(null);
+  const matrixName = useNameField(doc?.name ?? "", (name) => setError(mutate((d) => renameDocument(d, name))));
 
   if (!doc) return null;
 
@@ -143,12 +145,7 @@ export function SettingsView() {
       <Section title={t("name.title")}>
         <div className="flex max-w-sm flex-col gap-1.5">
           <Label htmlFor="matrix-name">{t("name.label")}</Label>
-          <Input
-            id="matrix-name"
-            value={doc.name}
-            maxLength={200}
-            onChange={(e) => setError(mutate((d) => renameDocument(d, e.target.value)))}
-          />
+          <Input id="matrix-name" maxLength={200} {...matrixName} />
         </div>
       </Section>
 
