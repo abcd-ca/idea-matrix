@@ -13,6 +13,13 @@ import { z } from "zod";
 
 export const PREFERENCES_KEY = "ideamatrix.preferences";
 
+/**
+ * The matrix screen's "show the five scores" toggle, kept under its own key
+ * from before the preferences record existed. Named here so "start over on
+ * this device" knows to clear it.
+ */
+export const SHOW_SCORES_KEY = "ideamatrix.showScores";
+
 export const LANGUAGES = ["en-CA", "fr-CA", "en-US", "es"] as const;
 export type Language = (typeof LANGUAGES)[number];
 
@@ -100,6 +107,15 @@ export function writePreferences(patch: Preferences): void {
     localStorage.setItem(PREFERENCES_KEY, JSON.stringify(next));
   } catch {
     // Local storage unavailable: the choice lasts until the page is closed.
+  }
+}
+
+/** Drop the record: the next read is the defaults, as on a device that never had one. */
+export function clearPreferences(): void {
+  try {
+    localStorage.removeItem(PREFERENCES_KEY);
+  } catch {
+    // Local storage unavailable: there was nothing stored to begin with.
   }
 }
 
