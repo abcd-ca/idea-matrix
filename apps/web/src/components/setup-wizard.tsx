@@ -3,7 +3,7 @@
 import { emptyDocument, sampleDocument } from "@idea-matrix/core";
 import { cn } from "cn";
 import { useRouter } from "next/navigation";
-import { useState, useSyncExternalStore, type ReactNode } from "react";
+import { useEffect, useRef, useState, useSyncExternalStore, type ReactNode } from "react";
 import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert";
 import { Button } from "@/components/ui/button";
 import { LogoMark } from "@/components/logo-mark";
@@ -36,6 +36,12 @@ export function SetupWizard() {
   const [driveFolderName, setDriveFolderName] = useState("Idea Matrix");
   const [busy, setBusy] = useState(false);
   const [error, setError] = useState<string | null>(null);
+  // On a phone the picker closes with the page scrolled to the buttons, and
+  // the message sits above the fold. Bring it into view when it appears.
+  const alertRef = useRef<HTMLParagraphElement>(null);
+  useEffect(() => {
+    if (error) alertRef.current?.scrollIntoView({ block: "nearest", behavior: "smooth" });
+  }, [error]);
   // null while rendering on the server, a real answer once in the browser.
   const supported = useSyncExternalStore(
     () => () => undefined,
@@ -159,7 +165,7 @@ export function SetupWizard() {
             </header>
 
             {error || storeError ? (
-              <p role="alert" className="text-sm text-destructive">
+              <p ref={alertRef} role="alert" className="text-sm text-destructive">
                 {error ?? storeError}
               </p>
             ) : null}
@@ -303,12 +309,6 @@ export function SetupWizard() {
                 </div>
               </div>
             )}
-
-            {error ? (
-              <p role="alert" className="text-sm text-destructive">
-                {error}
-              </p>
-            ) : null}
 
             <footer className="flex items-center justify-start">
               <Button variant="ghost" onClick={() => setStep("where")} disabled={busy}>
