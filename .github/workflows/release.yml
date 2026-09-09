@@ -31,6 +31,7 @@ jobs:
         with:
           node-version-file: .node-version
           cache: npm
+          registry-url: https://registry.npmjs.org
       - uses: actions/cache@v6
         id: node-modules
         with:
@@ -126,3 +127,15 @@ jobs:
             --target "$GITHUB_SHA" \
             --title "Idea Matrix $TAG" \
             --notes-file notes.md
+
+      # Trusted publishing: npm exchanges the job's OIDC token for a short-lived
+      # publish credential, so there is no npm token to store. The package's
+      # settings on npmjs.com name this repository and workflow file as the
+      # publisher. Node 22 ships npm 10, which does not know how; npm 11.5 does.
+      # Last on purpose: a publish hiccup leaves the GitHub release in place,
+      # and the package can be published by hand.
+      - name: Publish the MCP package to npm
+        if: steps.version.outputs.release == 'true'
+        run: |
+          npm install -g npm@latest
+          npm publish -w packages/mcp
