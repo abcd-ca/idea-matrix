@@ -4,6 +4,10 @@
   "unread_other": "Nouveautés, {{count}} non lues",
   "title": "Nouveautés",
   "entries": {
+    "2026-09-09-install-app": {
+      "title": "Installer comme application",
+      "text": "Chrome, Edge et Safari peuvent installer l’application avec sa propre fenêtre et sa propre icône, et elle fonctionne sans connexion; le bouton est dans les Réglages."
+    },
     "2026-09-09-two-devices": {
       "title": "Un fichier, deux appareils",
       "text": "Ouvrez le même fichier sur votre ordinateur et votre téléphone : une modification faite sur l'un apparaît sur l'autre en quelques secondes, et les changements apportés à des parties différentes d'une idée sont conservés des deux côtés."

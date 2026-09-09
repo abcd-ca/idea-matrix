@@ -3,6 +3,7 @@ import type { ReactNode } from "react";
 import { IBM_Plex_Sans, Nunito_Sans } from "next/font/google";
 import "./globals.css";
 import "driver.js/dist/driver.css";
+import { AppUpdate } from "@/components/app-update";
 import { FileSession } from "@/components/file-session";
 import { TooltipProvider } from "@/components/ui/tooltip";
 import { DevicePreferences } from "@/components/device-preferences";
@@ -48,11 +49,19 @@ export const metadata: Metadata = {
     title: APP_NAME,
     description: TAGLINE,
   },
+  // Installed from Safari on iOS the app gets its own window too; the
+  // manifest (app/manifest.ts) covers every other browser.
+  appleWebApp: { capable: true, title: APP_NAME, statusBarStyle: "default" },
 };
 
 export const viewport: Viewport = {
   width: "device-width",
   initialScale: 1,
+  // The title bar of the installed app follows the page background (globals.css).
+  themeColor: [
+    { media: "(prefers-color-scheme: light)", color: "#ffffff" },
+    { media: "(prefers-color-scheme: dark)", color: "#0a0a0a" },
+  ],
 };
 
 export default function RootLayout({ children }: { children: ReactNode }) {
@@ -90,6 +99,7 @@ export default function RootLayout({ children }: { children: ReactNode }) {
         <TooltipProvider>
           <DevicePreferences />
           <FileSession />
+          <AppUpdate />
           {children}
         </TooltipProvider>
       </body>

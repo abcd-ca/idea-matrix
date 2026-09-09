@@ -3,6 +3,10 @@
   "unread": "What's new, {{count}} unread",
   "title": "What's new",
   "entries": {
+    "2026-09-09-install-app": {
+      "title": "Install as an app",
+      "text": "Chrome, Edge and Safari can install the app with its own window and icon, and it works without a connection; the button is in Settings."
+    },
     "2026-09-09-two-devices": {
       "title": "One file, two devices",
       "text": "Open the same file on your computer and your phone: a change made on one shows up on the other within seconds, and edits to different parts of an idea are kept from both."

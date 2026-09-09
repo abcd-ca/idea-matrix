@@ -23,7 +23,8 @@
   "browser": {
     "title": "What the browser remembers",
     "p1": "A cached copy of your matrix and a pointer to your file live in this browser’s private storage, so the app opens instantly and works offline. They never leave the browser. Clearing site data removes them; your file is untouched.",
-    "p2": "On a return visit the browser asks for one click before the app may write to your file again. That prompt is the browser’s, not the app’s, and it is a good thing."
+    "p2": "On a return visit the browser asks for one click before the app may write to your file again. That prompt is the browser’s, not the app’s, and it is a good thing.",
+    "p3": "A small service worker, part of the app, keeps the app’s own pages, scripts, styles and icons in the browser’s cache, so the app opens and works without a connection and can be installed as an app. It only ever answers requests for this site’s own files; anything else, Google Drive included, goes straight to the network. A new version downloads in the background, and the app asks before switching to it."
   },
   "telemetry": {
     "title": "No telemetry",
