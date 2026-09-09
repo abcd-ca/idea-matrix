@@ -120,12 +120,26 @@
   --sidebar-ring: oklch(0.556 0 0);
 }
 
+/* A screen that fills the viewport, less the safe-area padding the body already adds, so it never scrolls by the inset. */
+@utility min-h-screen-safe {
+  min-height: calc(100svh - env(safe-area-inset-top) - env(safe-area-inset-bottom));
+}
+
 @layer base {
   * {
     @apply border-border outline-ring/50;
   }
   body {
     @apply bg-background text-foreground;
+    /*
+     * The installed app has no browser bars, so on an iPhone the page reaches
+     * the screen's edges: the status bar at the top, the home indicator at
+     * the bottom. With viewport-fit=cover (layout.tsx) the browser reports
+     * those edges as env() insets, zero in an ordinary tab, and this padding
+     * keeps the content out of them. Fixed elements sit outside the body's
+     * padding and add the inset themselves (see app-update.tsx).
+     */
+    padding: env(safe-area-inset-top) env(safe-area-inset-right) env(safe-area-inset-bottom) env(safe-area-inset-left);
   }
   html {
     @apply font-sans;
