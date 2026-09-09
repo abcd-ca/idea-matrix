@@ -33,6 +33,7 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
 import { useAppStore } from "@/lib/store";
+import { useNameField } from "@/lib/use-name-field";
 
 export function IdeaDetail() {
   const params = useSearchParams();
@@ -44,6 +45,8 @@ export function IdeaDetail() {
   const [parkOpen, setParkOpen] = useState(false);
 
   const idea = doc ? findIdea(doc, id) : undefined;
+  // Before the early return, as every hook must be; the id is read at commit time.
+  const ideaName = useNameField(idea?.name ?? "", (name) => setError(mutate((d) => updateIdea(d, id, { name }))));
   if (!doc || !idea) {
     return (
       <div className="flex flex-col gap-3">
@@ -88,9 +91,8 @@ export function IdeaDetail() {
             <Input
               aria-label="Idea name"
               className="h-11 flex-1 font-heading text-2xl font-semibold md:text-2xl"
-              value={idea.name}
               maxLength={200}
-              onChange={(e) => change({ name: e.target.value })}
+              {...ideaName}
             />
             <div className="flex items-center gap-2">
               <Label htmlFor="stage" className="sr-only">
