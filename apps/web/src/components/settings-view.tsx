@@ -12,7 +12,15 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { APP_NAME, APP_VERSION, ISSUES_URL, MAINTAINER_NAME, MAINTAINER_URL, SOURCE_URL } from "@/lib/config";
-import { closeFile, flushSave, moveToDrive, moveToLocal, openDriveFile, openExistingFile } from "@/lib/file-session";
+import {
+  closeFile,
+  flushSave,
+  moveToDrive,
+  moveToLocal,
+  openDriveFile,
+  openExistingFile,
+  signOutOfDrive,
+} from "@/lib/file-session";
 import { driveConfigured } from "@/lib/storage/google-drive";
 import { supportsLocalFile } from "@/lib/storage/local-file";
 import { describeWhere } from "@/lib/storage/target";
@@ -97,6 +105,11 @@ export function SettingsView() {
           <Button variant="outline" disabled title="Coming in a later version">
             Move to Dropbox…
           </Button>
+          {target === "drive" ? (
+            <Button variant="outline" disabled={busy} onClick={() => signOutOfDrive()}>
+              Sign out of Google
+            </Button>
+          ) : null}
         </div>
         <p className="text-xs text-muted-foreground">
           Opening a different file switches to it; the current file stays where it is with everything saved. Moving
@@ -106,6 +119,9 @@ export function SettingsView() {
             ? " Moving to this computer needs Chrome or Edge on a computer."
             : ""}
           {" Dropbox is coming in a later version."}
+          {target === "drive"
+            ? " Signing out drops the key Google gave the app; the next read or save asks for one click."
+            : ""}
         </p>
         {error ? (
           <p role="alert" className="text-sm text-destructive">

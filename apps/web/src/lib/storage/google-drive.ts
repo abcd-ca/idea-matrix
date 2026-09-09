@@ -14,7 +14,7 @@ import { GOOGLE_API_KEY, GOOGLE_APP_ID, GOOGLE_CLIENT_ID } from "../config";
  *   so a reload or a new tab does not ask for a click. (It used to be session
  *   storage, which is per tab, and on a phone every link opened a new tab
  *   that landed on the sign-in gate.) It goes when Google expires it, about
- *   an hour after sign-in, or when the user closes the file. No refresh
+ *   an hour after sign-in, or when the user signs out in Settings. No refresh
  *   token, no server of ours. After that, one click gets a new one.
  */
 

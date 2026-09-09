@@ -129,6 +129,18 @@
   }
 }
 /*
+ * Form controls at 16px on touch screens. Below that iOS Safari zooms the
+ * whole page in when a field gets focus and leaves it zoomed. Outside the
+ * Tailwind layers on purpose, so it wins over md:text-sm and the like.
+ */
+@media (pointer: coarse) {
+  input,
+  select,
+  textarea {
+    font-size: 1rem;
+  }
+}
+/*
  * Tour popovers (driver.js) are never taller than the screen. The title and
  * the buttons stay in place; a long step's text scrolls instead of clipping.
  */
