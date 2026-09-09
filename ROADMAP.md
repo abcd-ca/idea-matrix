@@ -8,8 +8,8 @@ The same decision matrix as a proper app: the five criteria (Reach, Impact, Prof
 
 ## What I decided on 2026-09-04
 
-- **Not a business, at least not yet.** No subscription, no billing. It is a free tool.
-- **Portfolio first.** The main payoff is showing my capabilities to local entrepreneurs, which is a plausible source of contract work.
+- **Not a business.** No subscription, no billing. It is a free tool.
+- **A tool for my own use first** (reworded 2026-09-08: it was "portfolio first"). I built it because I wanted it. It is not a portfolio piece, and I do not think it is going to be a business; if other people find it useful, good.
 - **First audience is BISS**, the Squamish entrepreneurs' meetup. Not a paying customer, but a good place to demo it and collect feedback.
 - **Build it and polish it anyway.** I am taking an "if you build it they will come" attitude: ship something nice, demo it, and let the feedback decide what comes next.
 - **Multi-user, no accounts of mine.** Each user keeps their own file in their own storage. There is no sign-up with me and no database of mine. See "Storage, privacy and trust" below.
@@ -23,7 +23,7 @@ The Google Sheet is retired as the future source of truth on 2026-09-04 but stay
 
 BISS members currently write their project ideas down somewhere and have at least once struggled to decide which one to work on.
 
-This still matters even though I am building regardless. If people do not write ideas down at all, the app is a portfolio demo and does not need every feature polished. If they do, it is worth finishing properly. Testable at one meetup by asking people how they picked their last project, without mentioning the tool.
+This still matters even though I am building regardless. If people do not write ideas down at all, the app stays a tool for me and does not need every feature polished. If they do, it is worth finishing properly. Testable at one meetup by asking people how they picked their last project, without mentioning the tool.
 
 ## Milestones
 
@@ -102,7 +102,7 @@ Decided 2026-09-04. The app enforces the Confidence rules and scale meanings at 
 
 ## Stack
 
-Next.js, TypeScript, Vercel. shadcn/ui with Tailwind for components (accessible, current default in the Next.js world, does not impose a look the way Material does; Bootstrap would date the portfolio piece). TanStack Table for the matrix. Zustand for state rather than useState or Redux: its persist middleware takes a custom storage adapter, and idb-keyval makes IndexedDB one in a few lines, so the cache comes for free. The save target is separate: subscribe to the store, debounce, write the whole document. Mobile: the detail view works on narrow screens and the table collapses to a card list.
+Next.js, TypeScript, Vercel. shadcn/ui with Tailwind for components (accessible, current default in the Next.js world, does not impose a look the way Material does; Bootstrap would date it). TanStack Table for the matrix. Zustand for state rather than useState or Redux: its persist middleware takes a custom storage adapter, and idb-keyval makes IndexedDB one in a few lines, so the cache comes for free. The save target is separate: subscribe to the store, debounce, write the whole document. Mobile: the detail view works on narrow screens and the table collapses to a card list.
 
 ## Landscape (researched 2026-09-04)
 
@@ -112,7 +112,7 @@ What this means for the plan:
 - Headline: local-first plus the Mom Test framing ("your scores are hunches until you talk to people"). Contrast with AI validators.
 - The AI walks you through scoring; you assign the number. Never "AI scores your idea".
 - Import from the Google Sheet template early. Template-to-app is the only plausible adoption route.
-- Realistic ceiling if published (Show HN, Indie Hackers): a few hundred stars and a handful of regulars. Fine for a portfolio piece.
+- Realistic ceiling if published (Show HN, Indie Hackers): a few hundred stars and a handful of regulars. Fine for a tool I built for myself.
 
 ## Testing
 
