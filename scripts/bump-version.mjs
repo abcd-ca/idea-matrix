@@ -41,6 +41,8 @@ for (const file of FILES) {
   json.version = next;
   writeFileSync(path, `${JSON.stringify(json, null, 2)}\n`);
 }
+// JSON.stringify and Prettier disagree on short arrays, so put the files back in the project's style.
+execSync(`npx prettier --write ${FILES.join(" ")}`, { cwd: root, stdio: "ignore" });
 // The lockfile records each workspace's version too.
 execSync("npm install --package-lock-only --ignore-scripts --no-audit --no-fund", { cwd: root, stdio: "inherit" });
 startSection(current, next);
