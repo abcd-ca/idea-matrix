@@ -195,7 +195,7 @@ export function sampleDocument(clock: Clock = () => new Date(), text: SampleText
       description: words.description,
       stage: shape.stage ?? "Backlog",
       riskiestAssumption: words.riskiestAssumption ?? "",
-      scores: shape.scores,
+      scores: { ...shape.scores },
       confidence: shape.confidence ?? 1,
       parkedReason: words.parkedReason ?? "",
       evidence,

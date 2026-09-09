@@ -4,6 +4,10 @@
   "unread_other": "Nouveautés, {{count}} non lues",
   "title": "Nouveautés",
   "entries": {
+    "2026-09-09-two-devices": {
+      "title": "Un fichier, deux appareils",
+      "text": "Ouvrez le même fichier sur votre ordinateur et votre téléphone : une modification faite sur l'un apparaît sur l'autre en quelques secondes, et les changements apportés à des parties différentes d'une idée sont conservés des deux côtés."
+    },
     "2026-09-09-dark-mode": {
       "title": "Mode sombre",
       "text": "Les Réglages offrent un choix de thème : suivre le système, ou rester clair ou sombre sur cet appareil."
@@ -19,10 +23,6 @@
     "2026-09-09-languages": {
       "title": "Quatre langues",
       "text": "L'application parle maintenant anglais canadien et américain, français et espagnol; choisissez la vôtre dans les Réglages."
-    },
-    "2026-09-09-phone-layout": {
-      "title": "Pensée pour le téléphone",
-      "text": "Sur un téléphone, la matrice devient une liste de cartes, avec sa propre visite guidée."
     }
   }
 }

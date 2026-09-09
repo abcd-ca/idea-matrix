@@ -64,7 +64,8 @@
     "minutesAgo": "{{count}} min ago",
     "savedTo": "Saved to {{fileName}} {{where}}",
     "yourFile": "your file",
-    "autosave": "Every change is saved to your file automatically. There is no Save button."
+    "autosave": "Every change is saved to your file automatically. There is no Save button.",
+    "alsoOpen": "Also open somewhere else; last change {{when}}"
   },
   "errors": {
     "noMatrixOpen": "No matrix is open.",

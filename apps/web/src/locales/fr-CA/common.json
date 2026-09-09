@@ -64,7 +64,8 @@
     "minutesAgo": "il y a {{count}} min",
     "savedTo": "Enregistré dans {{fileName}} {{where}}",
     "yourFile": "votre fichier",
-    "autosave": "Chaque modification est enregistrée automatiquement dans votre fichier. Il n'y a pas de bouton Enregistrer."
+    "autosave": "Chaque modification est enregistrée automatiquement dans votre fichier. Il n'y a pas de bouton Enregistrer.",
+    "alsoOpen": "Aussi ouvert ailleurs; dernière modification {{when}}"
   },
   "errors": {
     "noMatrixOpen": "Aucune matrice n'est ouverte.",

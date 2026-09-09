@@ -23,7 +23,8 @@ import { defineConfig, devices } from "@playwright/test";
  *   lost by not running the desktop specs there, and none of their
  *   layout-specific assertions has to be forked with test.skip.
  */
-const PORT = 3100;
+/** Overridable so two worktrees can run their suites side by side, each against its own export. */
+const PORT = Number(process.env.E2E_PORT ?? 3100);
 
 /**
  * An iPhone 14 in portrait as Chromium sees it: the 390 × 664 viewport is the
