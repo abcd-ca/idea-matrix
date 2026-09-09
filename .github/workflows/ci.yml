@@ -43,8 +43,16 @@ jobs:
         with:
           path: ~/.cache/ms-playwright
           key: playwright-${{ runner.os }}-${{ hashFiles('package-lock.json') }}
-      # A no-op download on a cache hit; the system libraries still get installed.
-      - run: npx -w apps/web playwright install --with-deps chromium
+      # A no-op download on a cache hit; the system libraries still get
+      # installed, through apt, whose mirrors fail now and then. Three tries.
+      - name: Install Chromium for Playwright
+        run: |
+          for attempt in 1 2 3; do
+            npx -w apps/web playwright install --with-deps chromium && exit 0
+            echo "Attempt $attempt failed; trying again in 15 s"
+            sleep 15
+          done
+          exit 1
       - run: npm run test:e2e
       - if: failure()
         uses: actions/upload-artifact@v7
