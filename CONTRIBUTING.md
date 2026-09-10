@@ -48,7 +48,7 @@ Every string the app shows lives in `apps/web/src/locales/<language>/<namespace>
 - Keep the scale words consistent throughout a language: Reach, Impact, Profitability, Vision, Ease, Confidence, Potential and Score each get one translation, used everywhere. Product names (Idea Matrix, Google Drive, Claude, The Mom Test) stay as they are.
 - To change English copy, edit `en-CA` first, then update the other three (or, for `en-US`, add or remove an override). A sentence that appears in more than one place comes from one key; do not paste it twice.
 - To add a language, copy the `en-CA` folder to a new tag (for example `pt-BR`), translate every file, write the `core.json` from the keys in `fr-CA/core.json`, add the tag to `LANGUAGES` and its own name to `LANGUAGE_NAMES` in `apps/web/src/lib/preferences.ts`, add it to `resources` in `apps/web/src/lib/i18n.ts`, and add its unit-test expectation to `apps/web/test/preferences.test.ts`. The inline script in the root layout picks the new tag up from `LANGUAGES` by itself. Dates come from `Intl` with the language tag, so nothing else needs translating.
-- The MCP server and CLI stay English.
+- The MCP server and CLI stay English. So does the build-planning offer in the sidebar and on the privacy page (`consulting` in `common.json`, `who.p2` in `privacy.json`): the sessions are held in English, so those keys exist only in `en-CA` and the other languages fall back to them on purpose. Do not add translations for them.
 
 `npm run check` catches a JSON file that will not parse and a key that Prettier would format differently; it does not catch a missing key, which simply falls back to English on screen, so click through the app in the language you changed.
 

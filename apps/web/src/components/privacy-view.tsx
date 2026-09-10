@@ -2,7 +2,7 @@
 
 import { BuildInfo } from "@/components/build-info";
 import { GitHubMark } from "@/components/github-mark";
-import { APP_NAME, MAINTAINER_NAME, MAINTAINER_URL, SOURCE_URL } from "@/lib/config";
+import { APP_NAME, CONSULTING_URL, MAINTAINER_NAME, MAINTAINER_URL, SOURCE_URL } from "@/lib/config";
 import Link from "next/link";
 import type { ReactNode } from "react";
 import { Trans, useTranslation } from "react-i18next";
@@ -51,6 +51,32 @@ export function PrivacyView() {
         <p>{t("ai.p1", app)}</p>
       </Section>
 
+      <Section title={t("who.title")}>
+        <p>
+          <Trans
+            t={t}
+            i18nKey="who.p1"
+            values={{ app: APP_NAME, maintainer: MAINTAINER_NAME, site: MAINTAINER_URL.replace("https://", "") }}
+            components={{
+              a: <a href={MAINTAINER_URL} className="underline underline-offset-4" target="_blank" rel="noreferrer" />,
+            }}
+          />
+        </p>
+        {CONSULTING_URL ? (
+          <p>
+            <Trans
+              t={t}
+              i18nKey="who.p2"
+              components={{
+                a: (
+                  <a href={CONSULTING_URL} className="underline underline-offset-4" target="_blank" rel="noreferrer" />
+                ),
+              }}
+            />
+          </p>
+        ) : null}
+      </Section>
+
       <Section title={t("source.title")}>
         <p>
           {t("source.licence", app)}
@@ -75,14 +101,7 @@ export function PrivacyView() {
               />
             </>
           ) : null}{" "}
-          <Trans
-            t={t}
-            i18nKey="source.maintained"
-            values={{ maintainer: MAINTAINER_NAME, site: MAINTAINER_URL.replace("https://", "") }}
-            components={{
-              a: <a href={MAINTAINER_URL} className="underline underline-offset-4" target="_blank" rel="noreferrer" />,
-            }}
-          />
+          {t("source.checks")}
         </p>
       </Section>
 

@@ -33,11 +33,16 @@
     "title": "AI assistants",
     "p1": "{{app}} comes with a small program you can install so Claude Desktop, Claude Code or a local model can read and update your matrix through the Model Context Protocol. It runs on your computer, on the same file as the app. When you use it, the text of the idea you ask about goes to whichever assistant you connected, on your account, and nowhere else. There is no server of the app’s in between."
   },
+  "who": {
+    "title": "Who runs this",
+    "p1": "{{app}} is made and maintained by {{maintainer}} (<a>{{site}}</a>), one person. There are no investors, no ads and no accounts.",
+    "p2": "It pays for itself when someone books a fixed-rate build-planning session with me: I go over the idea and how to build it with them, and they leave with a written plan covering the feature set, which technologies to use and how to get started. <a>Book a session</a>. The link is the same for everyone, and nothing you write in the app changes it."
+  },
   "source": {
     "title": "Read the source",
     "licence": "{{app}} is open source under the MIT licence.",
     "code": "The code is at <a><icon/> {{repo}}</a>.",
-    "maintained": "It is maintained by {{maintainer}} (<a>{{site}}</a>). Every pull request runs the same checks, and the rule that nothing leaves your machine is written into the contributor guidelines."
+    "checks": "Every pull request runs the same checks, and the rule that nothing leaves your machine is written into the contributor guidelines."
   },
   "build": {
     "title": "The build you are running"

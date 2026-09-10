@@ -141,5 +141,27 @@
     "fingerprint": "Fingerprint",
     "mismatch": "The fingerprint file is from commit {{fileCommit}} but this page is from commit {{pageCommit}}. Reload the page; if this stays, you are seeing two deploys mixed together.",
     "explain": "The fingerprint is a hash of every file this site serves. <checks>GitHub shows the same fingerprint for that commit</checks>, so the code you can read there is the code running here. <how>How to check it yourself</how>."
+  },
+  "consulting": {
+    "title": "Build-planning sessions",
+    "lead": "Have an idea worth building? Plan it with me.",
+    "button": "Book a session",
+    "about": "I’m Andrew Blair, and I made Idea Matrix. I’ve built software for more than twenty years, for startups and on projects for Microsoft, Nike, Disney, Coca-Cola and Honeywell. I work on the whole thing myself: the design, the web and mobile apps, the server side, and when it comes to it, the hardware and firmware they talk to. I started out as a designer, so I care as much about how people will use something as about how it gets built, and I’ve launched products of my own, this one included. In a session I look at your idea the way I would look at my own and help you map out all the technical pieces and how they fit together.",
+    "aboutLinks": "More about me: <site>abcd.ca</site> and <linkedin>LinkedIn</linkedin>.",
+    "tiers": {
+      "call": {
+        "name": "Working session",
+        "summary": "An hour together on your idea. We work out what to build first, what to leave out for now, which technologies fit and roughly what it will take in time and money. You leave with clear next steps."
+      },
+      "plan": {
+        "name": "Session and written plan",
+        "summary": "The working session, then a written plan within a week: the feature set for a first version, the technology choices and why, and how to get started, whether you hire a developer or build it yourself. Something you can hand to a developer, a co-founder or an investor."
+      }
+    },
+    "duration": "{{minutes}} minutes",
+    "book": "Book",
+    "tax": "Prices include tax.",
+    "confidential": "Your idea stays confidential. Most of my client work is under NDA already, and if you want one for this, tick the box when you book and I’ll sign it before we talk.",
+    "note": "Booking opens on abcd.ca in a new tab. Nothing from your matrix goes with you."
   }
 }
