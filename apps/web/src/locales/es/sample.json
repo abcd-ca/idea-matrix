@@ -1,0 +1,82 @@
+{
+  "name": "Ideas de ejemplo",
+  "ideas": {
+    "sauna": {
+      "name": "Reservas de sauna móvil",
+      "description": "Una sauna en remolque que se instala en el lago los fines de semana de invierno. La gente reserva un turno de 45 minutos desde el teléfono en lugar de presentarse y esperar que haya sitio.",
+      "riskiestAssumption": "La gente ya conduce hasta el lago para darse baños de agua fría los fines de semana de invierno y se queja de que no hay dónde entrar en calor.",
+      "evidence": {
+        "e1": {
+          "who": "Organizador del grupo de baños de agua fría",
+          "whatTheyDoNow": "Organiza un baño semanal para unas 30 personas; después entran en calor en sus coches.",
+          "commitment": "Publicará el enlace de reserva en el chat del grupo el primer fin de semana."
+        },
+        "e2": {
+          "who": "Dos habituales del lago",
+          "whatTheyDoNow": "El mes pasado condujeron 40 minutos hasta una sauna en el pueblo vecino y pagaron 25 $ cada uno.",
+          "commitment": ""
+        },
+        "e3": {
+          "who": "Encargado del camping",
+          "whatTheyDoNow": "Le preguntan por opciones para entrar en calor casi todos los fines de semana de invierno; no tiene respuesta.",
+          "commitment": "Ofreció un sitio de estacionamiento junto a la playa, gratis el primer mes."
+        }
+      }
+    },
+    "tools": {
+      "name": "App de biblioteca de herramientas del vecindario",
+      "description": "Los vecinos se prestan taladros, escaleras e hidrolavadoras mediante una lista compartida, en lugar de que cada uno tenga una de cada cosa.",
+      "riskiestAssumption": "La gente de mi calle ya se presta herramientas al menos unas cuantas veces al año y ha perdido la cuenta de quién tiene qué.",
+      "evidence": {
+        "e1": {
+          "who": "Vecino, tres puertas más allá",
+          "whatTheyDoNow": "Presta su hidrolavadora a dos familias; lleva la cuenta de memoria y perdió una escalera durante un mes.",
+          "commitment": ""
+        },
+        "e2": {
+          "who": "Presidente de la comunidad de vecinos",
+          "whatTheyDoNow": "Probó una hoja de cálculo para el cobertizo compartido en 2024; nadie la actualizó después de la primera semana.",
+          "commitment": "Me presentará a otras dos comunidades de vecinos."
+        }
+      }
+    },
+    "weather": {
+      "name": "Panel meteorológico en el inicio del sendero",
+      "description": "Un pequeño letrero de tinta electrónica con energía solar en los inicios de senderos populares, que muestra el pronóstico del día en la cumbre, el nivel de riesgo de avalancha y los cierres de senderos.",
+      "riskiestAssumption": "Los senderistas de los senderos locales no consultan el pronóstico de la cumbre antes de salir del estacionamiento, y la asociación de senderos recibe quejas por eso.",
+      "evidence": {
+        "e1": {
+          "who": "Alguien en un meetup",
+          "whatTheyDoNow": "",
+          "commitment": ""
+        }
+      }
+    },
+    "rink": {
+      "name": "Monitor de pista de hielo casera",
+      "description": "Un sensor que te dice cuándo el hielo es lo bastante grueso para patinar y cuándo volver a regar, para dejar de adivinar a las 6 de la mañana.",
+      "riskiestAssumption": "Quienes tienen una pista de hielo en el patio salen ahora varias veces por noche a comprobar el hielo a mano."
+    },
+    "sourdough": {
+      "name": "Seguimiento de masa madre",
+      "description": "Registra las alimentaciones, los tiempos de levado y los resultados del horno, y recibe un aviso cuando la masa madre esté lista."
+    },
+    "ski": {
+      "name": "Quiosco de puesta a punto de esquís",
+      "description": "Deja tus esquís en una taquilla frente al supermercado por la noche y recógelos encerados y con los cantos afilados por la mañana."
+    },
+    "podcast": {
+      "name": "Bot de notas de episodio para pódcast",
+      "description": "Pega el enlace de un episodio y obtén marcas de tiempo, enlaces y un resumen que de verdad puedes publicar."
+    },
+    "snow": {
+      "name": "Turnos de retirada de nieve del vecindario",
+      "description": "Un calendario de turnos compartido para que no sean siempre las mismas dos personas quienes limpian el callejón común."
+    },
+    "dogwalk": {
+      "name": "Emparejamiento de paseadores de perros",
+      "description": "Empareja a dueños de perros de la misma calle para compartir los paseos.",
+      "parkedReason": "Ya hay tres apps que hacen esto y los dos dueños a los que pregunté estaban contentos con ellas."
+    }
+  }
+}

@@ -2,7 +2,7 @@
 
 Score your project ideas, and keep the file yourself.
 
-Use it at [ideamatrix.io](https://ideamatrix.io). Nothing to install, nothing to sign up for.
+Use it at [ideamatrix.io](https://ideamatrix.io). Nothing to install, nothing to sign up for. If you would rather have it as an app with its own window and icon, Chrome and Edge can install it (the button is in Settings; on an iPhone or iPad it is Share, then Add to Home Screen), and once loaded it works without a connection.
 
 Idea Matrix is a small web app for people with more ideas than time. Each idea gets a value of 1 to 5 for Reach, Impact, Profitability, Vision and Ease (Profitability may also be 0, for something deliberately non-commercial), and their average becomes a **Potential** from 0 to 100. A separate **Confidence** score records how much real evidence sits behind those numbers, and **Score** is Potential × Confidence ÷ 5. Score only rises when you have talked to real people, so the newest, shiniest idea cannot jump the queue.
 
@@ -17,6 +17,10 @@ Saving a file in place needs the File System Access API, which today means Chrom
 ## Languages
 
 The app speaks Canadian English, French (Canada), American English and Spanish; pick one under **Settings → This device**, or on the first screen of setup, and the choice stays with that browser rather than with your file. The French and Spanish translations were made by an AI and have not yet been checked by a native speaker, so corrections are welcome as pull requests: the text lives in `apps/web/src/locales`, and `CONTRIBUTING.md` explains the layout.
+
+## Dark mode
+
+The app follows your system's light or dark setting by default. To keep it one way on a device, pick **Light** or **Dark** under **Settings → This device**; like the language, the choice stays with that browser rather than with your file.
 
 ## AI assistants
 

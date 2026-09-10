@@ -95,5 +95,5 @@ export function RequireFile({ children }: { children: ReactNode }) {
 }
 
 function Centered({ children }: { children: ReactNode }) {
-  return <div className="flex min-h-svh items-center justify-center p-6 text-muted-foreground">{children}</div>;
+  return <div className="flex min-h-screen-safe items-center justify-center p-6 text-muted-foreground">{children}</div>;
 }

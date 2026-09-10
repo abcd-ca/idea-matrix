@@ -38,7 +38,7 @@ export function AppShell({ children }: { children: ReactNode }) {
     href === "/" ? pathname === "/" || pathname.startsWith("/idea") : pathname.startsWith(href);
 
   return (
-    <div className="flex min-h-svh flex-col md:flex-row">
+    <div className="flex min-h-screen-safe flex-col md:flex-row">
       <aside className="flex shrink-0 flex-col gap-1 border-b bg-muted/30 p-3 md:w-52 md:border-r md:border-b-0 md:p-4">
         <div className="flex items-center justify-between gap-2 md:mb-4">
           <Link href="/" className="inline-flex items-center gap-2 font-heading text-xl font-bold">

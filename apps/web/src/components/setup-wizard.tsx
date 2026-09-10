@@ -13,6 +13,7 @@ import { overview } from "@/lib/overview";
 import { driveConfigured } from "@/lib/storage/google-drive";
 import { supportsLocalFile } from "@/lib/storage/local-file";
 import type { TargetKind } from "@/lib/storage/target";
+import { sampleText } from "@/lib/i18n";
 import { useAppStore } from "@/lib/store";
 import { LanguageSelect } from "@/components/device-preferences";
 import { Trans, useTranslation } from "react-i18next";
@@ -34,7 +35,7 @@ export function SetupWizard() {
   const [step, setStep] = useState<Step>("welcome");
   const [where, setWhere] = useState<Where | null>(null);
   const [seed, setSeed] = useState<"example" | "empty">("example");
-  const [driveName, setDriveName] = useState("ideas");
+  const [driveName, setDriveName] = useState(() => t("defaultFileName", { ns: "common" }));
   const [driveFolder, setDriveFolder] = useState<"new" | "pick">("new");
   const [driveFolderName, setDriveFolderName] = useState("Idea Matrix");
   const [busy, setBusy] = useState(false);
@@ -62,7 +63,7 @@ export function SetupWizard() {
   const whereText = t(`where.${where === "drive" ? "drive" : "local"}`, { ns: "common" });
 
   return (
-    <div className="flex min-h-svh items-center justify-center bg-muted/30 p-3 sm:p-4">
+    <div className="flex min-h-screen-safe items-center justify-center bg-muted/30 p-3 sm:p-4">
       <div className="flex w-full max-w-3xl flex-col gap-5 rounded-lg border bg-background p-5 shadow-sm sm:gap-6 sm:p-6 md:p-10">
         {step !== "welcome" ? <Progress step={step} /> : null}
 
@@ -363,7 +364,9 @@ export function SetupWizard() {
                   setError(null);
                   try {
                     await writeDocumentNow(
-                      seed === "example" ? sampleDocument() : emptyDocument(t("start.defaultName")),
+                      seed === "example"
+                        ? sampleDocument(undefined, sampleText(t))
+                        : emptyDocument(t("start.defaultName")),
                     );
                     finish();
                   } catch (e) {

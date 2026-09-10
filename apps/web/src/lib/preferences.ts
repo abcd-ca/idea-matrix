@@ -2,8 +2,8 @@ import { z } from "zod";
 
 /**
  * Preferences of the device, not of the matrix file: the language the app
- * speaks, later the theme, and how far through the "What's new" feed this
- * device has read. Nothing here goes into the document, so
+ * speaks, the theme, and how far through the "What's new" feed this device
+ * has read. Nothing here goes into the document, so
  * saving, revisions and the MCP server never see them. One small record in
  * local storage, read through a schema at the boundary; a missing or
  * unreadable record means the defaults, which need no record at all.
@@ -89,14 +89,16 @@ export function detectLanguage(languages: readonly string[]): Language {
   return DEFAULT_LANGUAGE;
 }
 
+/** The media query the "system" theme follows. */
+export const DARK_QUERY = "(prefers-color-scheme: dark)";
+
 /**
- * Whether the page gets the `dark` class. "system" stays light for now: the
- * dark palette is unfinished and has no way to be turned off yet. When the
- * theme select lands, this is where "system" starts following the browser's
- * own preference (and the inline script in the layout does the same).
+ * Whether the page gets the `dark` class: always for "dark", never for
+ * "light", and for "system" whenever the browser says the operating system
+ * is dark. The inline script in the layout applies the same rule.
  */
-export function isDark(theme: Theme): boolean {
-  return theme === "dark";
+export function isDark(theme: Theme, systemDark: boolean): boolean {
+  return theme === "dark" || (theme === "system" && systemDark);
 }
 
 export function readPreferences(): Preferences {
@@ -130,17 +132,20 @@ export function clearPreferences(): void {
 /**
  * The one inline script in the app, run from the root layout before first
  * paint so a stored language or theme is in place before anything shows.
- * It reads the same record and applies the same rules as the store: the
- * `dark` class when the theme is "dark", `<html lang>` when the language is
- * one of ours, nothing at all on a missing or unreadable record. A fixed
- * string with no user data in it, so a content security policy can allow it
- * by hash.
+ * It reads the same record and applies the same rules as the store:
+ * `<html lang>` when the language is one of ours, and the `dark` class when
+ * the theme is "dark" or, with no theme stored or "system", when the
+ * operating system is dark. A missing or unreadable record means the
+ * defaults, and the default theme still follows the system, so the class is
+ * decided even when there is nothing stored. A fixed string with no user
+ * data in it, so a content security policy can allow it by hash.
  */
 export const PREFERENCES_SCRIPT =
   "(function(){try{" +
-  `var p=JSON.parse(localStorage.getItem(${JSON.stringify(PREFERENCES_KEY)}));` +
-  'if(!p||typeof p!=="object")return;' +
+  "var p={};" +
+  `try{p=JSON.parse(localStorage.getItem(${JSON.stringify(PREFERENCES_KEY)}))||{}}catch(e){}` +
+  'if(typeof p!=="object")p={};' +
   "var h=document.documentElement;" +
-  'if(p.theme==="dark")h.classList.add("dark");' +
   `if(${JSON.stringify(LANGUAGES)}.indexOf(p.language)>=0)h.lang=p.language;` +
+  `if(p.theme==="dark"||(p.theme!=="light"&&matchMedia(${JSON.stringify(DARK_QUERY)}).matches))h.classList.add("dark");` +
   "}catch(e){}})();";

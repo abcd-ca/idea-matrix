@@ -1,5 +1,14 @@
-import { renameDocument, serializeDocument } from "@idea-matrix/core";
-import { expect, expectSaved, readMatrixFile, setUpWithExample, test, writeFileText } from "./helpers";
+import { renameDocument, sampleDocument, serializeDocument, updateIdea } from "@idea-matrix/core";
+import {
+  expect,
+  expectSaved,
+  openIdea,
+  readMatrixFile,
+  setUpWithExample,
+  statusArea,
+  test,
+  writeFileText,
+} from "./helpers";
 
 // LocalTarget looks every 3 s (its watchInterval) on a 3 s tick, so a change
 // lands within about 6 s. The timeout leaves room for a slow machine.
@@ -21,4 +30,35 @@ test("watcher: a change written to the file from outside shows up in the open ta
   // The tab took the file as it is, and did not mark it dirty and write its old copy back.
   await expectSaved(page);
   expect(await readMatrixFile(page)).toEqual(renamed);
+});
+
+test("watcher: a change from outside arrives while this tab is mid-edit, and both edits are kept", async ({ page }) => {
+  const rink = sampleDocument().ideas.find((i) => i.id === "sample-rink")!;
+  await setUpWithExample(page);
+  await expectSaved(page);
+  await openIdea(page, rink.name);
+
+  // Score the idea from outside (the phone, or the MCP server), then type
+  // here straight away, before the watcher has looked. Whichever runs first,
+  // the tab's save finding the file moved on or the watcher merging the file
+  // into the unsaved edit, the merge is field by field against what this
+  // tab last saw, so the score and the text both survive.
+  const current = await readMatrixFile(page);
+  await writeFileText(page, serializeDocument(updateIdea(current, rink.id, { scores: { reach: 5 } })));
+  const typed = "Typed while the file changed underneath";
+  await page.getByLabel("Description").fill(typed);
+
+  await expect
+    .poll(
+      async () => {
+        const idea = (await readMatrixFile(page)).ideas.find((i) => i.id === rink.id)!;
+        return { reach: idea.scores.reach, description: idea.description };
+      },
+      { timeout: WATCH_TIMEOUT_MS },
+    )
+    .toEqual({ reach: 5, description: typed });
+  await expect(page.getByRole("radiogroup", { name: "Reach" }).getByRole("radio", { name: "5" })).toBeChecked();
+  await expect(page.getByLabel("Description")).toHaveValue(typed);
+  await expectSaved(page);
+  await expect(statusArea(page).getByText(/Also open somewhere else/)).toBeVisible();
 });

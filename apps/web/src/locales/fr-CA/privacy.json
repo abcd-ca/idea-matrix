@@ -23,7 +23,8 @@
   "browser": {
     "title": "Ce que le navigateur retient",
     "p1": "Une copie en cache de votre matrice et un pointeur vers votre fichier vivent dans le stockage privé de ce navigateur, pour que l'application s'ouvre instantanément et fonctionne hors ligne. Ils ne quittent jamais le navigateur. Effacer les données du site les retire; votre fichier n'est pas touché.",
-    "p2": "À une visite suivante, le navigateur demande un clic avant que l'application puisse écrire dans votre fichier de nouveau. Cette demande vient du navigateur, pas de l'application, et c'est une bonne chose."
+    "p2": "À une visite suivante, le navigateur demande un clic avant que l'application puisse écrire dans votre fichier de nouveau. Cette demande vient du navigateur, pas de l'application, et c'est une bonne chose.",
+    "p3": "Un petit service worker, qui fait partie de l’application, garde les pages, scripts, styles et icônes de l’application dans le cache du navigateur, pour qu’elle s’ouvre et fonctionne sans connexion et puisse être installée comme application. Il ne répond qu’aux demandes de fichiers de ce site; tout le reste, Google Drive compris, va directement au réseau. Une nouvelle version se télécharge en arrière-plan, et l’application demande avant d’y passer."
   },
   "telemetry": {
     "title": "Aucune télémétrie",

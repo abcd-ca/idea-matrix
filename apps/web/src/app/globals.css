@@ -84,7 +84,7 @@
   --sidebar-ring: oklch(0.708 0 0);
 }
 
-/* The `dark` class is set on <html> from the device preferences (lib/preferences.ts). */
+/* The `dark` class is set on <html> from the device preferences (lib/preferences.ts): the theme choice, or the system's when following it. */
 .dark {
   color-scheme: dark;
   --background: oklch(0.145 0 0);
@@ -120,12 +120,26 @@
   --sidebar-ring: oklch(0.556 0 0);
 }
 
+/* A screen that fills the viewport, less the safe-area padding the body already adds, so it never scrolls by the inset. */
+@utility min-h-screen-safe {
+  min-height: calc(100svh - env(safe-area-inset-top) - env(safe-area-inset-bottom));
+}
+
 @layer base {
   * {
     @apply border-border outline-ring/50;
   }
   body {
     @apply bg-background text-foreground;
+    /*
+     * The installed app has no browser bars, so on an iPhone the page reaches
+     * the screen's edges: the status bar at the top, the home indicator at
+     * the bottom. With viewport-fit=cover (layout.tsx) the browser reports
+     * those edges as env() insets, zero in an ordinary tab, and this padding
+     * keeps the content out of them. Fixed elements sit outside the body's
+     * padding and add the inset themselves (see app-update.tsx).
+     */
+    padding: env(safe-area-inset-top) env(safe-area-inset-right) env(safe-area-inset-bottom) env(safe-area-inset-left);
   }
   html {
     @apply font-sans;
@@ -157,4 +171,54 @@ body .driver-popover-description {
   min-height: 0;
   overflow-y: auto;
   overscroll-behavior: contain;
+}
+/*
+ * driver.js ships a white popover with fixed greys. In the dark palette it
+ * takes the app's own popover tokens, arrow and buttons included.
+ */
+.dark .driver-popover {
+  background-color: var(--popover);
+  color: var(--popover-foreground);
+}
+.dark .driver-popover-arrow {
+  border-color: var(--popover);
+}
+.dark .driver-popover-arrow-side-left {
+  border-top-color: transparent;
+  border-bottom-color: transparent;
+  border-right-color: transparent;
+}
+.dark .driver-popover-arrow-side-right {
+  border-top-color: transparent;
+  border-bottom-color: transparent;
+  border-left-color: transparent;
+}
+.dark .driver-popover-arrow-side-top {
+  border-bottom-color: transparent;
+  border-left-color: transparent;
+  border-right-color: transparent;
+}
+.dark .driver-popover-arrow-side-bottom {
+  border-top-color: transparent;
+  border-left-color: transparent;
+  border-right-color: transparent;
+}
+.dark .driver-popover-close-btn {
+  color: var(--muted-foreground);
+}
+.dark .driver-popover-close-btn:hover,
+.dark .driver-popover-close-btn:focus {
+  color: var(--popover-foreground);
+}
+.dark .driver-popover-progress-text {
+  color: var(--muted-foreground);
+}
+.dark .driver-popover-footer-btn {
+  color: var(--popover-foreground);
+  background-color: var(--popover);
+  border-color: var(--input);
+}
+.dark .driver-popover-footer-btn:hover,
+.dark .driver-popover-footer-btn:focus {
+  background-color: var(--accent);
 }

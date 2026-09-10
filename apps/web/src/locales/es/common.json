@@ -1,5 +1,11 @@
 {
   "language": "Idioma",
+  "theme": "Tema",
+  "themes": {
+    "system": "Como el sistema",
+    "light": "Claro",
+    "dark": "Oscuro"
+  },
   "nav": {
     "main": "Principal",
     "matrix": "Matriz",
@@ -58,7 +64,8 @@
     "minutesAgo": "hace {{count}} min",
     "savedTo": "Guardado en {{fileName}} {{where}}",
     "yourFile": "tu archivo",
-    "autosave": "Cada cambio se guarda automáticamente en tu archivo. No hay botón de guardar."
+    "autosave": "Cada cambio se guarda automáticamente en tu archivo. No hay botón de guardar.",
+    "alsoOpen": "También abierto en otro sitio; último cambio {{when}}"
   },
   "errors": {
     "noMatrixOpen": "No hay ninguna matriz abierta.",
@@ -79,12 +86,14 @@
     "driveError": "Google Drive devolvió un error ({{status}}).",
     "driveErrorDetail": "Google Drive devolvió un error ({{status}}): {{detail}}",
     "driveTrashed": "El archivo está en la papelera de Google Drive. Restáuralo allí, o abre otro archivo.",
-    "noLocalFileApi": "Este navegador no puede guardar los cambios en un archivo del disco. Abre esta página en Chrome o Edge."
+    "noLocalFileApi": "Este navegador no puede guardar los cambios en un archivo del disco. Abre esta página en Chrome o Edge.",
+    "savedElsewhere": "Otra copia de la aplicación guardó este archivo primero."
   },
   "picker": {
     "fileType": "Archivo de Idea Matrix",
     "openTitle": "Abre tu archivo de Idea Matrix",
-    "folderTitle": "Elige una carpeta para tu archivo de Idea Matrix"
+    "folderTitle": "Elige una carpeta para tu archivo de Idea Matrix",
+    "folderTip": "Para abrir una carpeta, tócala o haz clic en ella dos veces. Una sola vez solo la selecciona."
   },
   "overview": {
     "title": "Puntúa tus ideas de proyectos",
@@ -141,5 +150,11 @@
     "fingerprint": "Huella",
     "mismatch": "El archivo de huella es del commit {{fileCommit}} pero esta página es del commit {{pageCommit}}. Recarga la página; si sigue así, estás viendo dos despliegues mezclados.",
     "explain": "La huella es un hash de cada archivo que sirve este sitio. <checks>GitHub muestra la misma huella para ese commit</checks>, así que el código que puedes leer allí es el código que corre aquí. <how>Cómo comprobarlo tú mismo</how>."
-  }
+  },
+  "update": {
+    "ready": "Hay una versión nueva de {{app}} lista.",
+    "reload": "Recargar",
+    "later": "Más tarde"
+  },
+  "defaultFileName": "ideas"
 }
