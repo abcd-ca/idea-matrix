@@ -34,11 +34,15 @@
     "title": "Asistentes de IA",
     "p1": "{{app}} viene con un pequeño programa que puedes instalar para que Claude Desktop, Claude Code o un modelo local pueda leer y actualizar tu matriz a través del Model Context Protocol. Corre en tu ordenador, sobre el mismo archivo que la aplicación. Cuando lo usas, el texto de la idea sobre la que preguntas va al asistente que conectaste, en tu cuenta, y a ningún otro sitio. No hay ningún servidor de la aplicación en medio."
   },
+  "who": {
+    "title": "Quién está detrás",
+    "p1": "{{app}} lo hace y lo mantiene {{maintainer}} (<a>{{site}}</a>), una sola persona. No hay inversores, ni anuncios, ni cuentas."
+  },
   "source": {
     "title": "Lee el código fuente",
     "licence": "{{app}} es código abierto bajo licencia MIT.",
     "code": "El código está en <a><icon/> {{repo}}</a>.",
-    "maintained": "Lo mantiene {{maintainer}} (<a>{{site}}</a>). Cada pull request pasa las mismas comprobaciones, y la regla de que nada sale de tu máquina está escrita en las pautas para contribuir."
+    "checks": "Cada pull request pasa las mismas comprobaciones, y la regla de que nada sale de tu máquina está escrita en las pautas para contribuir."
   },
   "build": {
     "title": "La versión que estás usando"

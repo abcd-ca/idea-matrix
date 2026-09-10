@@ -34,11 +34,15 @@
     "title": "Assistants IA",
     "p1": "{{app}} vient avec un petit programme que vous pouvez installer pour que Claude Desktop, Claude Code ou un modèle local puisse lire et mettre à jour votre matrice par le Model Context Protocol. Il tourne sur votre ordinateur, sur le même fichier que l'application. Quand vous l'utilisez, le texte de l'idée dont vous parlez va à l'assistant que vous avez connecté, sur votre compte, et nulle part ailleurs. Il n'y a aucun serveur de l'application entre les deux."
   },
+  "who": {
+    "title": "Qui est derrière",
+    "p1": "{{app}} est fait et maintenu par {{maintainer}} (<a>{{site}}</a>), une seule personne. Il n’y a ni investisseurs, ni publicité, ni comptes."
+  },
   "source": {
     "title": "Lisez le code source",
     "licence": "{{app}} est un logiciel libre sous licence MIT.",
     "code": "Le code est sur <a><icon/> {{repo}}</a>.",
-    "maintained": "Il est maintenu par {{maintainer}} (<a>{{site}}</a>). Chaque demande d'intégration passe les mêmes vérifications, et la règle que rien ne quitte votre machine est écrite dans les lignes directrices pour les contributions."
+    "checks": "Chaque demande d'intégration passe les mêmes vérifications, et la règle que rien ne quitte votre machine est écrite dans les lignes directrices pour les contributions."
   },
   "build": {
     "title": "La version que vous utilisez"

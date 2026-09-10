@@ -13,6 +13,7 @@ import {
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 import { ConnectAiPanel } from "@/components/connect-ai";
+import { ConsultingOffer } from "@/components/consulting-offer";
 import { GitHubMark } from "@/components/github-mark";
 import { LogoMark } from "@/components/logo-mark";
 import { startTour } from "@/components/tour";
@@ -73,11 +74,13 @@ export function AppShell({ children }: { children: ReactNode }) {
         <div className="hidden flex-1 md:block" />
         <div className="hidden flex-col gap-3 md:flex">
           <ConnectAiPanel compact />
+          <ConsultingOffer variant="sidebar" />
           <StatusLine />
         </div>
       </aside>
       <main className="flex-1 p-4 md:p-8">{children}</main>
-      <div className="border-t p-2 text-center md:hidden">
+      <div className="flex flex-col items-center gap-2 border-t p-2 text-center md:hidden">
+        <ConsultingOffer variant="bar" />
         <StatusLine compact />
       </div>
     </div>
