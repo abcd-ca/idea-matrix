@@ -65,6 +65,10 @@ Pull requests are welcome; `CONTRIBUTING.md` has the setup and the house style. 
 
 MIT. See `LICENSE`.
 
+## Credits
+
+Google Drive is a trademark of Google LLC. Its logo appears on the storage cards and buttons to show where a file is kept, as Google's brand guidelines allow; it is served from this app's own files, unmodified.
+
 ## Verify the build
 
 Every build carries a fingerprint, so you can check that the copy you are using is the code in this repo and not something else. The fingerprint is the SHA-256 of a `sha256sum`-style list of every file the site serves. Both the list (`build.sha256`) and a summary with the commit and version (`build.json`) are served next to the app, and the app shows the fingerprint under **Settings → This build** and on the privacy page, with the commit it was built from. CI computes the same fingerprint for that commit and prints it in the job summary you reach from the commit's checks on GitHub, and every release lists it together with the SHA-256 of `idea-matrix.mcpb`.

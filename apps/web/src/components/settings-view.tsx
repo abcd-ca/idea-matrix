@@ -27,6 +27,7 @@ import { supportsLocalFile } from "@/lib/storage/local-file";
 import { useAppStore } from "@/lib/store";
 import { LanguageSelect, ThemeSelect } from "@/components/device-preferences";
 import { StartOver } from "@/components/start-over-dialog";
+import { StorageIcon } from "@/components/storage-icon";
 import { Trans, useTranslation } from "react-i18next";
 import { useNameField } from "@/lib/use-name-field";
 
@@ -120,7 +121,7 @@ export function SettingsView() {
                 if (result === "error") setError(useAppStore.getState().error);
               }}
             >
-              {t("where.moveToLocal")}
+              <StorageIcon kind="local" data-icon="inline-start" className="size-4" /> {t("where.moveToLocal")}
             </Button>
           ) : (
             <Button
@@ -135,11 +136,11 @@ export function SettingsView() {
                 if (result === "error") setError(useAppStore.getState().error);
               }}
             >
-              {t("where.moveToDrive")}
+              <StorageIcon kind="drive" data-icon="inline-start" className="size-4" /> {t("where.moveToDrive")}
             </Button>
           )}
           <Button variant="outline" disabled title={t("where.comingLater")}>
-            {t("where.moveToDropbox")}
+            <StorageIcon kind="dropbox" data-icon="inline-start" className="size-4" /> {t("where.moveToDropbox")}
           </Button>
           {target === "drive" ? (
             <Button variant="outline" disabled={busy} onClick={() => signOutOfDrive()}>

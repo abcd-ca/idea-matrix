@@ -7,6 +7,7 @@ import { useEffect, useRef, useState, useSyncExternalStore, type ReactNode } fro
 import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert";
 import { Button } from "@/components/ui/button";
 import { LogoMark } from "@/components/logo-mark";
+import { StorageIcon } from "@/components/storage-icon";
 import { createDriveFile, createNewFile, openDriveFile, openExistingFile, writeDocumentNow } from "@/lib/file-session";
 import { MOM_TEST_URL } from "@/lib/config";
 import { overview } from "@/lib/overview";
@@ -124,6 +125,7 @@ export function SetupWizard() {
                 selected={where === "local"}
                 disabled={supported !== true}
                 onSelect={() => setWhere("local")}
+                icon={<StorageIcon kind="local" />}
                 title={t("where.local")}
                 tag={t("where.localTag")}
               >
@@ -133,6 +135,7 @@ export function SetupWizard() {
                 selected={where === "drive"}
                 disabled={!driveConfigured()}
                 onSelect={() => setWhere("drive")}
+                icon={<StorageIcon kind="drive" />}
                 title={t("where.drive")}
                 tag={driveConfigured() ? t("where.driveTag") : t("where.comingLater")}
               >
@@ -142,6 +145,7 @@ export function SetupWizard() {
                 selected={false}
                 disabled
                 onSelect={() => undefined}
+                icon={<StorageIcon kind="dropbox" />}
                 title={t("where.dropbox")}
                 tag={t("where.comingLater")}
               >
@@ -434,6 +438,7 @@ function ChoiceCard({
   selected,
   disabled = false,
   onSelect,
+  icon,
   title,
   tag,
   children,
@@ -441,6 +446,7 @@ function ChoiceCard({
   selected: boolean;
   disabled?: boolean;
   onSelect: () => void;
+  icon?: ReactNode;
   title: string;
   tag?: string;
   children: ReactNode;
@@ -458,6 +464,7 @@ function ChoiceCard({
         disabled && "cursor-not-allowed opacity-50 hover:bg-transparent",
       )}
     >
+      {icon}
       <span className="font-heading text-lg font-bold">{title}</span>
       <span className="flex-1 text-sm text-muted-foreground">{children}</span>
       {tag ? <span className="self-start rounded-full border px-2 py-0.5 text-xs">{tag}</span> : null}
